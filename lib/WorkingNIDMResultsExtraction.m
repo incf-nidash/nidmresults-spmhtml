@@ -16,53 +16,30 @@ end
 contrastWeightMatrix = searchforType('obo_contrastweightmatrix', graph)
 contrastVector = contrastWeightMatrix{1}.('prov:value')
 
+% finding design matrix
+
+
 % finding height thresholds
+
 heightThresholds = searchforType('nidm_HeightThreshold', graph)
+%To obtain the statistics displayed at the top do the following;
 
-FDR = 0
-FWE = 0
-for i = 1:length(heightThresholds)
-    if any(ismember(heightThresholds{i}.('@type'), 'obo_FWERadjustedpvalue'))
-        FWE = i
-    end
-    if any(ismember(heightThresholds{i}.('@type'), 'obo_FDRadjustedqvalue'))
-        FDR = i
-    end
-    if any(ismember(heightThresholds{i}.('@type'), 'nidm_PValueUncorrected'))
-        unCorr = i
-    end
-    if any(ismember(heightThresholds{i}.('@type'), 'obo_statistic'))
-        stat = i
-    end
-end
+hPositions = getThresholdPositions(heightThresholds)
+hStatisticValue = heightThresholds{hpositions(4)}.('prov:value').('@value')
+[hpValueType, hpValue] = getUsersThresholdChoice(heightThresholds)
 
-if FWE ~= 0
-    probabilityHeightThreshold = heightThresholds{FWE}.('prov:value').('@value')
-    type = 'FWE'
-elseif FDR ~= 0
-    probabilityHeightThreshold = heightThresholds{FDR}.('prov:value').('@value')
-    type = 'FDR'
-else
-    probabilityHeightThreshold = heightThresholds{unCorr}.('prov:value').('@value')
-    type = 'uncorr'
-end
+% finding extent thresholds
 
-statisticHeightThreshold = heightThresholds{stat}.('prov:value').('@value')
+extentThresholds = searchforType('nidm_ExtentThreshold', graph)
+%To obtain the statistics displayed at the top do the following;
 
-%At the top of the template the statisticHeightThreshold and probabilityHeightThreshold and displayed
-%with the text detailing what 'type's they are.
+ePositions = getThresholdPositions(extentThresholds)
+eStatisticValue = extentThresholds{positions(4)}.('prov:value').('@value')
+[epValueType, epValue] = getUsersThresholdChoice(extentThresholds)
 
-%At the bottom all assigned thresholds are displayed (including the statisticHeightThreshold above:
-
-if FWE ~= 0
-    probabilityHeightThresholdFWE = heightThresholds{FWE}.('prov:value').('@value')
-end
-if FDR ~= 0
-    probabilityHeightThresholdFDR = heightThresholds{FDR}.('prov:value').('@value')
-end
-if unCorr ~= 0
-    probabilityHeightThresholdUnCorr = heightThresholds{unCorr}.('prov:value').('@value')
-end
+%Note if epValueType = 'stat', its the same as the eStatisticValue and
+%doesn't need to be displayed again. This tends to happen with extent
+%thresholds but not height thresholds.
 
 % finding set level p & c
 
