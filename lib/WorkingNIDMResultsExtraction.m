@@ -18,6 +18,19 @@ contrastVector = contrastWeightMatrix{1}.('prov:value')
 
 % finding design matrix
 
+temp = searchforType('nidm_DesignMatrix', graph)
+temp2 = searchforID(temp{1}.('dc:description').('@id'), graph)
+designCSVLocation = temp{1}.('prov:atLocation').('@value')
+designPNGLocation = temp2.('prov:atLocation').('@value')
+
+% finding statistic type 
+
+temp = searchforType('nidm_StatisticMap', graph)
+for i = 1:length(temp)
+    if isfield(temp{i}, 'nidm_statisticType')
+        statType = temp{i}.('nidm_statisticType').('@id')
+    end
+end
 
 % finding height thresholds
 
@@ -25,7 +38,7 @@ heightThresholds = searchforType('nidm_HeightThreshold', graph)
 %To obtain the statistics displayed at the top do the following;
 
 hPositions = getThresholdPositions(heightThresholds)
-hStatisticValue = heightThresholds{hpositions(4)}.('prov:value').('@value')
+hStatisticValue = heightThresholds{hPositions(4)}.('prov:value').('@value')
 [hpValueType, hpValue] = getUsersThresholdChoice(heightThresholds)
 
 % finding extent thresholds
