@@ -49,9 +49,18 @@ function NxSPM = changeNIDMtoxSPM(xSPM, json)
     STATStrTemp = [STATTemp '_{' errorDegrees '}']
     
     %===============================================
+    %MIP - note the original format for xSPM uses XYZmm, Z and Units
+    %instead of this.
+    
+    temp = searchforType('nidm_ExcursionSetMap', graph)
+    temp = searchforID(temp{1}.nidm_hasMaximumIntensityProjection.('@id'),graph)
+    MIPTemp = temp.('prov:atLocation').('@value')
+    
+    %===============================================
     
     NxSPM.title = titleTemp
     NxSPM.STAT = STATTemp
     NxSPM.STATStr = STATStrTemp
+    NxSPM.MIP = MIPTemp
     
 end

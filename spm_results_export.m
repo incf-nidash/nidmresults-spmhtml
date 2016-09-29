@@ -7,7 +7,6 @@ function spm_results_export(SPM,xSPM,TabDat)
 % Guillaume Flandin
 % $Id: spm_results_export.m 5615 2013-08-15 14:37:24Z spm $
 
-
 if nargin < 2
     error('Not enough input arguments.');
 end
@@ -44,7 +43,7 @@ imwrite(cursor,fcursor,'png','Transparency',[0 0 0]);
 
 %-Save results as HTML file
 %==========================================================================
-tpl = spm_file_template(fullfile('~/Downloads'),'keep');
+tpl = spm_file_template('C:\Users\owner\Documents\Project-NIDASH\nidmresults-spmhtml');
 tpl = tpl.file('TPL_RES','spm_results.tpl');
 tpl = tpl.block('TPL_RES','resftr','resftrs');
 tpl = tpl.block('TPL_RES','cursor','cursors');
