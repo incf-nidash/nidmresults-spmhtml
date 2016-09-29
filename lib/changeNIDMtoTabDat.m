@@ -1,10 +1,15 @@
-function NTabDat = changeNIDMtoTabDat(TabDat, json)
+function NTabDat = changeNIDMtoTabDat(json)
     
     graph = json.('@graph')
-    NTabDat = TabDat
+    NTabDat = struct
     
     %====================================
-    %dat field
+    %tit
+    
+    titleTemp = 'p-values adjusted for search volume'
+    
+    %====================================
+    %dat
     
     tableTemp = cell(1)
     
@@ -78,7 +83,7 @@ function NTabDat = changeNIDMtoTabDat(TabDat, json)
     %==========================================
     %ftr field
    
-    ftrTemp = TabDat.ftr
+    ftrTemp = cell(1)
     
     %Height thresholds
     heightThresholds = searchforType('nidm_HeightThreshold', graph)
@@ -91,22 +96,27 @@ function NTabDat = changeNIDMtoTabDat(TabDat, json)
     if hPositions(1) ~= 0
         h3 = str2num(heightThresholds{hPositions(1)}.('prov:value').('@value'))
     end
+    
+    ftrTemp{1, 1} = 'Height threshold: T = %0.2f, p = %0.3f (%0.3f)'
     ftrTemp{1, 2} = [h1, h2, h3]
     
     %Extent Threshold
     
     extentThresholds = searchforType('nidm_ExtentThreshold', graph)
     ePositions = getThresholdPositions(extentThresholds)
+    ftrTemp{2, 1} = 'Extent threshold: k = %0.0f voxels'  
     ftrTemp{2, 2} = str2num(extentThresholds{ePositions(4)}.('nidm_clusterSizeInVoxels').('@value'))
     
     searchSpaceMaskMap = searchforType('nidm_SearchSpaceMaskMap', graph)
     
     %Expected voxels per cluster (k)
     
+    ftrTemp{3, 1} = 'Expected voxels per cluster, <k> = %0.3f'
     ftrTemp{3, 2} = str2num(searchSpaceMaskMap{1}.('nidm_expectedNumberOfVoxelsPerCluster').('@value'))
     
     %Expected number of clusters (c)
     
+    ftrTemp{4, 1} = 'Expected number of clusters, <c> = %0.2f'  
     ftrTemp{4, 2} = str2num(searchSpaceMaskMap{1}.('nidm_expectedNumberOfClusters').('@value'))
     
     % FWEp, FDRp, FWEc, FDRc
@@ -116,10 +126,12 @@ function NTabDat = changeNIDMtoTabDat(TabDat, json)
     FWEc = str2num(searchSpaceMaskMap{1}.('spm_smallestSignificantClusterSizeInVoxelsFWE05').('@value'))
     FDRc = str2num(searchSpaceMaskMap{1}.('spm_smallestSignificantClusterSizeInVoxelsFDR05').('@value'))
     
+    ftrTemp{5,1} = 'FWEp: %0.3f, FDRp: %0.3f, FWEc: %0.0f, FDRc: %0.0f'
     ftrTemp{5,2} = [FWEp, FDRp, FWEc, FDRc]
     
     %Degrees of freedom
     temp = searchforType('nidm_StatisticMap', graph)
+    ftrTemp{6,1} = 'Degrees of freedom = [%0.1f, %0.1f]'
     for i = 1:length(temp)
         if isfield(temp{i}, 'nidm_effectDegreesOfFreedom')
             effectDegrees = temp{i}.('nidm_effectDegreesOfFreedom').('@value')
@@ -129,6 +141,11 @@ function NTabDat = changeNIDMtoTabDat(TabDat, json)
     end 
     
     %FWHM
+    
+    temp = searchforID(searchSpaceMaskMap{1}.nidm_inCoordinateSpace.('@id'), graph)
+    FWHMUnits = strrep(strrep(strrep(strrep(temp.('nidm_voxelUnits'), '\"', ''), '[', ''), ']', ''), ',', '')
+    
+    ftrTemp{7, 1} = ['FWHM = %3.1f %3.1f %3.1f ', FWHMUnits '; %3.1f %3.1f %3.1f {voxels}']
     
     unitsFWHM = str2num(searchSpaceMaskMap{1}.('nidm_noiseFWHMInUnits'))
     voxelsFWHM = str2num(searchSpaceMaskMap{1}.('nidm_noiseFWHMInVoxels'))
@@ -141,20 +158,36 @@ function NTabDat = changeNIDMtoTabDat(TabDat, json)
     volumeResels = str2num(searchSpaceMaskMap{1}.('nidm_searchVolumeInResels').('@value'))
     volumeVoxels = str2num(searchSpaceMaskMap{1}.('nidm_searchVolumeInVoxels').('@value'))
     
+    ftrTemp{8, 1} = 'Volume: %0.0f = %0.0f voxels = %0.1f resels' 
     ftrTemp{8, 2} = [volumeUnits, volumeVoxels, volumeResels]
     
     %Voxel dimensions and resel size
     
     temp = searchforID(searchSpaceMaskMap{1}.('nidm_inCoordinateSpace').('@id'), graph)
     voxelSize = str2num(temp.('nidm_voxelSize'))
-    voxelUnits = temp.('nidm_voxelUnits')
+    voxelUnits = strrep(strrep(strrep(strrep(temp.('nidm_voxelUnits'), '\"', ''), '[', ''), ']', ''), ',', '')
     reselSize = str2num(searchSpaceMaskMap{1}.('nidm_reselSizeInVoxels').('@value'))
     
+    ftrTemp{9, 1} = ['Voxel size: %3.1f %3.1f %3.1f ', voxelUnits, '; (resel = %0.2f voxels)']
     ftrTemp{9, 2} = [voxelSize reselSize]
     
     %===========================================
+    %str field
     
+    temp = searchforType('nidm_PeakDefinitionCriteria', graph)
+    units = strtok(voxelUnits, ' ')
+    strTemp = ['table shows 3 local maxima more than ', temp{1}.nidm_minDistanceBetweenPeaks.('@value'), units, ' apart']
+    
+    %===========================================
+    %fmt
+    
+    fmtTemp = {'%-0.3f' '%g' '%0.3f' '%0.3f' '%0.0f' '%0.3f' '%0.3f' '%0.3f' '%6.2f' '%5.2f' '%0.3f' '%3.0f %3.0f %3.0f '}
+    
+    %=============================================
+    
+    NTabDat.tit = titleTemp
     NTabDat.dat = tableTemp
     NTabDat.ftr = ftrTemp
-    
+    NTabDat.str = strTemp
+    NTabDat.fmt = fmtTemp
 end
