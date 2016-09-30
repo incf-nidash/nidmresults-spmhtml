@@ -14,8 +14,12 @@ if nargin < 3
     TabDat = spm_list('Table',xSPM);
 end
 
-MIP     = spm_mip(xSPM.Z,xSPM.XYZmm,xSPM.M,xSPM.units);
-DesMtx  = (SPM.xX.nKX + 1)*32;
+if ~isfield(xSPM, 'nidm')
+    MIP     = spm_mip(xSPM.Z,xSPM.XYZmm,xSPM.M,xSPM.units);
+end
+if ~isfield(SPM, 'nidm')
+    DesMtx  = (SPM.xX.nKX + 1)*32;
+end
 
 outdir  = pwd;
 fHTML   = spm_file(fullfile(outdir,'index.html'),'unique');
@@ -26,11 +30,20 @@ fcursor = spm_file(fullfile(outdir,'cursor.png'),'unique');
 
 %-Save images as PNG files
 %--------------------------------------------------------------------------
-imwrite(MIP,gray(64),fMIP,'png');
+if ~isfield(xSPM, 'nidm')
+    imwrite(MIP,gray(64),fMIP,'png');
+else
+    copyfile(xSPM.nidm.MIP, fMIP);
+end
 
-ml = floor(size(DesMtx,1)/size(DesMtx,2));
-DesMtx = reshape(repmat(DesMtx,ml,1),size(DesMtx,1),[]);
-imwrite(DesMtx,gray(64),fDesMtx,'png');
+if ~isfield(SPM, 'nidm')
+    ml = floor(size(DesMtx,1)/size(DesMtx,2));
+    DesMtx = reshape(repmat(DesMtx,ml,1),size(DesMtx,1),[]);
+    imwrite(DesMtx,gray(64),fDesMtx,'png');
+else
+    ml = floor(SPM.nidm.dim(1)/SPM.nidm.dim(2));
+    copyfile(SPM.nidm.DesMat, fDesMtx);
+end
 
 con = [SPM.xCon(xSPM.Ic).c]';
 con = (con/max(abs(con(:)))+1)*32;
