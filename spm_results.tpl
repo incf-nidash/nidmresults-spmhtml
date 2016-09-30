@@ -40,7 +40,7 @@
     <td><div style="position:relative;">
       <img src="{IMG_MIP}" class="crisp"/>
       <!-- BEGIN cursor -->
-      <img id="{CS_ID}" src="{IMG_CURSOR}" class="crisp" width="8" height="11" style="position:absolute;top:{CS_Y}px;left:{CS_X}px"/>
+      <img id="{CS_ID}" src="{IMG_CURSOR}" class="crisp" width="8" height="11" style="position:absolute;top:{CS_Y}px;left:{s}px"/>
       <!-- END cursor -->
       <div style="position:absolute;top:225px;left:240px;font-size:x-large;font-weight:bold;">SPM&#123{STAT_STR}&#125</div>
     </div></td>
