@@ -37,23 +37,23 @@ function NTabDat = changeNIDMtoTabDat(json)
     peaks = searchforType('nidm_Peak', graph)
 
     for i = 1:length(peaks)
-        temp = peaks{i}.('prov:wasDerivedFrom').('@id')
-        if isa(clusterPeakMap(temp), 'double')
-            clusterPeakMap(temp) = {peaks{i}}
+        clusterID = peaks{i}.('prov:wasDerivedFrom').('@id')
+        if isa(clusterPeakMap(clusterID), 'double')
+            clusterPeakMap(clusterID) = {peaks{i}}
         else
-            existing = clusterPeakMap(temp);
-            clusterPeakMap(temp) = {existing{:} peaks{i}}
+            existing = clusterPeakMap(clusterID);
+            clusterPeakMap(clusterID) = {existing{:} peaks{i}}
         end
     end
 
     %Sorting the peaks within clusters.
     for i = 1:length(keySet)
-        temp = keySet{i}
-        clustmaptemp=clusterPeakMap(temp)
-        oo=cellfun(@(x) x.('prov:value').('@value'), clustmaptemp, 'UniformOutput', false);
-        aa=str2num(strvcat(oo{:}))
-        [unused, idx]=sort(aa, 'descend')
-        clusterPeakMap(temp) = clustmaptemp(idx)
+        clusterID = keySet{i}
+        clustmaptemp=clusterPeakMap(clusterID)
+        clusSet=cellfun(@(x) x.('prov:value').('@value'), clustmaptemp, 'UniformOutput', false);
+        orderedClusSet=str2num(strvcat(clusSet{:}))
+        [unused, idx]=sort(orderedClusSet, 'descend')
+        clusterPeakMap(clusterID) = clustmaptemp(idx)
     end
     
     %Read data from map
@@ -130,20 +130,20 @@ function NTabDat = changeNIDMtoTabDat(json)
     ftrTemp{5,2} = [FWEp, FDRp, FWEc, FDRc]
     
     %Degrees of freedom
-    temp = searchforType('nidm_StatisticMap', graph)
+    statisticMap = searchforType('nidm_StatisticMap', graph)
     ftrTemp{6,1} = 'Degrees of freedom = [%0.1f, %0.1f]'
-    for i = 1:length(temp)
-        if isfield(temp{i}, 'nidm_effectDegreesOfFreedom')
-            effectDegrees = temp{i}.('nidm_effectDegreesOfFreedom').('@value')
-            errorDegrees = temp{i}.('nidm_errorDegreesOfFreedom').('@value')
+    for i = 1:length(statisticMap)
+        if isfield(statisticMap{i}, 'nidm_effectDegreesOfFreedom')
+            effectDegrees = statisticMap{i}.('nidm_effectDegreesOfFreedom').('@value')
+            errorDegrees = statisticMap{i}.('nidm_errorDegreesOfFreedom').('@value')
             ftrTemp{6,2} = [str2num(effectDegrees),  str2num(errorDegrees)]
         end
     end 
     
     %FWHM
     
-    temp = searchforID(searchSpaceMaskMap{1}.nidm_inCoordinateSpace.('@id'), graph)
-    FWHMUnits = strrep(strrep(strrep(strrep(temp.('nidm_voxelUnits'), '\"', ''), '[', ''), ']', ''), ',', '')
+    fwhmID = searchforID(searchSpaceMaskMap{1}.nidm_inCoordinateSpace.('@id'), graph)
+    FWHMUnits = strrep(strrep(strrep(strrep(fwhmID.('nidm_voxelUnits'), '\"', ''), '[', ''), ']', ''), ',', '')
     
     ftrTemp{7, 1} = ['FWHM = %3.1f %3.1f %3.1f ', FWHMUnits '; %3.1f %3.1f %3.1f {voxels}']
     
@@ -174,9 +174,9 @@ function NTabDat = changeNIDMtoTabDat(json)
     %===========================================
     %str field
     
-    temp = searchforType('nidm_PeakDefinitionCriteria', graph)
+    peakDefCriteria = searchforType('nidm_PeakDefinitionCriteria', graph)
     units = strtok(voxelUnits, ' ')
-    strTemp = ['table shows 3 local maxima more than ', temp{1}.nidm_minDistanceBetweenPeaks.('@value'), units, ' apart']
+    strTemp = ['table shows 3 local maxima more than ', peakDefCriteria{1}.nidm_minDistanceBetweenPeaks.('@value'), units, ' apart']
     
     %===========================================
     %fmt

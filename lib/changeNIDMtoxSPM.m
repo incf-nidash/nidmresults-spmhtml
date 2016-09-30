@@ -7,20 +7,20 @@ function NxSPM = changeNIDMtoxSPM(json)
     %==============================================
     %title
     
-    temp = searchforType('nidm_ContrastMap', graph)
-    for i = 1:length(temp)
-        if isfield(temp{i}, 'nidm_contrastName')
-            titleTemp = temp{i}.('nidm_contrastName')
+    contrastMaps = searchforType('nidm_ContrastMap', graph)
+    for i = 1:length(contrastMaps)
+        if isfield(contrastMaps{i}, 'nidm_contrastName')
+            titleTemp = contrastMaps{i}.('nidm_contrastName')
         end
     end 
     
     %==============================================
     %STAT
     
-    temp = searchforType('nidm_StatisticMap', graph)
-    for i = 1:length(temp)
-        if isfield(temp{i}, 'nidm_statisticType')
-            statType = temp{i}.('nidm_statisticType').('@id')
+    statisticMaps = searchforType('nidm_StatisticMap', graph)
+    for i = 1:length(statisticMaps)
+        if isfield(statisticMaps{i}, 'nidm_statisticType')
+            statType = statisticMaps{i}.('nidm_statisticType').('@id')
         end
     end
     
@@ -39,10 +39,9 @@ function NxSPM = changeNIDMtoxSPM(json)
     %===============================================
     %STATStr
     
-    temp = searchforType('nidm_StatisticMap', graph)
-    for i = 1:length(temp)
-        if isfield(temp{i}, 'nidm_errorDegreesOfFreedom')
-            errorDegrees = temp{i}.('nidm_errorDegreesOfFreedom').('@value')
+    for i = 1:length(statisticMaps)
+        if isfield(statisticMaps{i}, 'nidm_errorDegreesOfFreedom')
+            errorDegrees = statisticMaps{i}.('nidm_errorDegreesOfFreedom').('@value')
         end
     end 
     errorDegrees = num2str(round(str2num(errorDegrees)))
@@ -53,9 +52,9 @@ function NxSPM = changeNIDMtoxSPM(json)
     %derived from other fields and this field does not exist.
     
     nidmTemp = struct
-    temp = searchforType('nidm_ExcursionSetMap', graph)
-    temp = searchforID(temp{1}.nidm_hasMaximumIntensityProjection.('@id'),graph)
-    nidmTemp.MIP = fullfile(json.filepath, temp.('prov:atLocation').('@value'))
+    excursionSetMaps = searchforType('nidm_ExcursionSetMap', graph)
+    mipFilepath = searchforID(excursionSetMaps{1}.nidm_hasMaximumIntensityProjection.('@id'),graph)
+    nidmTemp.MIP = fullfile(json.filepath, mipFilepath.('prov:atLocation').('@value'))
     
     %===============================================
     

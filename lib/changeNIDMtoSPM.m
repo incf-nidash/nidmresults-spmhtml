@@ -7,12 +7,12 @@ function NSPM = changeNIDMtoSPM(json)
     %matrix is derived from other fields and this field does not exist.
     
     nidmTemp = struct
-    temp = searchforType('nidm_DesignMatrix', graph)
-    temp = searchforID(temp{1}.('dc:description').('@id'), graph)
-    nidmTemp.DesMat = fullfile(json.filepath, temp.('prov:atLocation').('@value'))
+    designMatrix = searchforType('nidm_DesignMatrix', graph)
     
-    temp = searchforType('nidm_DesignMatrix', graph)
-    csvFilePath = fullfile(json.filepath, temp{1}.('prov:atLocation').('@value'))
+    locationID = searchforID(designMatrix{1}.('dc:description').('@id'), graph)
+    nidmTemp.DesMat = fullfile(json.filepath, locationID.('prov:atLocation').('@value'))
+    
+    csvFilePath = fullfile(json.filepath, designMatrix{1}.('prov:atLocation').('@value'))
     csvFile = csvread(csvFilePath)
     nidmTemp.dim = size(csvFile)
     
