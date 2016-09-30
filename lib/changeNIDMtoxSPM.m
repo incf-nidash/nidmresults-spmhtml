@@ -1,8 +1,8 @@
 
-function NxSPM = changeNIDMtoxSPM(xSPM, json)
+function NxSPM = changeNIDMtoxSPM(json)
     
     graph = json.('@graph')
-    NxSPM = xSPM
+    NxSPM = struct
     
     %==============================================
     %title
@@ -49,18 +49,26 @@ function NxSPM = changeNIDMtoxSPM(xSPM, json)
     STATStrTemp = [STATTemp '_{' errorDegrees '}']
     
     %===============================================
-    %MIP - note the original format for xSPM uses XYZmm, Z and Units
-    %instead of this.
+    %nidm - NOTE: In the standard format for the SPM file the MIP is 
+    %derived from other fields and this field does not exist.
     
+    nidmTemp = struct
     temp = searchforType('nidm_ExcursionSetMap', graph)
     temp = searchforID(temp{1}.nidm_hasMaximumIntensityProjection.('@id'),graph)
-    MIPTemp = temp.('prov:atLocation').('@value')
+    nidmTemp.MIP = fullfile(json.filepath, temp.('prov:atLocation').('@value'))
     
     %===============================================
     
     NxSPM.title = titleTemp
     NxSPM.STAT = STATTemp
-    NxSPM.STATStr = STATStrTemp
-    NxSPM.MIP = MIPTemp
+    NxSPM.STATstr = STATStrTemp
+    NxSPM.nidm = nidmTemp
+    %Number of contrast vectors, currently only working with one.
+    NxSPM.Ic = 1
+    %Currently cursor is not working - these variables are used by the
+    %cursor. The below are just random values chosen so that the matrix
+    %generated for the cursor is non-singular.
+    NxSPM.DIM = [0; 0; 0]
+    NxSPM.M = [1, 0, 0, 0; 1, 2, 3, 0; 1, 0, 0, 2; 0, 1, 0, 0]
     
 end
