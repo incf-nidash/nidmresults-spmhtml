@@ -3,24 +3,24 @@
 %its place.
 
 function result = getThresholdPositions(thresholds) 
-    FWE = 0
-    FDR = 0
-    unCorr = 0
-    stat = 0
+    FWE = 0;
+    FDR = 0;
+    unCorr = 0;
+    stat = 0;
     for i = 1:length(thresholds)
         if any(ismember(thresholds{i}.('@type'), 'obo_FWERadjustedpvalue'))
-            FWE = i
+            FWE = i;
         end
         if any(ismember(thresholds{i}.('@type'), 'obo_FDRadjustedqvalue'))
-            FDR = i
+            FDR = i;
         end
         if any(ismember(thresholds{i}.('@type'), 'nidm_PValueUncorrected'))
-            unCorr = i
+            unCorr = i;
         end
         if any(ismember(thresholds{i}.('@type'), 'obo_statistic'))
-            stat = i
+            stat = i;
         end
     end
-    result = [FWE, FDR, unCorr, stat]
+    result = [FWE, FDR, unCorr, stat];
 end
 

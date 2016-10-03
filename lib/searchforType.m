@@ -1,16 +1,16 @@
 function result = searchforType(type, graph) 
  
-    result = []
-    n = 1
+    result = [];
+    n = 1;
     for k = 1:length(graph)
         if any(ismember(graph{k}.('@type'), type)) && isa(graph{k}.('@type'), 'cell')
-            result{n} = graph{k}
-            n = n+1
+            result{n} = graph{k};
+            n = n+1;
         end
         if isa(graph{k}.('@type'), 'char')
             if strcmp(graph{k}.('@type'), type)
-                result{n} = graph{k}
-                n = n+1
+                result{n} = graph{k};
+                n = n+1;
             end
         end
     end
