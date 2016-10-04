@@ -8,16 +8,16 @@ function result = getThresholdPositions(thresholds)
     unCorr = 0;
     stat = 0;
     for i = 1:length(thresholds)
-        if any(ismember(thresholds{i}.('@type'), 'obo_FWERadjustedpvalue'))
+        if any(ismember(thresholds{i}.('x_type'), 'obo_FWERadjustedpvalue'))
             FWE = i;
         end
-        if any(ismember(thresholds{i}.('@type'), 'obo_FDRadjustedqvalue'))
+        if any(ismember(thresholds{i}.('x_type'), 'obo_FDRadjustedqvalue'))
             FDR = i;
         end
-        if any(ismember(thresholds{i}.('@type'), 'nidm_PValueUncorrected'))
+        if any(ismember(thresholds{i}.('x_type'), 'nidm_PValueUncorrected'))
             unCorr = i;
         end
-        if any(ismember(thresholds{i}.('@type'), 'obo_statistic'))
+        if any(ismember(thresholds{i}.('x_type'), 'obo_statistic'))
             stat = i;
         end
     end

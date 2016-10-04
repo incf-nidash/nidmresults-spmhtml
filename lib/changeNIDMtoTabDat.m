@@ -1,6 +1,6 @@
 function NTabDat = changeNIDMtoTabDat(json)
     
-    graph = json.('@graph');
+    graph = json.('x_graph');
     NTabDat = struct;
     
     %====================================
@@ -16,28 +16,28 @@ function NTabDat = changeNIDMtoTabDat(json)
     %Set-level:
     
     excursionSetMap = searchforType('nidm_ExcursionSetMap', graph);
-    tableTemp{1, 1} = str2double(excursionSetMap{1}.('nidm_pValue').('@value'));
-    tableTemp{1, 2} = str2double(excursionSetMap{1}.('nidm_numberOfSupraThresholdClusters').('@value'));
+    tableTemp{1, 1} = str2double(excursionSetMap{1}.('nidm_pValue').('x_value'));
+    tableTemp{1, 2} = str2double(excursionSetMap{1}.('nidm_numberOfSupraThresholdClusters').('x_value'));
     
     %Cluster and peak level:
     
     clusters = searchforType('nidm_SupraThresholdCluster', graph);
 
     %Sorting the clusters by descending size.
-    oo=cellfun(@(x) x.('nidm_clusterSizeInVoxels').('@value'), clusters, 'UniformOutput', false);
+    oo=cellfun(@(x) x.('nidm_clusterSizeInVoxels').('x_value'), clusters, 'UniformOutput', false);
     aa=str2num(strvcat(oo{:}));
     [unused, idx]=sort(aa, 'descend');
     clusters = clusters(idx);
 
     %Create keySet and valueSet
-    keySet = cellfun(@(x) x.('@id'), clusters, 'UniformOutput', false);
+    keySet = cellfun(@(x) x.('x_id'), clusters, 'UniformOutput', false);
     valueSet = repmat(NaN, 1, length(keySet));
 
     clusterPeakMap = containers.Map(keySet, valueSet, 'UniformValues', false);
     peaks = searchforType('nidm_Peak', graph);
 
     for i = 1:length(peaks)
-        clusterID = peaks{i}.('prov:wasDerivedFrom').('@id');
+        clusterID = peaks{i}.('prov_wasDerivedFrom').('x_id');
         if isa(clusterPeakMap(clusterID), 'double')
             clusterPeakMap(clusterID) = {peaks{i}};
         else
@@ -50,7 +50,7 @@ function NTabDat = changeNIDMtoTabDat(json)
     for i = 1:length(keySet)
         clusterID = keySet{i};
         clustmaptemp=clusterPeakMap(clusterID);
-        clusSet=cellfun(@(x) x.('prov:value').('@value'), clustmaptemp, 'UniformOutput', false);
+        clusSet=cellfun(@(x) x.('prov_value').('x_value'), clustmaptemp, 'UniformOutput', false);
         orderedClusSet=str2num(strvcat(clusSet{:}));
         [unused, idx]=sort(orderedClusSet, 'descend');
         clusterPeakMap(clusterID) = clustmaptemp(idx);
@@ -60,20 +60,20 @@ function NTabDat = changeNIDMtoTabDat(json)
     
     n = 1;
     for i = 1:length(keySet)
-        tableTemp{n, 3} = str2double(clusters{i}.('nidm_pValueFWER').('@value'));
-        tableTemp{n, 4} = str2double(clusters{i}.('nidm_qValueFDR').('@value'));
-        tableTemp{n, 5} = str2double(clusters{i}.('nidm_clusterSizeInVoxels').('@value'));
-        tableTemp{n, 6} = str2double(clusters{i}.('nidm_pValueUncorrected').('@value'));
+        tableTemp{n, 3} = str2double(clusters{i}.('nidm_pValueFWER').('x_value'));
+        tableTemp{n, 4} = str2double(clusters{i}.('nidm_qValueFDR').('x_value'));
+        tableTemp{n, 5} = str2double(clusters{i}.('nidm_clusterSizeInVoxels').('x_value'));
+        tableTemp{n, 6} = str2double(clusters{i}.('nidm_pValueUncorrected').('x_value'));
         
         peaksTemp = clusterPeakMap(keySet{i});
         
        for j = 1:min(3, length(peaksTemp))
-          tableTemp{n, 7} = str2double(peaksTemp{j}.('nidm_pValueFWER').('@value'));
-          tableTemp{n, 8} = str2double(peaksTemp{j}.('nidm_qValueFDR').('@value'));
-          tableTemp{n, 9} = str2double(peaksTemp{j}.('prov:value').('@value'));
-          tableTemp{n, 10} = str2double(peaksTemp{j}.('nidm_equivalentZStatistic').('@value'));
-          tableTemp{n, 11} = str2double(peaksTemp{j}.('nidm_pValueUncorrected').('@value'));
-          locTemp = peaksTemp{j}.('prov:atLocation').('@id');
+          tableTemp{n, 7} = str2double(peaksTemp{j}.('nidm_pValueFWER').('x_value'));
+          tableTemp{n, 8} = str2double(peaksTemp{j}.('nidm_qValueFDR').('x_value'));
+          tableTemp{n, 9} = str2double(peaksTemp{j}.('prov_value').('x_value'));
+          tableTemp{n, 10} = str2double(peaksTemp{j}.('nidm_equivalentZStatistic').('x_value'));
+          tableTemp{n, 11} = str2double(peaksTemp{j}.('nidm_pValueUncorrected').('x_value'));
+          locTemp = peaksTemp{j}.('prov_atLocation').('x_id');
           locTemp = searchforID(locTemp, graph);
           tableTemp{n, 12} = str2num(locTemp.nidm_coordinateVector);
           n = n+1;
@@ -88,13 +88,13 @@ function NTabDat = changeNIDMtoTabDat(json)
     %Height thresholds
     heightThresholds = searchforType('nidm_HeightThreshold', graph);
     hPositions = getThresholdPositions(heightThresholds);
-    h1 = str2num(heightThresholds{hPositions(4)}.('prov:value').('@value'));
-    h2 = str2num(heightThresholds{hPositions(3)}.('prov:value').('@value'));
+    h1 = str2num(heightThresholds{hPositions(4)}.('prov_value').('x_value'));
+    h2 = str2num(heightThresholds{hPositions(3)}.('prov_value').('x_value'));
     if hPositions(2) ~= 0
-        h3 = str2num(heightThresholds{hPositions(2)}.('prov:value').('@value'));
+        h3 = str2num(heightThresholds{hPositions(2)}.('prov_value').('x_value'));
     end
     if hPositions(1) ~= 0
-        h3 = str2num(heightThresholds{hPositions(1)}.('prov:value').('@value'));
+        h3 = str2num(heightThresholds{hPositions(1)}.('prov_value').('x_value'));
     end
     
     ftrTemp{1, 1} = 'Height threshold: T = %0.2f, p = %0.3f (%0.3f)';
@@ -105,26 +105,26 @@ function NTabDat = changeNIDMtoTabDat(json)
     extentThresholds = searchforType('nidm_ExtentThreshold', graph);
     ePositions = getThresholdPositions(extentThresholds);
     ftrTemp{2, 1} = 'Extent threshold: k = %0.0f voxels';  
-    ftrTemp{2, 2} = str2num(extentThresholds{ePositions(4)}.('nidm_clusterSizeInVoxels').('@value'));
+    ftrTemp{2, 2} = str2num(extentThresholds{ePositions(4)}.('nidm_clusterSizeInVoxels').('x_value'));
     
     searchSpaceMaskMap = searchforType('nidm_SearchSpaceMaskMap', graph);
     
     %Expected voxels per cluster (k)
     
     ftrTemp{3, 1} = 'Expected voxels per cluster, <k> = %0.3f';
-    ftrTemp{3, 2} = str2num(searchSpaceMaskMap{1}.('nidm_expectedNumberOfVoxelsPerCluster').('@value'));
+    ftrTemp{3, 2} = str2num(searchSpaceMaskMap{1}.('nidm_expectedNumberOfVoxelsPerCluster').('x_value'));
     
     %Expected number of clusters (c)
     
     ftrTemp{4, 1} = 'Expected number of clusters, <c> = %0.2f';
-    ftrTemp{4, 2} = str2num(searchSpaceMaskMap{1}.('nidm_expectedNumberOfClusters').('@value'));
+    ftrTemp{4, 2} = str2num(searchSpaceMaskMap{1}.('nidm_expectedNumberOfClusters').('x_value'));
     
     % FWEp, FDRp, FWEc, FDRc
     
-    FWEp = str2num(searchSpaceMaskMap{1}.('nidm_heightCriticalThresholdFWE05').('@value'));
-    FDRp = str2num(searchSpaceMaskMap{1}.('nidm_heightCriticalThresholdFDR05').('@value'));
-    FWEc = str2num(searchSpaceMaskMap{1}.('spm_smallestSignificantClusterSizeInVoxelsFWE05').('@value'));
-    FDRc = str2num(searchSpaceMaskMap{1}.('spm_smallestSignificantClusterSizeInVoxelsFDR05').('@value'));
+    FWEp = str2num(searchSpaceMaskMap{1}.('nidm_heightCriticalThresholdFWE05').('x_value'));
+    FDRp = str2num(searchSpaceMaskMap{1}.('nidm_heightCriticalThresholdFDR05').('x_value'));
+    FWEc = str2num(searchSpaceMaskMap{1}.('spm_smallestSignificantClusterSizeInVoxelsFWE05').('x_value'));
+    FDRc = str2num(searchSpaceMaskMap{1}.('spm_smallestSignificantClusterSizeInVoxelsFDR05').('x_value'));
     
     ftrTemp{5,1} = 'FWEp: %0.3f, FDRp: %0.3f, FWEc: %0.0f, FDRc: %0.0f';
     ftrTemp{5,2} = [FWEp, FDRp, FWEc, FDRc];
@@ -134,15 +134,15 @@ function NTabDat = changeNIDMtoTabDat(json)
     ftrTemp{6,1} = 'Degrees of freedom = [%0.1f, %0.1f]';
     for i = 1:length(statisticMap)
         if isfield(statisticMap{i}, 'nidm_effectDegreesOfFreedom')
-            effectDegrees = statisticMap{i}.('nidm_effectDegreesOfFreedom').('@value');
-            errorDegrees = statisticMap{i}.('nidm_errorDegreesOfFreedom').('@value');
+            effectDegrees = statisticMap{i}.('nidm_effectDegreesOfFreedom').('x_value');
+            errorDegrees = statisticMap{i}.('nidm_errorDegreesOfFreedom').('x_value');
             ftrTemp{6,2} = [str2num(effectDegrees),  str2num(errorDegrees)];
         end
     end 
     
     %FWHM
     
-    fwhmID = searchforID(searchSpaceMaskMap{1}.nidm_inCoordinateSpace.('@id'), graph);
+    fwhmID = searchforID(searchSpaceMaskMap{1}.nidm_inCoordinateSpace.('x_id'), graph);
     FWHMUnits = strrep(strrep(strrep(strrep(fwhmID.('nidm_voxelUnits'), '\"', ''), '[', ''), ']', ''), ',', '');
     
     ftrTemp{7, 1} = ['FWHM = %3.1f %3.1f %3.1f ', FWHMUnits '; %3.1f %3.1f %3.1f {voxels}'];
@@ -154,19 +154,19 @@ function NTabDat = changeNIDMtoTabDat(json)
     
     %Volume
     
-    volumeUnits = str2num(searchSpaceMaskMap{1}.('nidm_searchVolumeInUnits').('@value'));
-    volumeResels = str2num(searchSpaceMaskMap{1}.('nidm_searchVolumeInResels').('@value'));
-    volumeVoxels = str2num(searchSpaceMaskMap{1}.('nidm_searchVolumeInVoxels').('@value'));
+    volumeUnits = str2num(searchSpaceMaskMap{1}.('nidm_searchVolumeInUnits').('x_value'));
+    volumeResels = str2num(searchSpaceMaskMap{1}.('nidm_searchVolumeInResels').('x_value'));
+    volumeVoxels = str2num(searchSpaceMaskMap{1}.('nidm_searchVolumeInVoxels').('x_value'));
     
     ftrTemp{8, 1} = 'Volume: %0.0f = %0.0f voxels = %0.1f resels';
     ftrTemp{8, 2} = [volumeUnits, volumeVoxels, volumeResels];
     
     %Voxel dimensions and resel size
     
-    temp = searchforID(searchSpaceMaskMap{1}.('nidm_inCoordinateSpace').('@id'), graph);
+    temp = searchforID(searchSpaceMaskMap{1}.('nidm_inCoordinateSpace').('x_id'), graph);
     voxelSize = str2num(temp.('nidm_voxelSize'));
     voxelUnits = strrep(strrep(strrep(strrep(temp.('nidm_voxelUnits'), '\"', ''), '[', ''), ']', ''), ',', '');
-    reselSize = str2num(searchSpaceMaskMap{1}.('nidm_reselSizeInVoxels').('@value'));
+    reselSize = str2num(searchSpaceMaskMap{1}.('nidm_reselSizeInVoxels').('x_value'));
     
     ftrTemp{9, 1} = ['Voxel size: %3.1f %3.1f %3.1f ', voxelUnits, '; (resel = %0.2f voxels)'];
     ftrTemp{9, 2} = [voxelSize reselSize];
@@ -176,7 +176,7 @@ function NTabDat = changeNIDMtoTabDat(json)
     
     peakDefCriteria = searchforType('nidm_PeakDefinitionCriteria', graph);
     units = strtok(voxelUnits, ' ');
-    strTemp = ['table shows 3 local maxima more than ', peakDefCriteria{1}.nidm_minDistanceBetweenPeaks.('@value'), units, ' apart'];
+    strTemp = ['table shows 3 local maxima more than ', peakDefCriteria{1}.nidm_minDistanceBetweenPeaks.('x_value'), units, ' apart'];
     
     %===========================================
     %fmt

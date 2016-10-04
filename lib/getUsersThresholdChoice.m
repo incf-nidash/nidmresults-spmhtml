@@ -8,21 +8,21 @@ function [type, value] = getUsersThresholdChoice(thresholds)
         end
     end
     if isfield(thresholds{pos}, 'nidm_clusterSizeInVoxels')
-        value = thresholds{pos}.('nidm_clusterSizeInVoxels').('@value');
+        value = thresholds{pos}.('nidm_clusterSizeInVoxels').('x_value');
     end
-    if isfield(thresholds{pos}, 'prov:value')
-        value = thresholds{pos}.('prov:value').('@value');
+    if isfield(thresholds{pos}, 'prov_value')
+        value = thresholds{pos}.('prov_value').('x_value');
     end
-    if any(ismember(thresholds{pos}.('@type'), 'obo_FWERadjustedpvalue'))
+    if any(ismember(thresholds{pos}.('x_type'), 'obo_FWERadjustedpvalue'))
         type = 'FWE';
     end
-    if any(ismember(thresholds{pos}.('@type'), 'obo_FDRadjustedqvalue'))
+    if any(ismember(thresholds{pos}.('x_type'), 'obo_FDRadjustedqvalue'))
         type = 'FDR';
     end
-    if any(ismember(thresholds{pos}.('@type'), 'nidm_PValueUncorrected'))
+    if any(ismember(thresholds{pos}.('x_type'), 'nidm_PValueUncorrected'))
         type = 'unCorr';
     end
-    if any(ismember(thresholds{pos}.('@type'), 'obo_statistic'))
+    if any(ismember(thresholds{pos}.('x_type'), 'obo_statistic'))
         type = 'stat';
     end
 end

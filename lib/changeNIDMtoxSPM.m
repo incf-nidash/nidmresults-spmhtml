@@ -1,7 +1,7 @@
 
 function NxSPM = changeNIDMtoxSPM(json)
     
-    graph = json.('@graph');
+    graph = json.('x_graph');
     NxSPM = struct;
     
     %==============================================
@@ -20,7 +20,7 @@ function NxSPM = changeNIDMtoxSPM(json)
     statisticMaps = searchforType('nidm_StatisticMap', graph);
     for i = 1:length(statisticMaps)
         if isfield(statisticMaps{i}, 'nidm_statisticType')
-            statType = statisticMaps{i}.('nidm_statisticType').('@id');
+            statType = statisticMaps{i}.('nidm_statisticType').('x_id');
         end
     end
     
@@ -41,7 +41,7 @@ function NxSPM = changeNIDMtoxSPM(json)
     
     for i = 1:length(statisticMaps)
         if isfield(statisticMaps{i}, 'nidm_errorDegreesOfFreedom')
-            errorDegrees = statisticMaps{i}.('nidm_errorDegreesOfFreedom').('@value');
+            errorDegrees = statisticMaps{i}.('nidm_errorDegreesOfFreedom').('x_value');
         end
     end 
     errorDegrees = num2str(round(str2num(errorDegrees)));
@@ -53,8 +53,8 @@ function NxSPM = changeNIDMtoxSPM(json)
     
     nidmTemp = struct;
     excursionSetMaps = searchforType('nidm_ExcursionSetMap', graph);
-    mipFilepath = searchforID(excursionSetMaps{1}.nidm_hasMaximumIntensityProjection.('@id'),graph);
-    nidmTemp.MIP = fullfile(json.filepath, mipFilepath.('prov:atLocation').('@value'));
+    mipFilepath = searchforID(excursionSetMaps{1}.nidm_hasMaximumIntensityProjection.('x_id'),graph);
+    nidmTemp.MIP = fullfile(json.filepath, mipFilepath.('prov_atLocation').('x_value'));
     
     %===============================================
     

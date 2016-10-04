@@ -15,6 +15,7 @@ if nargin < 3
 end
 
 if ~isfield(xSPM, 'nidm')
+    disp(xSPM)
     MIP     = spm_mip(xSPM.Z,xSPM.XYZmm,xSPM.M,xSPM.units);
 end
 if ~isfield(SPM, 'nidm')
@@ -56,7 +57,7 @@ imwrite(cursor,fcursor,'png','Transparency',[0 0 0]);
 
 %-Save results as HTML file
 %==========================================================================
-tpl = spm_file_template('C:\Users\owner\Documents\Project-NIDASH\nidmresults-spmhtml');
+tpl = spm_file_template(fileparts(mfilename('fullpath')));;
 tpl = tpl.file('TPL_RES','spm_results.tpl');
 tpl = tpl.block('TPL_RES','resftr','resftrs');
 tpl = tpl.block('TPL_RES','cursor','cursors');
