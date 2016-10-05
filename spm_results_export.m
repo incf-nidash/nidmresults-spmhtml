@@ -22,7 +22,11 @@ if ~isfield(SPM, 'nidm')
     DesMtx  = (SPM.xX.nKX + 1)*32;
 end
 
-outdir  = pwd;
+if ~isfield(SPM, 'filepath')
+    outdir  = pwd;
+else
+    outdir  = SPM.filepath;
+end
 fHTML   = spm_file(fullfile(outdir,'index.html'),'unique');
 fMIP    = spm_file(fullfile(outdir,'MIP.png'),'unique');
 fDesMtx = spm_file(fullfile(outdir,'DesMtx.png'),'unique');

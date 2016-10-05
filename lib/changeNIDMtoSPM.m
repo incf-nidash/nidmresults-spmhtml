@@ -1,5 +1,6 @@
 function NSPM = changeNIDMtoSPM(json)
     graph = json.('x_graph');
+    filepathTemp = json.filepath;
     NSPM = struct;
     
     %============================================================
@@ -27,5 +28,6 @@ function NSPM = changeNIDMtoSPM(json)
     
     NSPM.nidm = nidmTemp;
     NSPM.xCon = xConTemp;
+    NSPM.filepath = filepathTemp;
     
 end
