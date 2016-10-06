@@ -1,6 +1,6 @@
 # nidmresults-spmhtml
 
-Import mass-univariate neuroimaging results computed in SPM as NIDM-Results packs.
+Read and display NIDM-Results packs in the SPM environment.
 
 Usage
 
@@ -11,10 +11,6 @@ Usage
 1. Add the filepath to SPM in Matlab;
  ```
  addpath(<full path to matlab>)
- ```
-1. Download the updated spm_jsonread files and add the path to them in matlab.
- ```
- addpath(<full path to new spm json reader>)
  ```
 1. Run the following:
  ```
