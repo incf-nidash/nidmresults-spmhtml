@@ -25,10 +25,10 @@ This should create output like the below.
 To run the NIDM-Results viewer do the following:
 
 1. Add the filepath to the nidmresults-spmhtml directory in Matlab;
- ```
+  ```
  addpath(<full path to nidmresults-spmhtml>)
- ```
+  ```
 1. Add the filepath to SPM in Matlab;
- ```
+  ```
  addpath(<full path to SPM>)
- ```
+  ```
