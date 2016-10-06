@@ -10,7 +10,7 @@ To view NIDM results using the NIDM results viewer run the following:
  ```
 (where <full path to nidm json file you wish to view> is replaced with the full path to the nidm json file you wish to view)
 
-<img src="Doc/example1.png" width="500">            |  <img src="Doc/example2.png" width="500">
+<img src="Doc/example1.png" width="300">            |  <img src="Doc/example2.png" width="300">
 :-------------------------:|:-------------------------:
  **Fig. 1.** Table data and images  |  **Fig. 2.** Summary statistics
 
