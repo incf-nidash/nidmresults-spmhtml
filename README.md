@@ -6,9 +6,9 @@ Read and display NIDM-Results packs in the SPM environment.
 
 To view NIDM results using the NIDM results viewer run the following:
  ```
- nidm_results_display(<full path to nidm json file you wish to view>)
+ nidm_results_display(<'full path to nidm json file you wish to view'>)
  ```
-(where <'full path to nidm json file you wish to view> is replaced with the full path to the nidm json file you wish to view)
+(where <'full path to nidm json file you wish to view'> is replaced with the full path to the nidm json file you wish to view)
 
 This should create output like the below.
 
