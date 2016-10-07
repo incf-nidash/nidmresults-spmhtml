@@ -7,7 +7,6 @@ function spm_results_export(SPM,xSPM,TabDat)
 % Guillaume Flandin
 % $Id: spm_results_export.m 5615 2013-08-15 14:37:24Z spm $
 
-
 if nargin < 2
     error('Not enough input arguments.');
 end
@@ -15,10 +14,22 @@ if nargin < 3
     TabDat = spm_list('Table',xSPM);
 end
 
-MIP     = spm_mip(xSPM.Z,xSPM.XYZmm,xSPM.M,xSPM.units);
-DesMtx  = (SPM.xX.nKX + 1)*32;
+if ~isfield(xSPM, 'nidm')
+    disp(xSPM)
+    MIP     = spm_mip(xSPM.Z,xSPM.XYZmm,xSPM.M,xSPM.units);
+end
+if ~isfield(SPM, 'nidm')
+    DesMtx  = (SPM.xX.nKX + 1)*32;
+end
 
-outdir  = pwd;
+if ~isfield(SPM, 'filepath')
+    outdir  = pwd;
+else
+    if exist(fullfile(SPM.filepath,'html')) ~= 7
+        mkdir(SPM.filepath,'html')
+    end
+    outdir  = fullfile(SPM.filepath,'html');
+end
 fHTML   = spm_file(fullfile(outdir,'index.html'),'unique');
 fMIP    = spm_file(fullfile(outdir,'MIP.png'),'unique');
 fDesMtx = spm_file(fullfile(outdir,'DesMtx.png'),'unique');
@@ -27,11 +38,20 @@ fcursor = spm_file(fullfile(outdir,'cursor.png'),'unique');
 
 %-Save images as PNG files
 %--------------------------------------------------------------------------
-imwrite(MIP,gray(64),fMIP,'png');
+if ~isfield(xSPM, 'nidm')
+    imwrite(MIP,gray(64),fMIP,'png');
+else
+    copyfile(xSPM.nidm.MIP, fMIP);
+end
 
-ml = floor(size(DesMtx,1)/size(DesMtx,2));
-DesMtx = reshape(repmat(DesMtx,ml,1),size(DesMtx,1),[]);
-imwrite(DesMtx,gray(64),fDesMtx,'png');
+if ~isfield(SPM, 'nidm')
+    ml = floor(size(DesMtx,1)/size(DesMtx,2));
+    DesMtx = reshape(repmat(DesMtx,ml,1),size(DesMtx,1),[]);
+    imwrite(DesMtx,gray(64),fDesMtx,'png');
+else
+    ml = floor(SPM.nidm.dim(1)/SPM.nidm.dim(2));
+    copyfile(SPM.nidm.DesMat, fDesMtx);
+end
 
 con = [SPM.xCon(xSPM.Ic).c]';
 con = (con/max(abs(con(:)))+1)*32;
@@ -44,7 +64,7 @@ imwrite(cursor,fcursor,'png','Transparency',[0 0 0]);
 
 %-Save results as HTML file
 %==========================================================================
-tpl = spm_file_template(fullfile('~/Downloads'),'keep');
+tpl = spm_file_template(fileparts(mfilename('fullpath')));;
 tpl = tpl.file('TPL_RES','spm_results.tpl');
 tpl = tpl.block('TPL_RES','resftr','resftrs');
 tpl = tpl.block('TPL_RES','cursor','cursors');
