@@ -25,7 +25,10 @@ end
 if ~isfield(SPM, 'filepath')
     outdir  = pwd;
 else
-    outdir  = SPM.filepath;
+    if exist(fullfile(SPM.filepath,'html')) ~= 7
+        mkdir(SPM.filepath,'html')
+    end
+    outdir  = fullfile(SPM.filepath,'html');
 end
 fHTML   = spm_file(fullfile(outdir,'index.html'),'unique');
 fMIP    = spm_file(fullfile(outdir,'MIP.png'),'unique');
