@@ -57,6 +57,20 @@ function NxSPM = changeNIDMtoxSPM(json)
     nidmTemp.MIP = fullfile(json.filepath, mipFilepath.('prov_atLocation').('x_value'));
     
     %===============================================
+    %M
+    
+    coordSpaceId = excursionSetMaps{1}.('nidm_inCoordinateSpace').('x_id');
+    coordSpace = searchforID(coordSpaceId, graph);
+    v2wm = str2num(strrep(coordSpace.nidm_voxelToWorldMapping, '],[', '; '));
+    transform = [1, 0, 0, -1; 0, 1, 0, -1; 0, 0, 1, -1; 0, 0, 0, 1];
+    mTemp = v2wm*transform;
+    
+    %===============================================
+    %DIM
+    
+    dimTemp = str2num(coordSpace.('nidm_dimensionsInVoxels'))';
+    
+    %===============================================
     
     NxSPM.title = titleTemp;
     NxSPM.STAT = STATTemp;
@@ -64,10 +78,7 @@ function NxSPM = changeNIDMtoxSPM(json)
     NxSPM.nidm = nidmTemp;
     %Number of contrast vectors, currently only working with one.
     NxSPM.Ic = 1;
-    %Currently cursor is not working - these variables are used by the
-    %cursor. The below are just random values chosen so that the matrix
-    %generated for the cursor is non-singular.
-    NxSPM.DIM = [0; 0; 0];
-    NxSPM.M = [1, 0, 0, 0; 1, 2, 3, 0; 1, 0, 0, 2; 0, 1, 0, 0];
+    NxSPM.DIM = dimTemp;
+    NxSPM.M = mTemp;
     
 end
