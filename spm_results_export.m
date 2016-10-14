@@ -25,8 +25,13 @@ end
 if ~isfield(SPM, 'filepath')
     outdir  = pwd;
 else
-    if exist(fullfile(SPM.filepath,'html')) ~= 7
-        mkdir(SPM.filepath,'html')
+    if exist(fullfile(SPM.filepath,'html')) ~= 7 
+        mkdir(SPM.filepath,'html');
+    else
+        if xSPM.nidm.oW == 1
+            rmdir(fullfile(SPM.filepath,'html'), 's');
+            mkdir(SPM.filepath,'html');
+        end
     end
     outdir  = fullfile(SPM.filepath,'html');
 end
