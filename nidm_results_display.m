@@ -6,29 +6,33 @@ function nidm_results_display(jsonfilepath, overWrite)
         validateattributes(overWrite,{'logical'}, {'scalar'});
     end
     %Ask user whether to overwrite files
-    if nargin < 2
-        button = questdlg('There currently exists a folder named HTML in the output directory. Would you like this folder to be overwritten? Note: All files in the HTML folder will be lost if overwritten.', 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');
-        switch button
-            case 'Overwrite'
-                overWrite = true;
-            case 'Do not overwrite'
-                overWrite = false;
-            case ''
-                overWrite = false;
+    if nargin < 2 
+        if exist(fullfile(fileparts(mfilename('fullpath')), 'Data', 'html'), 'dir') == 7
+            button = questdlg('There currently exists a folder named HTML in the output directory. Proceeding will result in all files within the HTML folder being overwritten. Would you like to proceed?', 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');
+            switch button
+                case 'Overwrite'
+                    overWrite = true;
+                case 'Do not overwrite'
+                    overWrite = false;
+                case ''
+                    overWrite = false;
+            end
+        else
+            overWrite = true;
         end
     end
     
-    %Record users choice and filepath.
-    jsondoc=spm_jsonread(jsonfilepath);
-    pathstr = fileparts(jsonfilepath); 
-    jsondoc.filepath = pathstr;
-    jsondoc.overWrite = overWrite;
-    
-    %Add path to required methods
-    if exist('changeNIDMtoSPM') ~= 2
-        addpath(fullfile(fileparts(mfilename('fullpath')), 'lib'));
+    if(overWrite)
+        %Record users choice and filepath.
+        jsondoc=spm_jsonread(jsonfilepath);
+        pathstr = fileparts(jsonfilepath); 
+        jsondoc.filepath = pathstr;
+
+        %Add path to required methods
+        if exist('changeNIDMtoSPM') ~= 2
+            addpath(fullfile(fileparts(mfilename('fullpath')), 'lib'));
+        end
+
+        spm_results_export(changeNIDMtoSPM(jsondoc),changeNIDMtoxSPM(jsondoc),changeNIDMtoTabDat(jsondoc));
     end
-    
-    spm_results_export(changeNIDMtoSPM(jsondoc),changeNIDMtoxSPM(jsondoc),changeNIDMtoTabDat(jsondoc));
-    
 end

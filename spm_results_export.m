@@ -27,10 +27,8 @@ else
     if exist(fullfile(SPM.filepath,'html')) ~= 7 
         mkdir(SPM.filepath,'html');
     else
-        if xSPM.nidm.overWrite == 1
-            rmdir(fullfile(SPM.filepath,'html'), 's');
-            mkdir(SPM.filepath,'html');
-        end
+        rmdir(fullfile(SPM.filepath,'html'), 's');
+        mkdir(SPM.filepath,'html');
     end
     outdir  = fullfile(SPM.filepath,'html');
 end

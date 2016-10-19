@@ -55,7 +55,6 @@ function NxSPM = changeNIDMtoxSPM(json)
     excursionSetMaps = searchforType('nidm_ExcursionSetMap', graph);
     mipFilepath = searchforID(excursionSetMaps{1}.nidm_hasMaximumIntensityProjection.('x_id'),graph);
     nidmTemp.MIP = fullfile(json.filepath, mipFilepath.('prov_atLocation').('x_value'));
-    nidmTemp.overWrite = json.overWrite;
     
     %===============================================
     %M
