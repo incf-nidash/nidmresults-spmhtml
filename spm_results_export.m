@@ -15,7 +15,6 @@ if nargin < 3
 end
 
 if ~isfield(xSPM, 'nidm')
-    disp(xSPM)
     MIP     = spm_mip(xSPM.Z,xSPM.XYZmm,xSPM.M,xSPM.units);
 end
 if ~isfield(SPM, 'nidm')
