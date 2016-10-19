@@ -28,7 +28,7 @@ else
     if exist(fullfile(SPM.filepath,'html')) ~= 7 
         mkdir(SPM.filepath,'html');
     else
-        if xSPM.nidm.oW == 1
+        if xSPM.nidm.overWrite == 1
             rmdir(fullfile(SPM.filepath,'html'), 's');
             mkdir(SPM.filepath,'html');
         end
@@ -69,7 +69,7 @@ imwrite(cursor,fcursor,'png','Transparency',[0 0 0]);
 
 %-Save results as HTML file
 %==========================================================================
-tpl = spm_file_template(fileparts(mfilename('fullpath')));;
+tpl = spm_file_template(fileparts(mfilename('fullpath')));
 tpl = tpl.file('TPL_RES','spm_results.tpl');
 tpl = tpl.block('TPL_RES','resftr','resftrs');
 tpl = tpl.block('TPL_RES','cursor','cursors');

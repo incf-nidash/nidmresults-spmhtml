@@ -8,38 +8,35 @@ classdef nidmExampleDataTest < matlab.unittest.TestCase
     methods(TestMethodSetup)
         %Rename the users HTML folder to prevent the tests damaging it.
         function storeUsersHTML(testCase)
-            if exist(strrep(fileparts(mfilename('fullpath')), 'test', 'Data\html')) == 7 
-                movefile(strrep(fileparts(mfilename('fullpath')), 'test', 'Data\html'), strrep(fileparts(mfilename('fullpath')), 'test', 'Data\htmlTemp'))
+            if exist(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'html'))) == 7 
+                movefile(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'html')), strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'htmlTemp')))
             end
         end
     end
     
     methods(TestMethodTeardown)
-        %Remove the HTML folder created by test.
+        %Remove the HTML folder created by test and move the users data back to the HTML folder.
         function removeTestHTML(testCase)
-            pause(0.1);
-            if exist(strrep(fileparts(mfilename('fullpath')), 'test', 'Data\html')) == 7
-                rmdir(strrep(fileparts(mfilename('fullpath')), 'test', 'Data\html'), 's')
+            if exist(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'html'))) == 7
+                rmdir(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'html')), 's')
             end
-        end
-        %Move the users data back to the HTML folder.
-        function addUsersHTML(testCase)
-            if exist(strrep(fileparts(mfilename('fullpath')), 'test', 'Data\htmlTemp')) == 7
-                movefile(strrep(fileparts(mfilename('fullpath')), 'test', 'Data\htmlTemp'), strrep(fileparts(mfilename('fullpath')), 'test', 'Data\html'))
-            end 
+            if exist(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'htmlTemp'))) == 7
+                movefile(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'htmlTemp')), strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'html')), 'f')
+            end
+            com.mathworks.mlservices.MatlabDesktopServices.getDesktop.closeGroup('Web Browser');
         end
     end 
         
     methods(Test)
         %Simply checking the viewer doesn't crash.
         function checkViewerRuns(testCase)
-            nidm_results_display(strrep(fileparts(mfilename('fullpath')), 'test', 'Data\nidm.json'), 1);
+            nidm_results_display(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'nidm.json')), true);
         end
         %Checking the experiment title is somewhere in the output HTML
         %file.
         function checkForTitle(testCase)
-            nidm_results_display(strrep(fileparts(mfilename('fullpath')), 'test', 'Data\nidm.json'), 1);
-            text = fileread(strrep(fileparts(mfilename('fullpath')), 'test', 'Data\html\index_001.html'));
+            nidm_results_display(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'nidm.json')), true);
+            text = fileread(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'html', filesep, 'index_001.html')));
             verifySubstring(testCase, text, 'tone counting vs baseline');
         end
     end
