@@ -34,3 +34,18 @@ To run the NIDM-Results viewer do the following:
  ```
  addpath(<full path to SPM>)
  ```
+ 
+##### Testing
+
+Assuming the paths to the viewer have been added (see above), to run the tests do the following:
+
+1. Add the filepath to the 'tests' folder;
+
+ ```
+ addpath(<full path to tests>)
+ ```
+1. Run runTest;
+
+ ```
+ runTest();
+ ```
