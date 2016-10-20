@@ -28,6 +28,6 @@ function NSPM = changeNIDMtoSPM(json)
     
     NSPM.nidm = nidmTemp;
     NSPM.xCon = xConTemp;
-    NSPM.filepath = filepathTemp;
+    NSPM.nidm.filepath = filepathTemp;
     
 end
