@@ -35,4 +35,5 @@ function nidm_results_display(jsonfilepath, overWrite)
 
         spm_results_export(changeNIDMtoSPM(jsondoc),changeNIDMtoxSPM(jsondoc),changeNIDMtoTabDat(jsondoc));
     end
+    
 end
