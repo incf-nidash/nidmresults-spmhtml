@@ -1,4 +1,4 @@
-function nidm_results_display(jsonfilepath, overWrite)
+function webID = nidm_results_display(jsonfilepath, overWrite)
     
     %Checks on input
     narginchk(1, 2);
@@ -33,7 +33,9 @@ function nidm_results_display(jsonfilepath, overWrite)
             addpath(fullfile(fileparts(mfilename('fullpath')), 'lib'));
         end
 
-        spm_results_export(changeNIDMtoSPM(jsondoc),changeNIDMtoxSPM(jsondoc),changeNIDMtoTabDat(jsondoc));
+        webID = spm_results_export(changeNIDMtoSPM(jsondoc),changeNIDMtoxSPM(jsondoc),changeNIDMtoTabDat(jsondoc));
+    else
+        webID = 0;
     end
     
 end
