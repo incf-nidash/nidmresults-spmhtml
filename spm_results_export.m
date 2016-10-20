@@ -1,4 +1,4 @@
-function spm_results_export(SPM,xSPM,TabDat)
+function webID = spm_results_export(SPM,xSPM,TabDat)
 % Export SPM results in HTML
 % FORMAT spm_results_export(SPM,xSPM,TabDat)
 %__________________________________________________________________________
@@ -128,4 +128,4 @@ fclose(fid);
 rmdir(outdir, 's');
 %-Display webpage
 %==========================================================================
-web(fHTML);
+[stat, webID] = web(fHTML);
