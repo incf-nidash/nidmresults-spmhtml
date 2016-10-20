@@ -42,7 +42,7 @@ Assuming the paths to the viewer have been added (see above), to run the tests d
 1. Add the filepath to the 'tests' folder;
 
  ```
- addpath(<full path to tests>)
+addpath(fullfile(fileparts(which('nidm_results_display')), 'test'))
  ```
 1. Run runTest;
 
