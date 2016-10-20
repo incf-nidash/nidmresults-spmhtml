@@ -28,14 +28,12 @@ else
     if exist(fullfile(SPM.filepath,'html')) ~= 7 
         mkdir(SPM.filepath,'html');
     else
-        if xSPM.nidm.overWrite == 1
-            rmdir(fullfile(SPM.filepath,'html'), 's');
-            mkdir(SPM.filepath,'html');
-        end
+        rmdir(fullfile(SPM.filepath,'html'), 's');
+        mkdir(SPM.filepath,'html');
     end
     outdir  = fullfile(SPM.filepath,'html');
 end
-fHTML   = spm_file(fullfile(outdir,'index.html'),'unique');
+fHTML   = spm_file(fullfile(outdir, 'index.html'),'unique');
 fMIP    = spm_file(fullfile(outdir,'MIP.png'),'unique');
 fDesMtx = spm_file(fullfile(outdir,'DesMtx.png'),'unique');
 fcon    = spm_file(fullfile(outdir,'contrast.png'),'unique');
@@ -128,7 +126,6 @@ tpl = tpl.parse('OUT','TPL_RES');
 fid = fopen(fHTML,'wt');
 fprintf(fid,'%c',get(tpl,'OUT'));
 fclose(fid);
-
 %-Display webpage
 %==========================================================================
 web(fHTML);

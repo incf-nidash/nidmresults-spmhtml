@@ -18,17 +18,18 @@ function nidm_results_display(jsonfilepath, overWrite)
         end
     end
     
-    %Record users choice and filepath.
-    jsondoc=spm_jsonread(jsonfilepath);
-    pathstr = fileparts(jsonfilepath); 
-    jsondoc.filepath = pathstr;
-    jsondoc.overWrite = overWrite;
-    
-    %Add path to required methods
-    if exist('changeNIDMtoSPM') ~= 2
-        addpath(fullfile(fileparts(mfilename('fullpath')), 'lib'));
+    if(overWrite == true)
+        %Record users choice and filepath.
+        jsondoc=spm_jsonread(jsonfilepath);
+        pathstr = fileparts(jsonfilepath); 
+        jsondoc.filepath = pathstr;
+
+        %Add path to required methods
+        if exist('changeNIDMtoSPM') ~= 2
+            addpath(fullfile(fileparts(mfilename('fullpath')), 'lib'));
+        end
+
+        spm_results_export(changeNIDMtoSPM(jsondoc),changeNIDMtoxSPM(jsondoc),changeNIDMtoTabDat(jsondoc));
     end
-    
-    spm_results_export(changeNIDMtoSPM(jsondoc),changeNIDMtoxSPM(jsondoc),changeNIDMtoTabDat(jsondoc));
     
 end
