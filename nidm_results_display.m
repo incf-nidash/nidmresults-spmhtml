@@ -7,7 +7,7 @@ function nidm_results_display(jsonfilepath, overWrite)
     end
     %Ask user whether to overwrite files
     if nargin < 2
-        button = questdlg('There currently exists a folder named HTML in the output directory. Would you like this folder to be overwritten? Note: All files in the HTML folder will be lost if overwritten.', 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');
+        button = questdlg('The output file, index.html, already exists. Would you like this file to be overwritten?', 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');
         switch button
             case 'Overwrite'
                 overWrite = true;

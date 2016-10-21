@@ -36,8 +36,14 @@ classdef nidmExampleDataTest < matlab.unittest.TestCase
         %file.
         function checkForTitle(testCase)
             nidm_results_display(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'nidm.json')), true);
-            text = fileread(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'html', filesep, 'index_001.html')));
+            text = fileread(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep,'index.html')));
             verifySubstring(testCase, text, 'tone counting vs baseline');
+        end
+        %Checking the original functionality of the viewer with the
+        %original SPM, xSPM and TabDat functions is unaffected.
+        function checkOriginalViewerRuns(testCase)
+            testData = load(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'nidm_example001.mat'));
+            spm_results_export(testData.SPM, testData.xSPM, testData.TabDat);
         end
     end
 end

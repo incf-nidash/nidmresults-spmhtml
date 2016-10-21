@@ -26,19 +26,20 @@ end
 
 %If we're using the matlab made SPM, xSPM and TabDat objectes just output
 %into the current directory, else output next to the NIDM objects.
-mkdir(pwd, 'temp');
+
 if ~isfield(SPM, 'nidm')
     outdir  = fullfile(pwd, 'temp');
 else
     outdir  = fullfile(SPM.nidm.filepath,'temp');
 end
+mkdir(fullfile(outdir, '..'), 'temp')
 
-fHTML   = spm_file(fullfile(outdir, '..', 'index.html'),'unique');
+fHTML   = spm_file(fullfile(outdir, '..', 'index.html'));
 
 %-Save images as PNG files
 %--------------------------------------------------------------------------
 if ~isfield(xSPM, 'nidm')
-    mipPath = spm_file(fullfile(outdir,'MIP.png'),'unique');
+    mipPath = spm_file(fullfile(outdir,'MIP.png'));
     imwrite(MIP,gray(64),mipPath,'png');
 else
     mipPath = xSPM.nidm.MIP;
@@ -47,14 +48,14 @@ end
 if ~isfield(SPM, 'nidm')
     ml = floor(size(DesMtx,1)/size(DesMtx,2));
     DesMtx = reshape(repmat(DesMtx,ml,1),size(DesMtx,1),[]);
-    desMatPath = spm_file(fullfile(outdir,'DesMtx.png'),'unique');
+    desMatPath = spm_file(fullfile(outdir,'DesMtx.png'));
     imwrite(DesMtx,gray(64),desMatPath,'png');
 else
     ml = floor(SPM.nidm.dim(1)/SPM.nidm.dim(2));
     desMatPath = SPM.nidm.DesMat;
 end
 
-contrastPath = spm_file(fullfile(outdir,'contrast.png'),'unique');
+contrastPath = spm_file(fullfile(outdir,'contrast.png'));
 con = [SPM.xCon(xSPM.Ic).c]';
 con = (con/max(abs(con(:)))+1)*32;
 con = kron(con,ones(ml,10));
