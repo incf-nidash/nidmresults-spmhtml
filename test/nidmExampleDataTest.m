@@ -5,11 +5,16 @@
 
 classdef nidmExampleDataTest < matlab.unittest.TestCase
     
+    properties 
+        TestData
+    end
+    
     methods(TestMethodSetup)
         %Rename the users HTML folder to prevent the tests damaging it.
         function storeUsersHTML(testCase)
-            if exist(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'html'))) == 7 
-                movefile(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'html')), strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'htmlTemp')))
+            testCase.TestData.webID = '0';
+            if exist(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'), 'file') == 2
+                movefile(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'), fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'indexTemp.html'))
             end
         end
     end
@@ -17,33 +22,36 @@ classdef nidmExampleDataTest < matlab.unittest.TestCase
     methods(TestMethodTeardown)
         %Remove the HTML folder created by test and move the users data back to the HTML folder.
         function removeTestHTML(testCase)
-            if exist(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'html'))) == 7
-                rmdir(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'html')), 's')
+            if(~strcmp(testCase.TestData.webID, '0'))
+                close(testCase.TestData.webID);
             end
-            if exist(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'htmlTemp'))) == 7
-                movefile(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'htmlTemp')), strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'html')), 'f')
+            if exist(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'), 'file') == 2
+                delete(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'))
             end
-            com.mathworks.mlservices.MatlabDesktopServices.getDesktop.closeGroup('Web Browser');
+            if exist(fullfile(fileparts(mfilename('fullpath')), '..' , 'Data', 'indexTemp.html'), 'file') == 2
+                movefile(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'indexTemp.html'), fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'), 'f')
+            end
         end
     end 
         
     methods(Test)
         %Simply checking the viewer doesn't crash.
         function checkViewerRuns(testCase)
-            nidm_results_display(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'nidm.json')), true);
+            testCase.TestData.webID = nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'nidm.json'), true);
         end
         %Checking the experiment title is somewhere in the output HTML
         %file.
         function checkForTitle(testCase)
-            nidm_results_display(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep, 'nidm.json')), true);
-            text = fileread(strrep(fileparts(mfilename('fullpath')), 'test', strcat('Data', filesep,'index.html')));
+            testCase.TestData.webID = nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'nidm.json'), true);
+            text = fileread(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'));
             verifySubstring(testCase, text, 'tone counting vs baseline');
         end
+        
         %Checking the original functionality of the viewer with the
         %original SPM, xSPM and TabDat functions is unaffected.
         function checkOriginalViewerRuns(testCase)
             testData = load(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'nidm_example001.mat'));
-            spm_results_export(testData.SPM, testData.xSPM, testData.TabDat);
+            testCase.TestData.webID = spm_results_export(testData.SPM, testData.xSPM, testData.TabDat);
         end
     end
 end
