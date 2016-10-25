@@ -28,11 +28,11 @@ end
 %into the current directory, else output next to the NIDM objects.
 
 if ~isfield(SPM, 'nidm')
-    outdir  = fullfile(pwd, 'temp');
+    outdir  = spm_file(fullfile(pwd, 'temp'), 'unique');
 else
-    outdir  = fullfile(SPM.nidm.filepath,'temp');
+    outdir  = spm_file(fullfile(SPM.nidm.filepath,'temp'), 'unique');
 end
-mkdir(fullfile(outdir, '..'), 'temp')
+mkdir(outdir);
 
 fHTML   = spm_file(fullfile(outdir, '..', 'index.html'));
 
