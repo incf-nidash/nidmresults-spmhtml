@@ -1,4 +1,4 @@
-function spm_results_export(SPM,xSPM,TabDat)
+function webID = spm_results_export(SPM,xSPM,TabDat)
 % Export SPM results in HTML
 % FORMAT spm_results_export(SPM,xSPM,TabDat)
 %__________________________________________________________________________
@@ -15,7 +15,6 @@ if nargin < 3
 end
 
 if ~isfield(xSPM, 'nidm')
-    disp(xSPM)
     MIP     = spm_mip(xSPM.Z,xSPM.XYZmm,xSPM.M,xSPM.units);
 end
 if ~isfield(SPM, 'nidm')
@@ -25,12 +24,15 @@ end
 if ~isfield(SPM, 'filepath')
     outdir  = pwd;
 else
-    if exist(fullfile(SPM.filepath,'html')) ~= 7
-        mkdir(SPM.filepath,'html')
+    if exist(fullfile(SPM.filepath,'html')) ~= 7 
+        mkdir(SPM.filepath,'html');
+    else
+        rmdir(fullfile(SPM.filepath,'html'), 's');
+        mkdir(SPM.filepath,'html');
     end
     outdir  = fullfile(SPM.filepath,'html');
 end
-fHTML   = spm_file(fullfile(outdir,'index.html'),'unique');
+fHTML   = spm_file(fullfile(outdir, 'index.html'),'unique');
 fMIP    = spm_file(fullfile(outdir,'MIP.png'),'unique');
 fDesMtx = spm_file(fullfile(outdir,'DesMtx.png'),'unique');
 fcon    = spm_file(fullfile(outdir,'contrast.png'),'unique');
@@ -64,7 +66,7 @@ imwrite(cursor,fcursor,'png','Transparency',[0 0 0]);
 
 %-Save results as HTML file
 %==========================================================================
-tpl = spm_file_template(fileparts(mfilename('fullpath')));;
+tpl = spm_file_template(fileparts(mfilename('fullpath')));
 tpl = tpl.file('TPL_RES','spm_results.tpl');
 tpl = tpl.block('TPL_RES','resftr','resftrs');
 tpl = tpl.block('TPL_RES','cursor','cursors');
@@ -123,7 +125,6 @@ tpl = tpl.parse('OUT','TPL_RES');
 fid = fopen(fHTML,'wt');
 fprintf(fid,'%c',get(tpl,'OUT'));
 fclose(fid);
-
 %-Display webpage
 %==========================================================================
-web(fHTML);
+[stat, webID] = web(fHTML);
