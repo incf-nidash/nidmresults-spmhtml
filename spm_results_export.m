@@ -7,6 +7,7 @@ function webID = spm_results_export(SPM,xSPM,TabDat)
 % Guillaume Flandin
 % $Id: spm_results_export.m 5615 2013-08-15 14:37:24Z spm $
 
+% Checking inputs.
 if nargin < 2
     error('Not enough input arguments.');
 end
@@ -14,6 +15,8 @@ if nargin < 3
     TabDat = spm_list('Table',xSPM);
 end
 
+%If we're using matlab SPM, xSPM and TabDat objects we need to generate the 
+%MIP and design matrix manually.
 if ~isfield(xSPM, 'nidm')
     MIP     = spm_mip(xSPM.Z,xSPM.XYZmm,xSPM.M,xSPM.units);
 end
@@ -21,48 +24,44 @@ if ~isfield(SPM, 'nidm')
     DesMtx  = (SPM.xX.nKX + 1)*32;
 end
 
-if ~isfield(SPM, 'filepath')
-    outdir  = pwd;
+%If we're using the matlab made SPM, xSPM and TabDat objectes just output
+%into the current directory, else output next to the NIDM objects.
+
+if ~isfield(SPM, 'nidm')
+    outdir  = spm_file(fullfile(pwd, 'temp'), 'unique');
 else
-    if exist(fullfile(SPM.filepath,'html')) ~= 7 
-        mkdir(SPM.filepath,'html');
-    else
-        rmdir(fullfile(SPM.filepath,'html'), 's');
-        mkdir(SPM.filepath,'html');
-    end
-    outdir  = fullfile(SPM.filepath,'html');
+    outdir  = spm_file(fullfile(SPM.nidm.filepath,'temp'), 'unique');
 end
-fHTML   = spm_file(fullfile(outdir, 'index.html'),'unique');
-fMIP    = spm_file(fullfile(outdir,'MIP.png'),'unique');
-fDesMtx = spm_file(fullfile(outdir,'DesMtx.png'),'unique');
-fcon    = spm_file(fullfile(outdir,'contrast.png'),'unique');
-fcursor = spm_file(fullfile(outdir,'cursor.png'),'unique');
+mkdir(outdir);
+
+fHTML   = spm_file(fullfile(outdir, '..', 'index.html'));
 
 %-Save images as PNG files
 %--------------------------------------------------------------------------
 if ~isfield(xSPM, 'nidm')
-    imwrite(MIP,gray(64),fMIP,'png');
+    mipPath = spm_file(fullfile(outdir,'MIP.png'));
+    imwrite(MIP,gray(64),mipPath,'png');
 else
-    copyfile(xSPM.nidm.MIP, fMIP);
+    mipPath = xSPM.nidm.MIP;
 end
 
 if ~isfield(SPM, 'nidm')
     ml = floor(size(DesMtx,1)/size(DesMtx,2));
     DesMtx = reshape(repmat(DesMtx,ml,1),size(DesMtx,1),[]);
-    imwrite(DesMtx,gray(64),fDesMtx,'png');
+    desMatPath = spm_file(fullfile(outdir,'DesMtx.png'));
+    imwrite(DesMtx,gray(64),desMatPath,'png');
 else
     ml = floor(SPM.nidm.dim(1)/SPM.nidm.dim(2));
-    copyfile(SPM.nidm.DesMat, fDesMtx);
+    desMatPath = SPM.nidm.DesMat;
 end
 
+contrastPath = spm_file(fullfile(outdir,'contrast.png'));
 con = [SPM.xCon(xSPM.Ic).c]';
 con = (con/max(abs(con(:)))+1)*32;
 con = kron(con,ones(ml,10));
-imwrite(con,gray(64),fcon,'png');
+imwrite(con,gray(64),contrastPath,'png');
 
-cursor = zeros(11,8,3);
-cursor([5 6 7 16 17 18 26 27 29 30 37 38 40 41 47 48 52 53 57 58 64 65 68 69 75 76 78 79 87 88]) = 1;
-imwrite(cursor,fcursor,'png','Transparency',[0 0 0]);
+cursorString = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAALCAIAAADN+VtyAAAABnRSTlMAAAAAAABupgeRAAAAB3RJTUUH4AoLERQaiQnJ6gAAADFJREFUGJVjYMAG/jMwMGIKQQAjLlFGXAoZ/yPpQNbOgsVE/Dpw20HAVZhy2MF/BgYAbK0KCmhBjJQAAAAASUVORK5CYII=';
 
 %-Save results as HTML file
 %==========================================================================
@@ -75,10 +74,10 @@ tpl = tpl.var('DATE',[datestr(now,8) ' ' datestr(now,1) ' ' datestr(now,13)]);
 tpl = tpl.var('SPM',spm('Version'));
 tpl = tpl.var('CON_TITLE',xSPM.title);
 tpl = tpl.var('RES_TITLE',TabDat.tit);
-tpl = tpl.var('IMG_MIP',spm_file(fMIP,'filename'));
-tpl = tpl.var('IMG_CURSOR',spm_file(fcursor,'filename'));
-tpl = tpl.var('IMG_CON',spm_file(fcon,'filename'));
-tpl = tpl.var('IMG_X',spm_file(fDesMtx,'filename'));
+tpl = tpl.var('IMG_MIP',getEmbeddingString(mipPath));
+tpl = tpl.var('IMG_CURSOR',cursorString);
+tpl = tpl.var('IMG_CON',getEmbeddingString(contrastPath));
+tpl = tpl.var('IMG_X',getEmbeddingString(desMatPath));
 tpl = tpl.var('cursors','');
 XYZmm = [0 0 0];
 XYZ = spm_XYZreg('RoundCoords',XYZmm,xSPM.M,xSPM.DIM);
@@ -125,6 +124,9 @@ tpl = tpl.parse('OUT','TPL_RES');
 fid = fopen(fHTML,'wt');
 fprintf(fid,'%c',get(tpl,'OUT'));
 fclose(fid);
+%==========================================================================
+%-Delete temporary files
+rmdir(outdir, 's');
 %-Display webpage
 %==========================================================================
 [stat, webID] = web(fHTML);

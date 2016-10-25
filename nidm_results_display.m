@@ -7,8 +7,8 @@ function webID = nidm_results_display(jsonfilepath, overWrite)
     end
     %Ask user whether to overwrite files
     if nargin < 2 
-        if exist(fullfile(fileparts(mfilename('fullpath')), 'Data', 'html'), 'dir') == 7
-            button = questdlg('There currently exists a folder named HTML in the output directory. Proceeding will result in all files within the HTML folder being overwritten. Would you like to proceed?', 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');
+        if exist(fullfile(fileparts(mfilename('fullpath')), 'Data', 'index.html'), 'file') == 2
+            button = questdlg('The output file, index.html, already exists. Would you like this file to be overwritten?', 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');
             switch button
                 case 'Overwrite'
                     overWrite = true;
