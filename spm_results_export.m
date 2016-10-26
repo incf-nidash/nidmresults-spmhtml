@@ -7,6 +7,7 @@ function webID = spm_results_export(SPM,xSPM,TabDat)
 % Guillaume Flandin
 % $Id: spm_results_export.m 5615 2013-08-15 14:37:24Z spm $
 
+%__________________________________________________________________________
 % Checking inputs.
 if nargin < 2
     error('Not enough input arguments.');
@@ -15,21 +16,14 @@ if nargin < 3
     TabDat = spm_list('Table',xSPM);
 end
 
-%If we're using matlab SPM, xSPM and TabDat objects we need to generate the 
-%MIP and design matrix manually.
-if ~isfield(xSPM, 'nidm')
-    MIP     = spm_mip(xSPM.Z,xSPM.XYZmm,xSPM.M,xSPM.units);
-end
-if ~isfield(SPM, 'nidm')
-    DesMtx  = (SPM.xX.nKX + 1)*32;
-end
-
 %If we're using the matlab made SPM, xSPM and TabDat objectes just output
 %into the current directory, else output next to the NIDM objects.
 
 if ~isfield(SPM, 'nidm')
+    fHTML = pwd;
     outdir  = spm_file(fullfile(pwd, 'temp'));
 else
+    fHTML = SPM.nidm.filepath;
     outdir  = spm_file(fullfile(SPM.nidm.filepath,'temp'));
 end
  
@@ -37,9 +31,39 @@ if exist(outdir) ~= 7
     outdir = spm_file(outdir, 'uniquedir');
 end
 
+fHTML   = spm_file(fullfile(fHTML, 'index.html'));
+
+%If fHTML already exists, ask if it should be overWritten.
+
+overWrite = true;
+if exist(fHTML, 'file') == 2
+    button = questdlg('The output file, index.html, already exists. Would you like this file to be overwritten?', 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');      
+    switch button
+        case 'Overwrite'
+            overWrite = true;
+        case 'Do not overwrite'
+            overWrite = false;
+        case ''
+            overWrite = false;
+    end
+end
+
+if(~overWrite)
+    webID = '0';
+    return
+end
+
 mkdir(outdir);
 
-fHTML   = spm_file(fullfile(outdir, '..', 'index.html'));
+%If we're using matlab SPM, xSPM and TabDat objects we need to generate the 
+%MIP and design matrix manually.
+
+if ~isfield(xSPM, 'nidm')
+    MIP     = spm_mip(xSPM.Z,xSPM.XYZmm,xSPM.M,xSPM.units);
+end
+if ~isfield(SPM, 'nidm')
+    DesMtx  = (SPM.xX.nKX + 1)*32;
+end
 
 %-Save images as PNG files
 %--------------------------------------------------------------------------

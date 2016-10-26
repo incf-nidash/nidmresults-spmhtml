@@ -11,6 +11,9 @@ classdef nidmExampleDataTest < matlab.unittest.TestCase
             if exist(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'), 'file') == 2
                 movefile(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'), fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'indexTemp.html'))
             end
+            if exist(fullfile(pwd, 'index.html'), 'file') == 2
+                movefile(fullfile(pwd, 'index.html'), fullfile(pwd, 'indexTemp.html'));
+            end
         end
     end
     
@@ -23,18 +26,24 @@ classdef nidmExampleDataTest < matlab.unittest.TestCase
             if exist(fullfile(fileparts(mfilename('fullpath')), '..' , 'Data', 'indexTemp.html'), 'file') == 2
                 movefile(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'indexTemp.html'), fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'), 'f')
             end
+            if exist(fullfile(pwd, 'index.html'), 'file') == 2
+                delete(fullfile(pwd, 'index.html'));
+            end
+            if exist(fullfile(pwd, 'indexTemp.html'), 'file') == 2
+                movefile(fullfile(pwd, 'indexTemp.html'), fullfile(pwd, 'index.html'));
+            end
         end
     end 
         
     methods(Test)
         %Simply checking the viewer doesn't crash.
         function checkViewerRuns(testCase)
-            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'nidm.json'), true);
+            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'nidm.json'));
         end
         %Checking the experiment title is somewhere in the output HTML
         %file.
         function checkForTitle(testCase)
-            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'nidm.json'), true);
+            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'nidm.json'));
             text = fileread(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'));
             verifySubstring(testCase, text, 'tone counting vs baseline');
         end
