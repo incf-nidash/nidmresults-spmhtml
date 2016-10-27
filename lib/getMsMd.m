@@ -1,8 +1,13 @@
-function [Ms, Md] = getMsMd(units)
+function [Ms, Md] = getMsMd(units, M, DIM)
+    % The below code was taken from the spm_mip_ui.m file in SPM12. 
     % Md maps various non-spatial data
     % Ms maps spatial (mm) to pixel coordinates, it must not change
     % mapping of non-spatial coordinates
     % Ms is left-multiplied to Md
+    
+    mipmat = char(spm_get_defaults('stats.results.mipmat'));
+    load(mipmat, 'DXYZ', 'CXYZ', 'scale');
+    
     if isequal(units,{'mm' 'mm' 'mm'})
         Md      = eye(4);
         Ms      = diag([scale(1:3) 1]);

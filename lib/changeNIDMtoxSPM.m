@@ -1,4 +1,3 @@
-
 function NxSPM = changeNIDMtoxSPM(json)
     
     graph = json.('x_graph');
