@@ -155,7 +155,9 @@ fprintf(fid,'%c',get(tpl,'OUT'));
 fclose(fid);
 %==========================================================================
 %-Delete temporary files
+
 rmdir(outdir, 's');
+
 %-Display webpage
 %==========================================================================
 [stat, webID] = web(fHTML);

@@ -47,20 +47,12 @@ function NxSPM = changeNIDMtoxSPM(json)
     STATStrTemp = [STATTemp '_{' errorDegrees '}'];
     
     %===============================================
-    %nidm - NOTE: In the standard format for the SPM file the MIP is 
-    %derived from other fields and this field does not exist.
-    
-    nidmTemp = struct;
-    excursionSetMaps = searchforType('nidm_ExcursionSetMap', graph);
-    mipFilepath = searchforID(excursionSetMaps{1}.nidm_hasMaximumIntensityProjection.('x_id'),graph);
-    nidmTemp.MIP = fullfile(json.filepath, mipFilepath.('prov_atLocation').('x_value'));
-    
-    %===============================================
     %M
     
+    excursionSetMaps = searchforType('nidm_ExcursionSetMap', graph);
     coordSpaceId = excursionSetMaps{1}.('nidm_inCoordinateSpace').('x_id');
     coordSpace = searchforID(coordSpaceId, graph);
-    v2wm = str2num(strrep(coordSpace.nidm_voxelToWorldMapping, '],[', '; '));
+    v2wm = spm_jsonread(coordSpace.nidm_voxelToWorldMapping);
     transform = [1, 0, 0, -1; 0, 1, 0, -1; 0, 0, 1, -1; 0, 0, 0, 1];
     mTemp = v2wm*transform;
     
@@ -68,6 +60,28 @@ function NxSPM = changeNIDMtoxSPM(json)
     %DIM
     
     dimTemp = str2num(coordSpace.('nidm_dimensionsInVoxels'))';
+    
+    %===============================================
+    %nidm - NOTE: In the standard format for the SPM file the MIP is 
+    %derived from other fields and this field does not exist.
+    
+    nidmTemp = struct;
+    
+    if isfield(excursionSetMaps{1}, 'nidm_hasMaximumIntensityProjection')
+        mipFilepath = searchforID(excursionSetMaps{1}.nidm_hasMaximumIntensityProjection.('x_id'),graph);
+        [~, filenameIMG, ext] = fileparts(mipFilepath.('prov_atLocation').('x_value'));
+        nidmTemp.MIP = fullfile(json.filepath, [filenameIMG, ext]);
+    else
+        %Find the units of the MIP.
+        searchSpaceMaskMap = searchforType('nidm_SearchSpaceMaskMap', graph);
+        searchSpace = searchforID(searchSpaceMaskMap{1}.('nidm_inCoordinateSpace').('x_id'), graph);
+        voxelUnits = strrep(strrep(strrep(strrep(searchSpace.('nidm_voxelUnits'), '\"', ''), '[', ''), ']', ''), ',', '');
+        
+        %Generate the MIP.
+        filenameNII = excursionSetMaps{1}.('nfo_fileName');
+        generateMIP(json.filepath, filenameNII, dimTemp, voxelUnits);
+        nidmTemp.MIP = spm_file(fullfile(json.filepath,'MIP.png'));
+    end
     
     %===============================================
     

@@ -6,7 +6,7 @@ function [Ms, Md] = getMsMd(units, M, DIM)
     % Ms is left-multiplied to Md
     
     mipmat = char(spm_get_defaults('stats.results.mipmat'));
-    load(mipmat, 'DXYZ', 'CXYZ', 'scale');
+    load(mipmat, 'scale');
     
     if isequal(units,{'mm' 'mm' 'mm'})
         Md      = eye(4);
