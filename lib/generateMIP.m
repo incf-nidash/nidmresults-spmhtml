@@ -3,6 +3,9 @@ function generateMIP(filepath, filename, DIM, units)
     %Unzip the nii.gz
     gunzip(fullfile(filepath, filename));
     
+    excset_img = nifti(strrep(fullfile(filepath, filename), '.gz', ''));
+    excset_img.dat(find(excset_img.dat(:)==0)) = NaN;
+    
     %Create the excursionSet accounting for NaNs.
     V=spm_vol(strrep(fullfile(filepath, filename), '.gz', ''));
     M=V.mat;

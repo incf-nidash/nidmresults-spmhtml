@@ -67,11 +67,16 @@ function NxSPM = changeNIDMtoxSPM(json)
     
     nidmTemp = struct;
     
+    exists = true;
     if isfield(excursionSetMaps{1}, 'nidm_hasMaximumIntensityProjection')
         mipFilepath = searchforID(excursionSetMaps{1}.nidm_hasMaximumIntensityProjection.('x_id'),graph);
         [~, filenameIMG, ext] = fileparts(mipFilepath.('prov_atLocation').('x_value'));
         nidmTemp.MIP = fullfile(json.filepath, [filenameIMG, ext]);
-    else
+        if ~exist(fullfile(json.filepath, [filenameIMG, ext]))
+            exists = false;
+        end
+    end 
+    if ~isfield(excursionSetMaps{1}, 'nidm_hasMaximumIntensityProjection') || exists == false
         %Find the units of the MIP.
         searchSpaceMaskMap = searchforType('nidm_SearchSpaceMaskMap', graph);
         searchSpace = searchforID(searchSpaceMaskMap{1}.('nidm_inCoordinateSpace').('x_id'), graph);

@@ -6,53 +6,61 @@
 classdef nidmExampleDataTest < matlab.unittest.TestCase
     
     methods(TestMethodSetup)
+        
         %Rename the users HTML folder to prevent the tests damaging it.
         function storeUsersHTML(testCase)
-            if exist(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'), 'file') == 2
-                movefile(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'), fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'indexTemp.html'))
-            end
-            if exist(fullfile(pwd, 'index.html'), 'file') == 2
-                movefile(fullfile(pwd, 'index.html'), fullfile(pwd, 'indexTemp.html'));
-            end
+            storeFile(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'fsl_default'));
+            storeFile(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default'));
+            storeFile(pwd); 
         end
+        
     end
     
     methods(TestMethodTeardown)
+        
         %Remove the HTML folder created by test and move the users data back to the HTML folder.
         function removeTestHTML(testCase)
-            if exist(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'), 'file') == 2
-                delete(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'))
-            end
-            if exist(fullfile(fileparts(mfilename('fullpath')), '..' , 'Data', 'indexTemp.html'), 'file') == 2
-                movefile(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'indexTemp.html'), fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'), 'f')
-            end
-            if exist(fullfile(pwd, 'index.html'), 'file') == 2
-                delete(fullfile(pwd, 'index.html'));
-            end
-            if exist(fullfile(pwd, 'indexTemp.html'), 'file') == 2
-                movefile(fullfile(pwd, 'indexTemp.html'), fullfile(pwd, 'index.html'));
-            end
+            
+            retrieveFile(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'fsl_default'));
+            retrieveFile(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default'));
+            retrieveFile(pwd);
+            
         end
     end 
         
     methods(Test)
-        %Simply checking the viewer doesn't crash.
-        function checkViewerRuns(testCase)
-            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'nidm.json'));
+        
+        %Checking the viewer runs on SPM-nidm input.
+        function checkViewerRunsSPM(testCase)
+            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default', 'nidm.json'));
         end
+        
         %Checking the experiment title is somewhere in the output HTML
         %file.
         function checkForTitle(testCase)
-            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'nidm.json'));
-            text = fileread(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'));
+            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default', 'nidm.json'));
+            text = fileread(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default', 'index.html'));
             verifySubstring(testCase, text, 'tone counting vs baseline');
         end
         
         %Checking the original functionality of the viewer with the
         %original SPM, xSPM and TabDat functions is unaffected.
         function checkOriginalViewerRuns(testCase)
-            testData = load(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'nidm_example001.mat'));
+            testData = load(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_output', 'nidm_example001.mat'));
             spm_results_export(testData.SPM, testData.xSPM, testData.TabDat);
         end
+        
+        %Checking the viewer runs on FSL-nidm output.
+        function checkViewerRunsFSL(testCase)
+            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'fsl_default', 'nidm.json'));
+        end
+        
+        %Checking the viewer runs on SPM-nidm output with no MIP.
+        function checkViewerRunsSPMwoMIP(testCase)
+            storeFile(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default'), 'MaximumIntensityProjection.png');
+            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default', 'nidm.json'));
+            retrieveFile(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default'), 'MaximumIntensityProjection.png');
+        end
+        
     end
 end
