@@ -2,7 +2,7 @@ function storeFile(filepath, filename)
     
     if nargin == 1
         if exist(fullfile(filepath, 'index.html')) == 2
-             movefile(fullfile(filepath, 'index.html'), fullfile(filepath, 'indexTemp.html'));
+             movefile(fullfile(filepath, 'index.html'), spm_file(fullfile(filepath, 'indexTemp.html'), 'unique'));
         end
     end
     

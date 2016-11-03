@@ -15,18 +15,6 @@ classdef nidmExampleDataTest < matlab.unittest.TestCase
         end
         
     end
-    
-    methods(TestMethodTeardown)
-        
-        %Remove the HTML folder created by test and move the users data back to the HTML folder.
-        function removeTestHTML(testCase)
-            
-            retrieveFile(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'fsl_default'));
-            retrieveFile(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default'));
-            retrieveFile(pwd);
-            
-        end
-    end 
         
     methods(Test)
         
