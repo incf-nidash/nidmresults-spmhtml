@@ -29,11 +29,34 @@ function NSPM = changeNIDMtoSPM(json)
     end    
     xConTemp(1).c = str2num(contrastWeightMatrix{1}.('prov_value'))';
     
-        
+    %=============================================================
+    %xX
+    
+    xXtemp = struct;
+    
+    designMatrices = searchforType('nidm_DesignMatrix', graph);
+    designMatrixFilename = designMatrices{1}.prov_atLocation.x_value;
+    [~, name, ext] = fileparts(designMatrixFilename);
+    xXtemp.xKXs.X = csvread([filepathTemp, name, ext]);
+    
+    %Get the regressor names in required format.
+    remain = strrep(strrep(strrep(strrep(designMatrices{1}.nidm_regressorNames, '\"', ''), '[', ''), ']', ''), ',', '');
+    counter = 1;
+    while ~isempty(remain)
+        [token, remain] = strtok(remain, ' ');
+        regNameCell{counter} = token;
+        counter = counter+1;
+    end
+    
+    xXtemp.name = regNameCell;
+    
+    xXtemp.nKX = spm_DesMtx('sca',xXtemp.xKXs.X,xXtemp.name);
+    
     %=============================================================
     
     NSPM.nidm = nidmTemp;
     NSPM.xCon = xConTemp;
+    NSPM.xX = xXtemp;
     NSPM.nidm.filepath = filepathTemp;
     
 end
