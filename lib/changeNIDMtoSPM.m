@@ -37,7 +37,7 @@ function NSPM = changeNIDMtoSPM(json)
     designMatrices = searchforType('nidm_DesignMatrix', graph);
     designMatrixFilename = designMatrices{1}.prov_atLocation.x_value;
     [~, name, ext] = fileparts(designMatrixFilename);
-    xXtemp.xKXs.X = csvread([filepathTemp, name, ext]);
+    xXtemp.xKXs.X = csvread(fullfile(filepathTemp, [name, ext]));
     
     %Get the regressor names in required format.
     remain = strrep(strrep(strrep(strrep(designMatrices{1}.nidm_regressorNames, '\"', ''), '[', ''), ']', ''), ',', '');

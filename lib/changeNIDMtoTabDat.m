@@ -22,6 +22,9 @@ function NTabDat = changeNIDMtoTabDat(json)
         end
     end 
     
+    nidmTemp = struct;
+    nidmTemp.software = software;
+    
     %======================================================================
     %dat
     
@@ -253,4 +256,5 @@ function NTabDat = changeNIDMtoTabDat(json)
     NTabDat.ftr = ftrTemp;
     NTabDat.str = strTemp;
     NTabDat.fmt = fmtTemp;
+    NTabDat.nidm = nidmTemp;
 end
