@@ -1,3 +1,8 @@
+%This function moves the file 'filename' to a temporary location
+%'filenameTemp' to prevent the tests overwriting any of the users data. If
+%only one argument is provided it is assumed the file in question is named
+%'index.html'.
+
 function storeFile(filepath, filename)
     
     if nargin == 1

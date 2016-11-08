@@ -1,10 +1,7 @@
 function webID = nidm_results_display(jsonfilepath)
     
-    %Checks on input
+    %Check input
     narginchk(1, 1);
-%     if nargin == 2
-%         validateattributes(overWrite,{'logical'}, {'scalar'});
-%     end
 
     %Record users choice and filepath.
     jsondoc=spm_jsonread(jsonfilepath);

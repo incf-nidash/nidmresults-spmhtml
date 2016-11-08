@@ -3,6 +3,8 @@ function generateMIP(filepath, filename, DIM, units)
     %Unzip the nii.gz
     gunzip(fullfile(filepath, filename));
     
+    %As FSL uses zeros to represent no activation, whereas SPM uses NaNs,
+    %covert all zero's to NaNs.
     excset_img = nifti(strrep(fullfile(filepath, filename), '.gz', ''));
     excset_img.dat(find(excset_img.dat(:)==0)) = NaN;
     
@@ -21,7 +23,6 @@ function generateMIP(filepath, filename, DIM, units)
         [token, remain] = strtok(remain, ' ');
         units{i} = token;
     end
-    units={'mm','mm','mm'};
     
     %Get Ms and Md.
     [Ms, Md] = getMsMd(units, M, DIM);

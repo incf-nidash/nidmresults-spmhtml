@@ -61,22 +61,18 @@ function NxSPM = changeNIDMtoxSPM(json)
     
     dimTemp = str2num(coordSpace.('nidm_dimensionsInVoxels'))';
     
-    %===============================================
-    %nidm - NOTE: In the standard format for the SPM file the MIP is 
+    %======================================================================
+    %nidm - NOTE: In the standard format for SPM output the MIP is 
     %derived from other fields and this field does not exist.
     
     nidmTemp = struct;
     
-    exists = true;
     if isfield(excursionSetMaps{1}, 'nidm_hasMaximumIntensityProjection')
         mipFilepath = searchforID(excursionSetMaps{1}.nidm_hasMaximumIntensityProjection.('x_id'),graph);
         [~, filenameIMG, ext] = fileparts(mipFilepath.('prov_atLocation').('x_value'));
         nidmTemp.MIP = fullfile(json.filepath, [filenameIMG, ext]);
-        if ~exist(fullfile(json.filepath, [filenameIMG, ext]))
-            exists = false;
-        end
     end 
-    if ~isfield(excursionSetMaps{1}, 'nidm_hasMaximumIntensityProjection') || exists == false
+    if ~isfield(excursionSetMaps{1}, 'nidm_hasMaximumIntensityProjection')
         %Find the units of the MIP.
         searchSpaceMaskMap = searchforType('nidm_SearchSpaceMaskMap', graph);
         searchSpace = searchforID(searchSpaceMaskMap{1}.('nidm_inCoordinateSpace').('x_id'), graph);

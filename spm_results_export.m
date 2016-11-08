@@ -16,8 +16,9 @@ if nargin < 3
     TabDat = spm_list('Table',xSPM);
 end
 
-%If we're using the matlab made SPM, xSPM and TabDat objectes just output
-%into the current directory, else output next to the NIDM objects.
+%If spm_results export has been called on standard SPM, xSPM and TabDat 
+%variables, output into the current directory, else if we are using 
+%nidm-created SPM, xSPM and TabDat variables, output next to the NIDM json.
 
 if ~isfield(SPM, 'nidm')
     fHTML = pwd;
@@ -35,7 +36,6 @@ fHTML   = spm_file(fullfile(fHTML, 'index.html'));
 
 %If fHTML already exists, ask if it should be overWritten.
 
-overWrite = true;
 if exist(fHTML, 'file') == 2
     button = questdlg('The output file, index.html, already exists. Would you like this file to be overwritten?', 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');      
     switch button
@@ -46,11 +46,10 @@ if exist(fHTML, 'file') == 2
         case ''
             overWrite = false;
     end
-end
-
-if(~overWrite)
-    webID = '0';
-    return
+    if(~overWrite)
+        webID = '0';
+        return
+    end
 end
 
 mkdir(outdir);
