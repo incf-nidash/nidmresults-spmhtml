@@ -45,9 +45,7 @@ classdef nidmExampleDataTest < matlab.unittest.TestCase
         
         %Checking the viewer runs on SPM-nidm output with no MIP.
         function checkViewerRunsSPMwoMIP(testCase)
-            storeFile(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default'), 'MaximumIntensityProjection.png');
-            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default', 'nidm.json'));
-            retrieveFile(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default'), 'MaximumIntensityProjection.png');
+            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default', 'nidmwithoutMIP.json'));
         end
         
     end

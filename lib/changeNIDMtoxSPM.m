@@ -49,7 +49,7 @@ function NxSPM = changeNIDMtoxSPM(json)
     %===============================================
     %M
     
-    excursionSetMaps = searchforType('nidm_ExcursionSetMap', graph);
+    [excursionSetMaps, excurIndices] = searchforType('nidm_ExcursionSetMap', graph);
     coordSpaceId = excursionSetMaps{1}.('nidm_inCoordinateSpace').('x_id');
     coordSpace = searchforID(coordSpaceId, graph);
     v2wm = spm_jsonread(coordSpace.nidm_voxelToWorldMapping);
@@ -69,8 +69,7 @@ function NxSPM = changeNIDMtoxSPM(json)
     
     if isfield(excursionSetMaps{1}, 'nidm_hasMaximumIntensityProjection')
         mipFilepath = searchforID(excursionSetMaps{1}.nidm_hasMaximumIntensityProjection.('x_id'),graph);
-        [~, filenameIMG, ext] = fileparts(mipFilepath.('prov_atLocation').('x_value'));
-        nidmTemp.MIP = fullfile(json.filepath, [filenameIMG, ext]);
+        nidmTemp.MIP = getPathDetails(mipFilepath.('prov_atLocation').('x_value'), json.filepath);
     end 
     if ~isfield(excursionSetMaps{1}, 'nidm_hasMaximumIntensityProjection')
         %Find the units of the MIP.
@@ -82,6 +81,30 @@ function NxSPM = changeNIDMtoxSPM(json)
         filenameNII = excursionSetMaps{1}.('nfo_fileName');
         generateMIP(json.filepath, filenameNII, dimTemp, voxelUnits);
         nidmTemp.MIP = spm_file(fullfile(json.filepath,'MIP.png'));
+        
+        %Store information about the new MIP in the NIDM pack. Temporarily
+        %remove the filepath from the json object.
+        filepathTemp = json.filepath;
+        json = rmfield(json, 'filepath');
+        
+        %Create a structure to store information about the MIP.
+        
+        s = struct;
+        s.x_id = ['niiri:', char(java.util.UUID.randomUUID)];
+        s.x_type = {'dctype:Image'; 'prov:Entity'};
+        s.dcterms_format = 'image/png';
+        s.nfo_fileName = 'MIP.png';
+        s.prov_atLocation.x_type = 'xsd:anyURI';
+        s.prov_atLocation.x_value = 'MIP.png';
+        
+        %Update the graph.
+        graph{excurIndices{1}}.nidm_hasMaximumIntensityProjection.x_id = s.x_id;
+        graph{length(graph)+1} = s;
+        json.x_graph = graph;
+        
+        spm_jsonwrite(fullfile(filepathTemp, 'nidm.json'), json);
+        json.filepath = filepathTemp;
+        
     end
     
     %===============================================

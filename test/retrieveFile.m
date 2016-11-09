@@ -14,5 +14,4 @@ function retrieveHTMLFile(filepath, filename)
         movefile(fullfile(filepath, filenameTemp), fullfile(filepath, filename), 'f');
     end
     
-    
 end

@@ -28,7 +28,7 @@ else
     outdir  = spm_file(fullfile(SPM.nidm.filepath,'temp'));
 end
  
-if exist(outdir) ~= 7
+if exist(outdir, 'dir') ~= 7
     outdir = spm_file(outdir, 'uniquedir');
 end
 
@@ -159,4 +159,4 @@ rmdir(outdir, 's');
 
 %-Display webpage
 %==========================================================================
-[stat, webID] = web(fHTML);
+[~, webID] = web(fHTML);
