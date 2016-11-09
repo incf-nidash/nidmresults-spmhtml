@@ -226,9 +226,9 @@ function NTabDat = changeNIDMtoTabDat(json)
     %Voxel dimensions and resel size
     
     k = k+1;
-    searchSpace = searchforID(searchSpaceMaskMap{1}.('nidm_inCoordinateSpace').('x_id'), graph);
-    voxelSize = str2num(searchSpace.('nidm_voxelSize'));
-    voxelUnits = strrep(strrep(strrep(strrep(searchSpace.('nidm_voxelUnits'), '\"', ''), '[', ''), ']', ''), ',', '');
+    coordSpace = searchforID(searchSpaceMaskMap{1}.('nidm_inCoordinateSpace').('x_id'), graph);
+    voxelSize = str2num(coordSpace.('nidm_voxelSize'));
+    voxelUnits = strrep(strrep(strrep(strrep(coordSpace.('nidm_voxelUnits'), '\"', ''), '[', ''), ']', ''), ',', '');
     reselSize = str2num(searchSpaceMaskMap{1}.('nidm_reselSizeInVoxels').('x_value'));
     
     ftrTemp{k, 1} = ['Voxel size: %3.1f %3.1f %3.1f ', voxelUnits, '; (resel = %0.2f voxels)'];

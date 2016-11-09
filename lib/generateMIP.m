@@ -1,5 +1,5 @@
 function generateMIP(filepath, filename, DIM, units)
-
+    
     %Unzip the nii.gz
     gunzip(fullfile(filepath, filename));
     
