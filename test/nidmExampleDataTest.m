@@ -4,46 +4,60 @@
 %result = run(tests)
 
 classdef nidmExampleDataTest < matlab.unittest.TestCase
-    
-    methods(TestMethodSetup)
-        %Rename the users HTML folder to prevent the tests damaging it.
-        function storeUsersHTML(testCase)
-            if exist(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'), 'file') == 2
-                movefile(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'), fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'indexTemp.html'))
+       
+    methods
+        function delete_html_file(testCase, data_path)
+            index = fullfile(data_path, 'index.html');
+            if exist(index, 'file')
+                delete(index);
             end
         end
     end
-    
-    methods(TestMethodTeardown)
-        %Remove the HTML folder created by test and move the users data back to the HTML folder.
-        function removeTestHTML(testCase)
-            if exist(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'), 'file') == 2
-                delete(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'))
-            end
-            if exist(fullfile(fileparts(mfilename('fullpath')), '..' , 'Data', 'indexTemp.html'), 'file') == 2
-                movefile(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'indexTemp.html'), fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'), 'f')
-            end
-        end
-    end 
         
     methods(Test)
-        %Simply checking the viewer doesn't crash.
-        function checkViewerRuns(testCase)
-            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'nidm.json'), true);
+        
+        %Checking the viewer runs on SPM-nidm input.
+        function checkViewerRunsSPM(testCase)
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default');
+            testCase.delete_html_file(data_path);
+            nidm_results_display(fullfile(data_path, 'nidm.json'));
         end
+        
         %Checking the experiment title is somewhere in the output HTML
         %file.
         function checkForTitle(testCase)
-            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'nidm.json'), true);
-            text = fileread(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'index.html'));
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default');
+            testCase.delete_html_file(data_path);
+            nidm_results_display(fullfile(data_path, 'nidm.json'));
+            text = fileread(fullfile(data_path, 'index.html'));
             verifySubstring(testCase, text, 'tone counting vs baseline');
         end
         
         %Checking the original functionality of the viewer with the
         %original SPM, xSPM and TabDat functions is unaffected.
         function checkOriginalViewerRuns(testCase)
-            testData = load(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'nidm_example001.mat'));
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_output');
+            testCase.delete_html_file(data_path);
+            cwd = pwd;
+            cd(data_path)
+            testData = load(fullfile(data_path, 'nidm_example001.mat'));
             spm_results_export(testData.SPM, testData.xSPM, testData.TabDat);
+            cd(cwd);
         end
+        
+        %Checking the viewer runs on FSL-nidm output.
+        function checkViewerRunsFSL(testCase)
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'fsl_default');
+            testCase.delete_html_file(data_path);
+            nidm_results_display(fullfile(data_path, 'nidm.json'));
+        end
+        
+        %Checking the viewer runs on SPM-nidm output with no MIP.
+        function checkViewerRunsSPMwoMIP(testCase)
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default');
+            testCase.delete_html_file(data_path);
+            nidm_results_display(fullfile(data_path, 'nidmwithoutMIP.json'));
+        end
+        
     end
 end

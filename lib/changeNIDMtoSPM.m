@@ -11,9 +11,9 @@ function NSPM = changeNIDMtoSPM(json)
     designMatrix = searchforType('nidm_DesignMatrix', graph);
     
     locationID = searchforID(designMatrix{1}.('dc_description').('x_id'), graph);
-    nidmTemp.DesMat = fullfile(json.filepath, locationID.('prov_atLocation').('x_value'));
+    nidmTemp.DesMat = getPathDetails(locationID.('prov_atLocation').('x_value'), json.filepath);
     
-    csvFilePath = fullfile(json.filepath, designMatrix{1}.('prov_atLocation').('x_value'));
+    csvFilePath = getPathDetails(designMatrix{1}.('prov_atLocation').('x_value'), json.filepath);
     csvFile = csvread(csvFilePath);
     nidmTemp.dim = size(csvFile);
     
@@ -22,8 +22,12 @@ function NSPM = changeNIDMtoSPM(json)
     
     xConTemp = struct;
     contrastWeightMatrix = searchforType('obo_contrastweightmatrix', graph);
+    if(isempty(contrastWeightMatrix))
+        contrastWeightMatrix = searchforType('obo:STATO_0000323', graph);
+    end    
     xConTemp(1).c = str2num(contrastWeightMatrix{1}.('prov_value'))';
     
+        
     %=============================================================
     
     NSPM.nidm = nidmTemp;

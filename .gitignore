@@ -9,3 +9,18 @@
 
 # images in data folder
 Data/*.png
+
+#nii files
+*.nii
+
+#asv files
+*.asv
+
+#html files
+*.html
+
+#png files
+*.png
+
+#ttl files
+*.ttl
