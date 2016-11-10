@@ -35,7 +35,10 @@ classdef nidmExampleDataTest < matlab.unittest.TestCase
         %original SPM, xSPM and TabDat functions is unaffected.
         function checkOriginalViewerRuns(testCase)
             testData = load(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_output', 'nidm_example001.mat'));
+            cwd = pwd;
+            cd(data_path)
             spm_results_export(testData.SPM, testData.xSPM, testData.TabDat);
+            cd(cwd);
         end
         
         %Checking the viewer runs on FSL-nidm output.
