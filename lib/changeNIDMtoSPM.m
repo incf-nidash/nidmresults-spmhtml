@@ -11,11 +11,9 @@ function NSPM = changeNIDMtoSPM(json)
     designMatrix = searchforType('nidm_DesignMatrix', graph);
     
     locationID = searchforID(designMatrix{1}.('dc_description').('x_id'), graph);
-    [~, filename, ext] = fileparts(locationID.('prov_atLocation').('x_value'));
-    nidmTemp.DesMat = fullfile(json.filepath, [filename, ext]);
+    nidmTemp.DesMat = getPathDetails(locationID.('prov_atLocation').('x_value'), json.filepath);
     
-    [~, filename, ext] = fileparts(designMatrix{1}.('prov_atLocation').('x_value'));
-    csvFilePath = fullfile(json.filepath, [filename, ext]);
+    csvFilePath = getPathDetails(designMatrix{1}.('prov_atLocation').('x_value'), json.filepath);
     csvFile = csvread(csvFilePath);
     nidmTemp.dim = size(csvFile);
     
