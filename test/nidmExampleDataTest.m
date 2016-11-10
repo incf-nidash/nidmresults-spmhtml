@@ -48,5 +48,17 @@ classdef nidmExampleDataTest < matlab.unittest.TestCase
             nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default', 'nidmwithoutMIP.json'));
         end
         
+        %Checking the nidm json is not damaged by the viewer.
+        function checkNIDMUnaffected(testCase)
+            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'fsl_default', 'nidm.json'));
+            originalNIDM = spm_jsonread('C:\Users\owner\Documents\Project-NIDASH\nidmresults-spmhtml\Data\fsl_default\nidmWithoutMip.json');
+            currentNIDM = spm_jsonread('C:\Users\owner\Documents\Project-NIDASH\nidmresults-spmhtml\Data\fsl_default\nidm.json');
+            %Choose a random vertex in the graph that we know should not have been changed.
+            testObject = 20;
+            while testObject == 20
+                testObject = randi(length(originalNIDM.x_graph));
+            end
+            verifyEqual(testCase, currentNIDM.x_graph{testObject}, originalNIDM.x_graph{testObject});
+        end
     end
 end
