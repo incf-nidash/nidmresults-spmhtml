@@ -263,7 +263,7 @@ function NTabDat = changeNIDMtoTabDat(json)
         units = strtok(voxelUnits, ' ');
         strTemp = ['table shows ', peakDefCriteria{1}.nidm_maxNumberOfPeaksPerCluster.('x_value'), ' local maxima more than ', peakDefCriteria{1}.nidm_minDistanceBetweenPeaks.('x_value'), units, ' apart'];
     else 
-        strTemp = 'table shows local maxima more than 0mm apart';
+        strTemp = '';
     end
     
     %===========================================
