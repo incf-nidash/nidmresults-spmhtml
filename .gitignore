@@ -24,3 +24,6 @@ Data/*.png
 
 #ttl files
 *.ttl
+
+#ZIP files
+*.zip

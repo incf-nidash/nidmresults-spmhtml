@@ -1,11 +1,22 @@
+%==========================================================================
+%Generate an object with the same format as the SPM-output variable, xSPM, 
+%using the information from an input NIDM-Results json pack. This takes in 
+%one argument:
+%
+%json - the spm_jsonread form of the NIDM-Results json file.
+%
+%Authors: Thomas Maullin, Camille Maumet.
+%==========================================================================
+
 function NxSPM = changeNIDMtoxSPM(json)
     
     graph = json.('x_graph');
     NxSPM = struct;
     
-    %==============================================
+    %======================================================================
     %title
     
+    %Find the contrast map holding the title.
     contrastMaps = searchforType('nidm_ContrastMap', graph);
     for i = 1:length(contrastMaps)
         if isfield(contrastMaps{i}, 'nidm_contrastName')
@@ -13,45 +24,44 @@ function NxSPM = changeNIDMtoxSPM(json)
         end
     end 
     
-    %==============================================
+    %======================================================================
     %STAT
     
-    statisticMaps = searchforType('nidm_StatisticMap', graph);
-    for i = 1:length(statisticMaps)
-        if isfield(statisticMaps{i}, 'nidm_statisticType')
-            statType = statisticMaps{i}.('nidm_statisticType').('x_id');
-        end
-    end
-    
-    if strcmp(statType, 'obo:STATO_0000176')
-       STATTemp = 'T';
-    elseif strcmp(statType, 'obo:STATO_0000030')
-       STATTemp = 'X';
-    elseif strcmp(statType, 'obo:STATO_0000378')
-       STATTemp = 'Z';
-    elseif strcmp(statType, 'obo:STATO_0000282')
-       STATTemp = 'F';
-    else
-       STATTemp = 'P';
-    end
+    %Using getStatType, obtain the statisticMaps objects and statistic type. 
+    [STATTemp, statisticMaps] = getStatType(graph);
        
-    %===============================================
+    %======================================================================
     %STATStr
     
+    %Obtain the degrees of freedom.
     for i = 1:length(statisticMaps)
         if isfield(statisticMaps{i}, 'nidm_errorDegreesOfFreedom')
+            effectDegrees = statisticMaps{i}.('nidm_effectDegreesOfFreedom').('x_value');
             errorDegrees = statisticMaps{i}.('nidm_errorDegreesOfFreedom').('x_value');
         end
     end 
+    
+    %Add the degrees of freedom as a subscript.
+    effectDegrees = num2str(round(str2num(effectDegrees)));
     errorDegrees = num2str(round(str2num(errorDegrees)));
-    STATStrTemp = [STATTemp '_{' errorDegrees '}'];
+    
+    if strcmp(STATTemp, 'T') || strcmp(STATTemp, 'X')
+        STATStrTemp = [STATTemp '_{' errorDegrees '}'];
+    elseif strcmp(STATTemp, 'Z') || strcmp(STATTemp, 'P')
+        STATStrTemp = STATTemp;
+    else
+        STATStrTemp = [STATTemp '_{' effectDegrees ',' errorDegrees '}'];
+    end
     
     %===============================================
     %M
     
+    %Locate the excursion set maps and their indices in the graph.
     [excursionSetMaps, excurIndices] = searchforType('nidm_ExcursionSetMap', graph);
     coordSpaceId = excursionSetMaps{1}.('nidm_inCoordinateSpace').('x_id');
     coordSpace = searchforID(coordSpaceId, graph);
+    
+    %Obtain the voxel to world mapping and transform it to obtain M.
     v2wm = spm_jsonread(coordSpace.nidm_voxelToWorldMapping);
     transform = [1, 0, 0, -1; 0, 1, 0, -1; 0, 0, 1, -1; 0, 0, 0, 1];
     mTemp = v2wm*transform;
@@ -67,11 +77,11 @@ function NxSPM = changeNIDMtoxSPM(json)
     
     nidmTemp = struct;
     
+    %If there's already an MIP, save it's location, else generate one.
     if isfield(excursionSetMaps{1}, 'nidm_hasMaximumIntensityProjection')
         mipFilepath = searchforID(excursionSetMaps{1}.nidm_hasMaximumIntensityProjection.('x_id'),graph);
         nidmTemp.MIP = getPathDetails(mipFilepath.('prov_atLocation').('x_value'), json.filepath);
-    end 
-    if ~isfield(excursionSetMaps{1}, 'nidm_hasMaximumIntensityProjection')
+    else
         %Find the units of the MIP.
         searchSpaceMaskMap = searchforType('nidm_SearchSpaceMaskMap', graph);
         searchSpace = searchforID(searchSpaceMaskMap{1}.('nidm_inCoordinateSpace').('x_id'), graph);
@@ -107,7 +117,7 @@ function NxSPM = changeNIDMtoxSPM(json)
         
     end
     
-    %===============================================
+    %======================================================================
     
     NxSPM.title = titleTemp;
     NxSPM.STAT = STATTemp;

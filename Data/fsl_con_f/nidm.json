@@ -1,0 +1,962 @@
+{
+  "x_context": {
+    "crypto": "http://id.loc.gov/vocabulary/preservation/cryptographicHashFunctions#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "dct": "http://purl.org/dc/terms/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "dctype": "http://purl.org/dc/dcmitype/",
+    "fsl": "http://purl.org/nidash/fsl#",
+    "fsl_FSLsGammaHRF": "http://purl.org/nidash/fsl#FSL_0000006",
+    "fsl_GaussianRunningLineDriftModel": "http://purl.org/nidash/fsl#FSL_0000002",
+    "fsl_driftCutoffPeriod": "http://purl.org/nidash/fsl#FSL_0000004",
+    "fsl_featVersion": "http://purl.org/nidash/fsl#FSL_0000005",
+    "nfo": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#",
+    "nidm": "http://purl.org/nidash/nidm#",
+    "nidm_ContrastEstimation": "http://purl.org/nidash/nidm#NIDM_0000001",
+    "nidm_ContrastExplainedMeanSquareMap": "http://purl.org/nidash/nidm#NIDM_0000163",
+    "nidm_ContrastMap": "http://purl.org/nidash/nidm#NIDM_0000002",
+    "nidm_ContrastStandardErrorMap": "http://purl.org/nidash/nidm#NIDM_0000013",
+    "nidm_ContrastVarianceMap": "http://purl.org/nidash/nidm#NIDM_0000135",
+    "nidm_CoordinateSpace": "http://purl.org/nidash/nidm#NIDM_0000016",
+    "nidm_Data": "http://purl.org/nidash/nidm#NIDM_0000169",
+    "nidm_DesignMatrix": "http://purl.org/nidash/nidm#NIDM_0000019",
+    "nidm_ErrorModel": "http://purl.org/nidash/nidm#NIDM_0000023",
+    "nidm_ExcursionSetMap": "http://purl.org/nidash/nidm#NIDM_0000025",
+    "nidm_ExtentThreshold": "http://purl.org/nidash/nidm#NIDM_0000026",
+    "nidm_GrandMeanMap": "http://purl.org/nidash/nidm#NIDM_0000033",
+    "nidm_HeightThreshold": "http://purl.org/nidash/nidm#NIDM_0000034",
+    "nidm_IndependentParameter": "http://purl.org/nidash/nidm#NIDM_0000073",
+    "nidm_Inference": "http://purl.org/nidash/nidm#NIDM_0000049",
+    "nidm_MaskMap": "http://purl.org/nidash/nidm#NIDM_0000054",
+    "nidm_ModelParametersEstimation": "http://purl.org/nidash/nidm#NIDM_0000056",
+    "nidm_NIDMResults": "http://purl.org/nidash/nidm#NIDM_0000027",
+    "nidm_NIDMResultsExport": "http://purl.org/nidash/nidm#NIDM_0000166",
+    "nidm_OneTailedTest": "http://purl.org/nidash/nidm#NIDM_0000060",
+    "nidm_PValueUncorrected": "http://purl.org/nidash/nidm#NIDM_0000160",
+    "nidm_ParameterEstimateMap": "http://purl.org/nidash/nidm#NIDM_0000061",
+    "nidm_RegularizedParameter": "http://purl.org/nidash/nidm#NIDM_0000074",
+    "nidm_ResidualMeanSquaresMap": "http://purl.org/nidash/nidm#NIDM_0000066",
+    "nidm_SearchSpaceMaskMap": "http://purl.org/nidash/nidm#NIDM_0000068",
+    "nidm_StatisticMap": "http://purl.org/nidash/nidm#NIDM_0000076",
+    "nidm_SubjectCoordinateSystem": "http://purl.org/nidash/nidm#NIDM_0000077",
+    "nidm_clusterSizeInVoxels": "http://purl.org/nidash/nidm#NIDM_0000084",
+    "nidm_contrastName": "http://purl.org/nidash/nidm#NIDM_0000085",
+    "nidm_dependenceMapWiseDependence": "http://purl.org/nidash/nidm#NIDM_0000089",
+    "nidm_dimensionsInVoxels": "http://purl.org/nidash/nidm#NIDM_0000090",
+    "nidm_effectDegreesOfFreedom": "http://purl.org/nidash/nidm#NIDM_0000091",
+    "nidm_errorDegreesOfFreedom": "http://purl.org/nidash/nidm#NIDM_0000093",
+    "nidm_errorVarianceHomogeneous": "http://purl.org/nidash/nidm#NIDM_0000094",
+    "nidm_grandMeanScaling": "http://purl.org/nidash/nidm#NIDM_0000096",
+    "nidm_hasAlternativeHypothesis": "http://purl.org/nidash/nidm#NIDM_0000097",
+    "nidm_hasDriftModel": "http://purl.org/nidash/nidm#NIDM_0000088",
+    "nidm_hasErrorDependence": "http://purl.org/nidash/nidm#NIDM_0000100",
+    "nidm_hasErrorDistribution": "http://purl.org/nidash/nidm#NIDM_0000101",
+    "nidm_hasHRFBasis": "http://purl.org/nidash/nidm#NIDM_0000102",
+    "nidm_hasMRIProtocol": "http://purl.org/nidash/nidm#NIDM_0000172",
+    "nidm_inCoordinateSpace": "http://purl.org/nidash/nidm#NIDM_0000104",
+    "nidm_inWorldCoordinateSystem": "http://purl.org/nidash/nidm#NIDM_0000105",
+    "nidm_isUserDefined": "http://purl.org/nidash/nidm#NIDM_0000106",
+    "nidm_maskedMedian": "http://purl.org/nidash/nidm#NIDM_0000107",
+    "nidm_nidmfsl": "http://purl.org/nidash/nidm#NIDM_0000167",
+    "nidm_noiseFWHMInUnits": "http://purl.org/nidash/nidm#NIDM_0000157",
+    "nidm_noiseFWHMInVoxels": "http://purl.org/nidash/nidm#NIDM_0000159",
+    "nidm_noiseRoughnessInVoxels": "http://purl.org/nidash/nidm#NIDM_0000145",
+    "nidm_numberOfDimensions": "http://purl.org/nidash/nidm#NIDM_0000112",
+    "nidm_randomFieldStationarity": "http://purl.org/nidash/nidm#NIDM_0000120",
+    "nidm_regressorNames": "http://purl.org/nidash/nidm#NIDM_0000021",
+    "nidm_reselSizeInVoxels": "http://purl.org/nidash/nidm#NIDM_0000148",
+    "nidm_searchVolumeInResels": "http://purl.org/nidash/nidm#NIDM_0000149",
+    "nidm_searchVolumeInUnits": "http://purl.org/nidash/nidm#NIDM_0000136",
+    "nidm_searchVolumeInVoxels": "http://purl.org/nidash/nidm#NIDM_0000121",
+    "nidm_softwareVersion": "http://purl.org/nidash/nidm#NIDM_0000122",
+    "nidm_statisticType": "http://purl.org/nidash/nidm#NIDM_0000123",
+    "nidm_targetIntensity": "http://purl.org/nidash/nidm#NIDM_0000124",
+    "nidm_varianceMapWiseDependence": "http://purl.org/nidash/nidm#NIDM_0000126",
+    "nidm_version": "http://purl.org/nidash/nidm#NIDM_0000127",
+    "nidm_voxelSize": "http://purl.org/nidash/nidm#NIDM_0000131",
+    "nidm_voxelToWorldMapping": "http://purl.org/nidash/nidm#NIDM_0000132",
+    "nidm_voxelUnits": "http://purl.org/nidash/nidm#NIDM_0000133",
+    "nidm_withEstimationMethod": "http://purl.org/nidash/nidm#NIDM_0000134",
+    "niiri": "http://iri.nidash.org/",
+    "nlx": "http://neurolex.org/wiki/",
+    "obo": "http://purl.obolibrary.org/obo/",
+    "prov": "http://www.w3.org/ns/prov#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "spm": "http://purl.org/nidash/spm#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "x_graph": [
+    {
+      "x_id": "niiri:b504ff39-6b49-4656-aa45-9fddb0271db3",
+      "x_type": [
+        "prov:Entity",
+        "nidm_StatisticMap"
+      ],
+      "crypto_sha512": "07ddd4fabb8409815459be622465fdb1462fcba124be9a521fbd51ea6d03c582dc4cae2b08cdecd0662e19ac958b5c37a58d3da6b6ee05ae212039a31f91056d",
+      "dct_format": "image/nifti",
+      "nfo_fileName": "ZStatistic_T001.nii.gz",
+      "nidm_contrastName": "tone counting vs baseline",
+      "nidm_effectDegreesOfFreedom": {
+        "x_type": "xsd:float",
+        "x_value": "1.0"
+      },
+      "nidm_errorDegreesOfFreedom": {
+        "x_type": "xsd:float",
+        "x_value": "inf"
+      },
+      "nidm_inCoordinateSpace": {
+        "x_id": "niiri:06f9f44b-7c0d-47c4-a4b3-5d8e98151e2c"
+      },
+      "nidm_statisticType": {
+        "x_id": "obo:STATO_0000376"
+      },
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm/ZStatistic_T001.nii.gz"
+      },
+      "prov_wasGeneratedBy": {
+        "x_id": "niiri:e23e4bc4-c11c-414a-995c-bbe0ec9b819c"
+      },
+      "rdfs_label": "Z-Statistic Map: tone counting vs baseline"
+    },
+    {
+      "x_id": "niiri:25613938-a9ce-49db-ac7e-e845531a2bc7",
+      "x_type": [
+        "http://scicrunch.org/resolver/SCR_002823",
+        "prov:Agent",
+        "prov:SoftwareAgent"
+      ],
+      "fsl_featVersion": "6.00",
+      "nidm_softwareVersion": "5.0.x",
+      "rdfs_label": "FSL"
+    },
+    {
+      "x_id": "niiri:200180f8-1379-44cf-bd89-f202f8cc1d36",
+      "x_type": [
+        "prov:Activity",
+        "nidm_ContrastEstimation"
+      ],
+      "prov_used": [
+        {
+          "x_id": "niiri:683c40fd-1d9a-4b14-9ad6-a40d667de1c9"
+        },
+        {
+          "x_id": "niiri:91918fd1-beb6-4e1c-a06d-dfd32a60964f"
+        },
+        {
+          "x_id": "niiri:1d7ef1ee-b96c-4adf-a2bb-b476f7232d8e"
+        }
+      ],
+      "prov_wasAssociatedWith": {
+        "x_id": "niiri:25613938-a9ce-49db-ac7e-e845531a2bc7"
+      },
+      "rdfs_label": "Contrast estimation: tone counting vs baseline"
+    },
+    {
+      "x_id": "niiri:ad99f7da-17d0-402e-9877-621f3f96ddcc",
+      "x_type": [
+        "nidm_nidmfsl",
+        "prov:SoftwareAgent",
+        "prov:Agent"
+      ],
+      "nidm_softwareVersion": "0.3.6",
+      "rdfs_label": "nidmfsl"
+    },
+    {
+      "x_id": "niiri:bc0b461a-a5c4-4358-b730-c26c7d19bcf8",
+      "x_type": [
+        "nidm_ExtentThreshold",
+        "prov:Entity",
+        "obo:STATO_0000039"
+      ],
+      "nidm_clusterSizeInVoxels": {
+        "x_type": "xsd:int",
+        "x_value": "0"
+      },
+      "rdfs_label": "Extent Threshold: k>=0"
+    },
+    {
+      "x_id": "niiri:91918fd1-beb6-4e1c-a06d-dfd32a60964f",
+      "x_type": [
+        "nidm_ParameterEstimateMap",
+        "prov:Entity"
+      ],
+      "crypto_sha512": "f2df3de73c023be1d8d1f73703e3ffdbf08b69a27ae304cdf053e8639da9e579fd21a52a66584e04c865239f408bd30d7b5e690985ce7a20ccd2a50c3306fd55",
+      "dct_format": "image/nifti",
+      "nfo_fileName": "pe1.nii.gz",
+      "nidm_inCoordinateSpace": {
+        "x_id": "niiri:06f9f44b-7c0d-47c4-a4b3-5d8e98151e2c"
+      },
+      "prov_wasGeneratedBy": {
+        "x_id": "niiri:d14ca1c6-8274-4f1c-84a4-650e6560ae38"
+      },
+      "rdfs_label": "Parameter estimate 1"
+    },
+    {
+      "x_id": "niiri:d22dd86d-0559-4344-9d23-352e8b327c32",
+      "x_type": [
+        "nidm_Data",
+        "prov:Entity",
+        "prov:Collection"
+      ],
+      "nidm_grandMeanScaling": true,
+      "nidm_hasMRIProtocol": {
+        "x_id": "http://uri.neuinfo.org/nif/nifstd/birnlex_2250"
+      },
+      "nidm_targetIntensity": {
+        "x_type": "xsd:float",
+        "x_value": "10000.0"
+      },
+      "prov_wasAttributedTo": [
+        {
+          "x_id": "niiri:137d0680-0a84-4cc3-9d65-99cf8d4f55e3"
+        },
+        {
+          "x_id": "niiri:02863a1f-148c-432c-820b-48726b740709"
+        }
+      ],
+      "rdfs_label": "Data"
+    },
+    {
+      "x_id": "niiri:683c40fd-1d9a-4b14-9ad6-a40d667de1c9",
+      "x_type": [
+        "nidm_MaskMap",
+        "prov:Entity"
+      ],
+      "crypto_sha512": "d092708a9c256b3573fbe1a932f4998af141739de2ac94ca58d57af814dde086a15f49b09093ac57041123c716d195f08ebc3e2fd0bec12832068154e1816b0e",
+      "dct_format": "image/nifti",
+      "nfo_fileName": "Mask.nii.gz",
+      "nidm_inCoordinateSpace": {
+        "x_id": "niiri:06f9f44b-7c0d-47c4-a4b3-5d8e98151e2c"
+      },
+      "nidm_isUserDefined": false,
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm/Mask.nii.gz"
+      },
+      "prov_wasGeneratedBy": {
+        "x_id": "niiri:d14ca1c6-8274-4f1c-84a4-650e6560ae38"
+      },
+      "rdfs_label": "Mask"
+    },
+    {
+      "x_id": "niiri:fd76d83d-6e2d-4e8c-a7bc-5d0494f04ec3",
+      "x_type": [
+        "prov:Entity",
+        "nidm_StatisticMap"
+      ],
+      "crypto_sha512": "012f646f7ccc9a0bafa192db06447764076cd10f695af75d8f4493137e92b65e75f4a4ee38e62fa53d68363a3d4e588ff2e3191fd961c36cc4ea954e42625559",
+      "dct_format": "image/nifti",
+      "nfo_fileName": "ZStatistic_F001.nii.gz",
+      "nidm_contrastName": "tone counting vs baseline",
+      "nidm_effectDegreesOfFreedom": {
+        "x_type": "xsd:float",
+        "x_value": "1.0"
+      },
+      "nidm_errorDegreesOfFreedom": {
+        "x_type": "xsd:float",
+        "x_value": "inf"
+      },
+      "nidm_inCoordinateSpace": {
+        "x_id": "niiri:06f9f44b-7c0d-47c4-a4b3-5d8e98151e2c"
+      },
+      "nidm_statisticType": {
+        "x_id": "obo:STATO_0000376"
+      },
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm/ZStatistic_F001.nii.gz"
+      },
+      "prov_wasGeneratedBy": {
+        "x_id": "niiri:200180f8-1379-44cf-bd89-f202f8cc1d36"
+      },
+      "rdfs_label": "Z-Statistic Map: tone counting vs baseline"
+    },
+    {
+      "x_id": "niiri:faa44c2a-dc0e-4c69-9a8b-33523026700e",
+      "x_type": [
+        "prov:Entity",
+        "dctype:Image"
+      ],
+      "dct_format": "image/png",
+      "nfo_fileName": "ExcursionSet_T001.png",
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm/ExcursionSet_T001.png"
+      }
+    },
+    {
+      "x_id": "niiri:046f72a3-9381-485b-a341-fc27f773d39f",
+      "x_type": [
+        "nidm_ContrastMap",
+        "prov:Entity"
+      ],
+      "crypto_sha512": "f2df3de73c023be1d8d1f73703e3ffdbf08b69a27ae304cdf053e8639da9e579fd21a52a66584e04c865239f408bd30d7b5e690985ce7a20ccd2a50c3306fd55",
+      "dct_format": "image/nifti",
+      "nfo_fileName": "Contrast_T001.nii.gz",
+      "nidm_contrastName": "tone counting vs baseline",
+      "nidm_inCoordinateSpace": {
+        "x_id": "niiri:06f9f44b-7c0d-47c4-a4b3-5d8e98151e2c"
+      },
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm/Contrast_T001.nii.gz"
+      },
+      "prov_wasGeneratedBy": {
+        "x_id": "niiri:e23e4bc4-c11c-414a-995c-bbe0ec9b819c"
+      },
+      "rdfs_label": "Contrast Map: tone counting vs baseline"
+    },
+    {
+      "x_id": "niiri:0b92053e-e856-4cfd-ba93-f0081b67839f",
+      "x_type": [
+        "prov:Entity",
+        "nidm_StatisticMap"
+      ],
+      "crypto_sha512": "38649b9e17afa0cbd95002eaffdd81f81d61b06fd8c5f4cf1d614e494d2d3ec3b97e1d808f5a6c92134a506aaa85b19eeefcb9b0a30d68788e9ef02b3e1fcb62",
+      "dct_format": "image/nifti",
+      "nfo_fileName": "TStatistic_T001.nii.gz",
+      "nidm_contrastName": "tone counting vs baseline",
+      "nidm_effectDegreesOfFreedom": {
+        "x_type": "xsd:float",
+        "x_value": "1.0"
+      },
+      "nidm_errorDegreesOfFreedom": {
+        "x_type": "xsd:float",
+        "x_value": "102.0"
+      },
+      "nidm_inCoordinateSpace": {
+        "x_id": "niiri:06f9f44b-7c0d-47c4-a4b3-5d8e98151e2c"
+      },
+      "nidm_statisticType": {
+        "x_id": "obo:STATO_0000176"
+      },
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm/TStatistic_T001.nii.gz"
+      },
+      "prov_wasGeneratedBy": {
+        "x_id": "niiri:e23e4bc4-c11c-414a-995c-bbe0ec9b819c"
+      },
+      "rdfs_label": "Statistic Map: tone counting vs baseline"
+    },
+    {
+      "x_id": "niiri:e23e4bc4-c11c-414a-995c-bbe0ec9b819c",
+      "x_type": [
+        "prov:Activity",
+        "nidm_ContrastEstimation"
+      ],
+      "prov_used": [
+        {
+          "x_id": "niiri:683c40fd-1d9a-4b14-9ad6-a40d667de1c9"
+        },
+        {
+          "x_id": "niiri:91918fd1-beb6-4e1c-a06d-dfd32a60964f"
+        },
+        {
+          "x_id": "niiri:1d7ef1ee-b96c-4adf-a2bb-b476f7232d8e"
+        }
+      ],
+      "prov_wasAssociatedWith": {
+        "x_id": "niiri:25613938-a9ce-49db-ac7e-e845531a2bc7"
+      },
+      "rdfs_label": "Contrast estimation: tone counting vs baseline"
+    },
+    {
+      "x_id": "niiri:fa08d171-8614-428d-89c6-1b6d2dc2f130",
+      "x_type": [
+        "prov:Entity",
+        "nidm_SearchSpaceMaskMap"
+      ],
+      "crypto_sha512": "d092708a9c256b3573fbe1a932f4998af141739de2ac94ca58d57af814dde086a15f49b09093ac57041123c716d195f08ebc3e2fd0bec12832068154e1816b0e",
+      "dct_format": "image/nifti",
+      "nfo_fileName": "SearchSpaceMask.nii.gz",
+      "nidm_inCoordinateSpace": {
+        "x_id": "niiri:06f9f44b-7c0d-47c4-a4b3-5d8e98151e2c"
+      },
+      "nidm_noiseFWHMInUnits": "[7.30301, 7.28026, 6.07038]",
+      "nidm_noiseFWHMInVoxels": "[2.33696, 2.32968, 1.21408]",
+      "nidm_noiseRoughnessInVoxels": {
+        "x_type": "xsd:float",
+        "x_value": "0.700797"
+      },
+      "nidm_randomFieldStationarity": true,
+      "nidm_reselSizeInVoxels": {
+        "x_type": "xsd:float",
+        "x_value": "6.60989"
+      },
+      "nidm_searchVolumeInResels": {
+        "x_type": "xsd:float",
+        "x_value": "5801.00425272"
+      },
+      "nidm_searchVolumeInUnits": {
+        "x_type": "xsd:float",
+        "x_value": "1872265.625"
+      },
+      "nidm_searchVolumeInVoxels": {
+        "x_type": "xsd:int",
+        "x_value": "38344"
+      },
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm/SearchSpaceMask.nii.gz"
+      },
+      "prov_wasGeneratedBy": {
+        "x_id": "niiri:d7a171cd-3e5e-4cfa-9bd3-357576cd0aca"
+      },
+      "rdfs_label": "Search Space Mask Map"
+    },
+    {
+      "x_id": "niiri:865a066d-11a9-4a2a-ab7d-6b2a9ff1c8bd",
+      "x_type": [
+        "nidm_HeightThreshold",
+        "nidm_PValueUncorrected",
+        "prov:Entity"
+      ],
+      "prov_value": {
+        "x_type": "xsd:float",
+        "x_value": "0.001"
+      },
+      "rdfs_label": "Height Threshold: p<0.001 (uncorrected)"
+    },
+    {
+      "x_id": "niiri:06f9f44b-7c0d-47c4-a4b3-5d8e98151e2c",
+      "x_type": [
+        "prov:Entity",
+        "nidm_CoordinateSpace"
+      ],
+      "nidm_dimensionsInVoxels": "[64, 64, 30]",
+      "nidm_inWorldCoordinateSystem": {
+        "x_id": "nidm:NIDM_0000077"
+      },
+      "nidm_numberOfDimensions": {
+        "x_type": "xsd:int",
+        "x_value": "3"
+      },
+      "nidm_voxelSize": "[3.125, 3.125, 5.0]",
+      "nidm_voxelToWorldMapping": "[[-3.125, 0.0, 0.0, 100.0], [0.0, 3.125, 0.0, -100.0], [0.0, 0.0, 5.0, -75.0], [0.0, 0.0, 0.0, 1.0]]",
+      "nidm_voxelUnits": "[\"mm\", \"mm\", \"mm\"]",
+      "rdfs_label": "Coordinate space"
+    },
+    {
+      "x_id": "niiri:c3e84c04-2327-4fa4-a965-abb6e721d8dc",
+      "x_type": [
+        "nidm_ContrastExplainedMeanSquareMap",
+        "prov:Entity"
+      ],
+      "crypto_sha512": "661148287dbaa93c999aa458ae7042e0464be881055fb3fcad0df3d6db40c9b75160f07dcf38d2d1c3e49def592ec2b24c348415398f94cce82bb2acb623e229",
+      "dct_format": "image/nifti",
+      "nfo_fileName": "ContrastExplainedMeanSquareMap_F001.nii.gz",
+      "nidm_inCoordinateSpace": {
+        "x_id": "niiri:06f9f44b-7c0d-47c4-a4b3-5d8e98151e2c"
+      },
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm/ContrastExplainedMeanSquareMap_F001.nii.gz"
+      },
+      "prov_wasGeneratedBy": {
+        "x_id": "niiri:200180f8-1379-44cf-bd89-f202f8cc1d36"
+      },
+      "rdfs_label": "Contrast Explained Mean Square Map"
+    },
+    {
+      "x_id": "niiri:d13aa1e3-0bc3-4d7b-9e8b-dd5eb94eff54",
+      "x_type": [
+        "prov:Entity",
+        "nidm_ExcursionSetMap"
+      ],
+      "crypto_sha512": "89fdcf74cc17afff354d7427ccdf1385a681017b4554fa1ec566b0c6b337f1d4040c7cb8f89ddf9d6ab2f0e75d3c38e30f83d4b56a74e3a8d68107b4a13f5f2e",
+      "dc_description": {
+        "x_id": "niiri:81a2ebbd-2997-49cf-ac82-06fa1fdac2db"
+      },
+      "dct_format": "image/nifti",
+      "nfo_fileName": "ExcursionSet_F001.nii.gz",
+      "nidm_inCoordinateSpace": {
+        "x_id": "niiri:06f9f44b-7c0d-47c4-a4b3-5d8e98151e2c"
+      },
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm/ExcursionSet_F001.nii.gz"
+      },
+      "prov_wasGeneratedBy": {
+        "x_id": "niiri:dd93a3d1-191f-4a0c-9d00-a5e072725eec"
+      },
+      "rdfs_label": "Excursion Set Map",
+      "nidm_hasMaximumIntensityProjection": {
+        "x_id": "niiri:ee15f79d-92a0-416b-aad2-de16c5a56f7f"
+      }
+    },
+    {
+      "x_id": "niiri:9d5cb3eb-3eae-4521-a413-117b1fd0a953",
+      "x_type": [
+        "nidm_ErrorModel",
+        "prov:Entity"
+      ],
+      "nidm_dependenceMapWiseDependence": {
+        "x_id": "nidm:NIDM_0000074"
+      },
+      "nidm_errorVarianceHomogeneous": true,
+      "nidm_hasErrorDependence": {
+        "x_id": "obo:STATO_0000357"
+      },
+      "nidm_hasErrorDistribution": {
+        "x_id": "obo:STATO_0000227"
+      },
+      "nidm_varianceMapWiseDependence": {
+        "x_id": "nidm:NIDM_0000073"
+      }
+    },
+    {
+      "x_id": "niiri:cd7887af-9893-461a-8d99-d1386dbaa5b2",
+      "x_type": [
+        "prov:Entity",
+        "nidm_ContrastVarianceMap"
+      ],
+      "crypto_sha512": "32ec7259f2c39d9b242965331145529a1efbfb5b32e133b7e5b93b8ba4d566bf476f0ffac79e9ae0bb49e3db419cc1da9e6f9b7b070194dc1be124bab11a9fc8",
+      "dct_format": "image/nifti",
+      "nfo_fileName": "varcope1.nii.gz"
+    },
+    {
+      "x_id": "niiri:d14ca1c6-8274-4f1c-84a4-650e6560ae38",
+      "x_type": [
+        "nidm_ModelParametersEstimation",
+        "prov:Activity"
+      ],
+      "nidm_withEstimationMethod": {
+        "x_id": "obo:STATO_0000372"
+      },
+      "prov_used": [
+        {
+          "x_id": "niiri:137b4bd8-406f-4779-bfe2-a1862ebea880"
+        },
+        {
+          "x_id": "niiri:9d5cb3eb-3eae-4521-a413-117b1fd0a953"
+        },
+        {
+          "x_id": "niiri:d22dd86d-0559-4344-9d23-352e8b327c32"
+        }
+      ],
+      "prov_wasAssociatedWith": {
+        "x_id": "niiri:25613938-a9ce-49db-ac7e-e845531a2bc7"
+      },
+      "rdfs_label": "Model Parameters Estimation"
+    },
+    {
+      "x_id": "niiri:02863a1f-148c-432c-820b-48726b740709",
+      "x_type": [
+        "http://uri.neuinfo.org/nif/nifstd/birnlex_2100",
+        "prov:Agent"
+      ],
+      "rdfs_label": "MRI Scanner"
+    },
+    {
+      "x_id": "niiri:4646777d-04e0-4b89-9a1d-05344372d84c",
+      "x_type": [
+        "fsl_GaussianRunningLineDriftModel",
+        "prov:Entity"
+      ],
+      "fsl_driftCutoffPeriod": {
+        "x_type": "xsd:float",
+        "x_value": "60.0"
+      },
+      "rdfs_label": "FSL's Gaussian Running Line Drift Model"
+    },
+    {
+      "x_id": "niiri:137b4bd8-406f-4779-bfe2-a1862ebea880",
+      "x_type": [
+        "prov:Entity",
+        "nidm_DesignMatrix"
+      ],
+      "dc_description": {
+        "x_id": "niiri:0fa77a7d-bea9-4abd-9071-85bf29138b9f"
+      },
+      "dct_format": "text/csv",
+      "nfo_fileName": "DesignMatrix.csv",
+      "nidm_hasDriftModel": {
+        "x_id": "niiri:4646777d-04e0-4b89-9a1d-05344372d84c"
+      },
+      "nidm_hasHRFBasis": {
+        "x_id": "fsl:FSL_0000006"
+      },
+      "nidm_regressorNames": "[\"tone_counting\", \"tone_counting*temporal_derivative\", \"tone_counting_probe\", \"tone_counting_probe*temporal_derivative\"]",
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm/DesignMatrix.csv"
+      },
+      "rdfs_label": "Design Matrix"
+    },
+    {
+      "x_id": "niiri:dd93a3d1-191f-4a0c-9d00-a5e072725eec",
+      "x_type": [
+        "nidm_Inference",
+        "prov:Activity"
+      ],
+      "nidm_hasAlternativeHypothesis": {
+        "x_id": "nidm:NIDM_0000060"
+      },
+      "prov_used": [
+        {
+          "x_id": "niiri:fd76d83d-6e2d-4e8c-a7bc-5d0494f04ec3"
+        },
+        {
+          "x_id": "niiri:810c62e8-05b6-45fd-9657-f23dfdbd091e"
+        },
+        {
+          "x_id": "niiri:b30932f6-6a33-4e7d-821c-68e63a4dd66d"
+        }
+      ],
+      "prov_wasAssociatedWith": {
+        "x_id": "niiri:25613938-a9ce-49db-ac7e-e845531a2bc7"
+      },
+      "rdfs_label": "Inference: tone counting vs baseline"
+    },
+    {
+      "x_id": "niiri:f78c63bc-1c43-4f3c-ae20-27f557415dd8",
+      "x_type": [
+        "prov:Entity",
+        "nidm_ContrastStandardErrorMap"
+      ],
+      "crypto_sha512": "5f6c299048c1245e76c1c3ea09e6bf78ebf21e7380b2abf6ef8e0ca40723cbbbb731c436e99d458324aaa884cf97e42736f26e46d182ae16640c2ce8db1fdb4c",
+      "dct_format": "image/nifti",
+      "nfo_fileName": "ContrastStandardError_T001.nii.gz",
+      "nidm_inCoordinateSpace": {
+        "x_id": "niiri:06f9f44b-7c0d-47c4-a4b3-5d8e98151e2c"
+      },
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm/ContrastStandardError_T001.nii.gz"
+      },
+      "prov_wasDerivedFrom": {
+        "x_id": "niiri:cd7887af-9893-461a-8d99-d1386dbaa5b2"
+      },
+      "prov_wasGeneratedBy": {
+        "x_id": "niiri:e23e4bc4-c11c-414a-995c-bbe0ec9b819c"
+      },
+      "rdfs_label": "Contrast Standard Error Map"
+    },
+    {
+      "x_id": "niiri:f71ef143-8711-40df-b764-e7b17db79056",
+      "x_type": [
+        "nidm_NIDMResults",
+        "prov:Bundle",
+        "prov:Entity"
+      ],
+      "nidm_version": "1.3.0",
+      "prov_qualifiedGeneration": {
+        "x_id": "_:ub374bL214C30"
+      },
+      "rdfs_label": "NIDM-Results"
+    },
+    {
+      "x_id": "niiri:b5c6e2b4-ba49-42b3-a231-4a833083de5e",
+      "x_type": [
+        "nidm_ExcursionSetMap",
+        "prov:Entity"
+      ],
+      "crypto_sha512": "d20b80683d8cf569e6c146bc4fe44506567004f1c0bf9b3571fa99e76e4f009146938a2b0b051198a46dbf7a6cd8d9701a20cf8eebe2e8f061216c1d772bb83e",
+      "dc_description": {
+        "x_id": "niiri:faa44c2a-dc0e-4c69-9a8b-33523026700e"
+      },
+      "dct_format": "image/nifti",
+      "nfo_fileName": "ExcursionSet_T001.nii.gz",
+      "nidm_inCoordinateSpace": {
+        "x_id": "niiri:06f9f44b-7c0d-47c4-a4b3-5d8e98151e2c"
+      },
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm/ExcursionSet_T001.nii.gz"
+      },
+      "prov_wasGeneratedBy": {
+        "x_id": "niiri:d7a171cd-3e5e-4cfa-9bd3-357576cd0aca"
+      },
+      "rdfs_label": "Excursion Set Map"
+    },
+    {
+      "x_id": "_:ub374bL214C30",
+      "x_type": "prov:Generation",
+      "prov_activity": {
+        "x_id": "niiri:bc9e6edd-43cc-426a-8a1c-fe55c645c3a1"
+      },
+      "prov_atTime": {
+        "x_type": "xsd:dateTime",
+        "x_value": "12:19:46.956891"
+      }
+    },
+    {
+      "x_id": "niiri:810c62e8-05b6-45fd-9657-f23dfdbd091e",
+      "x_type": [
+        "nidm_HeightThreshold",
+        "prov:Entity",
+        "nidm_PValueUncorrected"
+      ],
+      "prov_value": {
+        "x_type": "xsd:float",
+        "x_value": "0.001"
+      },
+      "rdfs_label": "Height Threshold: p<0.001 (uncorrected)"
+    },
+    {
+      "x_id": "niiri:81a2ebbd-2997-49cf-ac82-06fa1fdac2db",
+      "x_type": [
+        "prov:Entity",
+        "dctype:Image"
+      ],
+      "dct_format": "image/png",
+      "nfo_fileName": "ExcursionSet_F001.png",
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm/ExcursionSet_F001.png"
+      }
+    },
+    {
+      "x_id": "niiri:1d7ef1ee-b96c-4adf-a2bb-b476f7232d8e",
+      "x_type": [
+        "nidm_ResidualMeanSquaresMap",
+        "prov:Entity"
+      ],
+      "crypto_sha512": "61d38cc67f56974aabcb7b4aaf32868cb0a3f7a4b3ec2d2bf867d889907073ad0ea6aa51e419f6e4dedd6659d56eff879c9ed17e4da903807ed7fce4a2d6efbb",
+      "dct_format": "image/nifti",
+      "nfo_fileName": "ResidualMeanSquares.nii.gz",
+      "nidm_inCoordinateSpace": {
+        "x_id": "niiri:06f9f44b-7c0d-47c4-a4b3-5d8e98151e2c"
+      },
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm/ResidualMeanSquares.nii.gz"
+      },
+      "prov_wasGeneratedBy": {
+        "x_id": "niiri:d14ca1c6-8274-4f1c-84a4-650e6560ae38"
+      },
+      "rdfs_label": "Residual Mean Squares Map"
+    },
+    {
+      "x_id": "niiri:cd03ba36-2cae-451e-9958-6e3e15702451",
+      "x_type": [
+        "nidm_GrandMeanMap",
+        "prov:Entity"
+      ],
+      "crypto_sha512": "46d5f0f323c77faec3fd8ec1e608b3d9cb6697528b279bcac746129041a07b1c0af7f3396bc43a41417361b5d9f03b271f8769123111f56fa27e2a8069bdf14d",
+      "dct_format": "image/nifti",
+      "nfo_fileName": "GrandMean.nii.gz",
+      "nidm_inCoordinateSpace": {
+        "x_id": "niiri:06f9f44b-7c0d-47c4-a4b3-5d8e98151e2c"
+      },
+      "nidm_maskedMedian": {
+        "x_type": "xsd:float",
+        "x_value": "9565.25488281"
+      },
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm/GrandMean.nii.gz"
+      },
+      "prov_wasGeneratedBy": {
+        "x_id": "niiri:d14ca1c6-8274-4f1c-84a4-650e6560ae38"
+      },
+      "rdfs_label": "Grand Mean Map"
+    },
+    {
+      "x_id": "niiri:137d0680-0a84-4cc3-9d65-99cf8d4f55e3",
+      "x_type": [
+        "prov:Person",
+        "prov:Agent"
+      ],
+      "rdfs_label": "Person"
+    },
+    {
+      "x_id": "niiri:e10ba62c-33fb-40e3-9f2f-34c0d437b907",
+      "x_type": [
+        "obo:STATO_0000323",
+        "prov:Entity"
+      ],
+      "nidm_contrastName": "tone counting vs baseline",
+      "nidm_statisticType": {
+        "x_id": "obo:STATO_0000176"
+      },
+      "prov_value": "[1, 0]",
+      "rdfs_label": "Contrast Weights: tone counting vs baseline"
+    },
+    {
+      "x_id": "niiri:bc9e6edd-43cc-426a-8a1c-fe55c645c3a1",
+      "x_type": [
+        "prov:Activity",
+        "nidm_NIDMResultsExport"
+      ],
+      "prov_wasAssociatedWith": {
+        "x_id": "niiri:ad99f7da-17d0-402e-9877-621f3f96ddcc"
+      },
+      "rdfs_label": "NIDM-Results export"
+    },
+    {
+      "x_id": "niiri:4e7f1d5b-1b63-49fa-aacc-a263a5be9021",
+      "x_type": [
+        "nidm_StatisticMap",
+        "prov:Entity"
+      ],
+      "crypto_sha512": "6319c1f641849cf73d28748ff98abef59fe533a05004d770f2f0c71222e36ad812fd211084963718555819268c625e483093ce70bd5aeb7332b7160739ad059c",
+      "dct_format": "image/nifti",
+      "nfo_fileName": "FStatistic_F001.nii.gz",
+      "nidm_contrastName": "tone counting vs baseline",
+      "nidm_effectDegreesOfFreedom": {
+        "x_type": "xsd:float",
+        "x_value": "1.0"
+      },
+      "nidm_errorDegreesOfFreedom": {
+        "x_type": "xsd:float",
+        "x_value": "102.0"
+      },
+      "nidm_inCoordinateSpace": {
+        "x_id": "niiri:06f9f44b-7c0d-47c4-a4b3-5d8e98151e2c"
+      },
+      "nidm_statisticType": {
+        "x_id": "obo:STATO_0000282"
+      },
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm/FStatistic_F001.nii.gz"
+      },
+      "prov_wasGeneratedBy": {
+        "x_id": "niiri:200180f8-1379-44cf-bd89-f202f8cc1d36"
+      },
+      "rdfs_label": "Statistic Map: tone counting vs baseline"
+    },
+    {
+      "x_id": "niiri:b30932f6-6a33-4e7d-821c-68e63a4dd66d",
+      "x_type": [
+        "nidm_ExtentThreshold",
+        "prov:Entity",
+        "obo:STATO_0000039"
+      ],
+      "nidm_clusterSizeInVoxels": {
+        "x_type": "xsd:int",
+        "x_value": "0"
+      },
+      "rdfs_label": "Extent Threshold: k>=0"
+    },
+    {
+      "x_id": "niiri:0fa77a7d-bea9-4abd-9071-85bf29138b9f",
+      "x_type": [
+        "dctype:Image",
+        "prov:Entity"
+      ],
+      "dct_format": "image/png",
+      "nfo_fileName": "DesignMatrix.png",
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm/DesignMatrix.png"
+      }
+    },
+    {
+      "x_id": "niiri:b4a2c0f2-899e-4504-953d-4cfecdab79f8",
+      "x_type": [
+        "prov:Entity",
+        "obo:STATO_0000323"
+      ],
+      "nidm_contrastName": "tone counting vs baseline",
+      "nidm_statisticType": {
+        "x_id": "obo:STATO_0000282"
+      },
+      "prov_value": "[1, 0]",
+      "rdfs_label": "Contrast Weights: tone counting vs baseline"
+    },
+    {
+      "x_id": "niiri:c0f03dfe-00ee-4db1-9db0-584ff02b9f23",
+      "x_type": [
+        "nidm_ParameterEstimateMap",
+        "prov:Entity"
+      ],
+      "crypto_sha512": "43cd79a08a78b1873136d33e871af5a5bc85ab6e8193b8dfd2c5add4765c91ae502be137dbab45d38f13ddc74d82cf06ecd5ea633841afdd4df589c14be9e345",
+      "dct_format": "image/nifti",
+      "nfo_fileName": "pe2.nii.gz",
+      "nidm_inCoordinateSpace": {
+        "x_id": "niiri:06f9f44b-7c0d-47c4-a4b3-5d8e98151e2c"
+      },
+      "prov_wasGeneratedBy": {
+        "x_id": "niiri:d14ca1c6-8274-4f1c-84a4-650e6560ae38"
+      },
+      "rdfs_label": "Parameter estimate 2"
+    },
+    {
+      "x_id": "niiri:d7a171cd-3e5e-4cfa-9bd3-357576cd0aca",
+      "x_type": [
+        "prov:Activity",
+        "nidm_Inference"
+      ],
+      "nidm_hasAlternativeHypothesis": {
+        "x_id": "nidm:NIDM_0000060"
+      },
+      "prov_used": [
+        {
+          "x_id": "niiri:b504ff39-6b49-4656-aa45-9fddb0271db3"
+        },
+        {
+          "x_id": "niiri:865a066d-11a9-4a2a-ab7d-6b2a9ff1c8bd"
+        },
+        {
+          "x_id": "niiri:bc0b461a-a5c4-4358-b730-c26c7d19bcf8"
+        }
+      ],
+      "prov_wasAssociatedWith": {
+        "x_id": "niiri:25613938-a9ce-49db-ac7e-e845531a2bc7"
+      },
+      "rdfs_label": "Inference: tone counting vs baseline"
+    },
+    {
+      "x_id": "niiri:b28bb6e3-0950-47d1-9be2-26f64f7a05a2",
+      "x_type": [
+        "nidm_SearchSpaceMaskMap",
+        "prov:Entity"
+      ],
+      "crypto_sha512": "d092708a9c256b3573fbe1a932f4998af141739de2ac94ca58d57af814dde086a15f49b09093ac57041123c716d195f08ebc3e2fd0bec12832068154e1816b0e",
+      "dct_format": "image/nifti",
+      "nfo_fileName": "SearchSpaceMask.nii.gz",
+      "nidm_inCoordinateSpace": {
+        "x_id": "niiri:06f9f44b-7c0d-47c4-a4b3-5d8e98151e2c"
+      },
+      "nidm_noiseFWHMInUnits": "[7.30301, 7.28026, 6.07038]",
+      "nidm_noiseFWHMInVoxels": "[2.33696, 2.32968, 1.21408]",
+      "nidm_noiseRoughnessInVoxels": {
+        "x_type": "xsd:float",
+        "x_value": "0.700797"
+      },
+      "nidm_randomFieldStationarity": true,
+      "nidm_reselSizeInVoxels": {
+        "x_type": "xsd:float",
+        "x_value": "6.60989"
+      },
+      "nidm_searchVolumeInResels": {
+        "x_type": "xsd:float",
+        "x_value": "5801.00425272"
+      },
+      "nidm_searchVolumeInUnits": {
+        "x_type": "xsd:float",
+        "x_value": "1872265.625"
+      },
+      "nidm_searchVolumeInVoxels": {
+        "x_type": "xsd:int",
+        "x_value": "38344"
+      },
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm/SearchSpaceMask.nii.gz"
+      },
+      "prov_wasGeneratedBy": {
+        "x_id": "niiri:dd93a3d1-191f-4a0c-9d00-a5e072725eec"
+      },
+      "rdfs_label": "Search Space Mask Map"
+    },
+    {
+      "x_id": "niiri:ee15f79d-92a0-416b-aad2-de16c5a56f7f",
+      "x_type": [
+        "dctype:Image",
+        "prov:Entity"
+      ],
+      "dcterms_format": "image/png",
+      "nfo_fileName": "MIP.png",
+      "prov_atLocation": {
+        "x_type": "xsd:anyURI",
+        "x_value": "MIP.png"
+      }
+    }
+  ]
+}

@@ -1,3 +1,15 @@
+%==========================================================================
+%This function generates an MIP image from the nii.gz format. It takes as
+%inputs:
+%
+%filepath - The location of the nii.gz file.
+%filename - The name of the nii.gz file.
+%DIM - The dimensions in voxels.
+%units - The units the MIP is written in.
+%
+%Authors: Thomas Maullin, Camille Maumet.
+%==========================================================================
+
 function generateMIP(filepath, filename, DIM, units)
     
     %Unzip the nii.gz

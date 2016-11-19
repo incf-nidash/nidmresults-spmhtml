@@ -66,7 +66,7 @@ if ~isfield(SPM, 'nidm') || strcmp(software, 'FSL')
     DesMtx  = (SPM.xX.nKX + 1)*32;
 end
 
-%-Save images as PNG files
+%-Create images for embedding, if they don't already exist.
 %--------------------------------------------------------------------------
 if ~isfield(xSPM, 'nidm')
     mipPath = spm_file(fullfile(outdir,'MIP.png'));
@@ -91,7 +91,11 @@ con = (con/max(abs(con(:)))+1)*32;
 con = kron(con,ones(ml,10));
 imwrite(con,gray(64),contrastPath,'png');
 
-cursorString = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAALCAIAAADN+VtyAAAABnRSTlMAAAAAAABupgeRAAAAB3RJTUUH4AoLERQaiQnJ6gAAADFJREFUGJVjYMAG/jMwMGIKQQAjLlFGXAoZ/yPpQNbOgsVE/Dpw20HAVZhy2MF/BgYAbK0KCmhBjJQAAAAASUVORK5CYII=';
+if(~isnan(TabDat.dat{1,12}))
+    cursorString = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAALCAIAAADN+VtyAAAABnRSTlMAAAAAAABupgeRAAAAB3RJTUUH4AoLERQaiQnJ6gAAADFJREFUGJVjYMAG/jMwMGIKQQAjLlFGXAoZ/yPpQNbOgsVE/Dpw20HAVZhy2MF/BgYAbK0KCmhBjJQAAAAASUVORK5CYII=';
+else
+    cursorString = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAALCAIAAADN+VtyAAAABnRSTlMAAAAAAABupgeRAAAAB3RJTUUH4AsSDCYaYPacHQAAAA1JREFUGJVjYBgFaAAAARMAAXYknF0AAAAASUVORK5CYII=';
+end
 
 %-Save results as HTML file
 %==========================================================================
@@ -133,6 +137,7 @@ for i=1:3
     tpl = tpl.parse('cursors','cursor',1);
 end
 tpl = tpl.var('RES_STR',TabDat.str);
+tpl = tpl.var('SOFTWARE',software);
 tpl = tpl.var('STAT_STR',strrep(strrep(xSPM.STATstr,'_{','<sub>'),'}','</sub>'));
 tpl = tpl.var('CON_STAT',xSPM.STAT);
 tpl = tpl.var('resrows','');
