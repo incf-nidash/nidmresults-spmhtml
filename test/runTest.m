@@ -16,8 +16,8 @@ function runTest()
     createTest();
     
     %Run all tests.
-    tests = [matlab.unittest.TestSuite.fromFile(which('testFeatures')),...
-             matlab.unittest.TestSuite.fromFile(which('testDataSets'))];
+    tests = [matlab.unittest.TestSuite.fromFile(which('testDataSets')),...
+             matlab.unittest.TestSuite.fromFile(which('testFeatures'))];
     result = run(tests)
     
 end

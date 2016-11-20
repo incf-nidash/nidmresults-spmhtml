@@ -89,9 +89,9 @@
     {
       "@id": "niiri:3e02d145-7ce7-4ba1-90e1-3e489fd90511",
       "@type": [
-        "nidm_PValueUncorrected",
+        "prov:Entity",
         "nidm_HeightThreshold",
-        "prov:Entity"
+        "nidm_PValueUncorrected"
       ],
       "prov:value": {
         "@type": "xsd:float",
@@ -140,8 +140,8 @@
     {
       "@id": "niiri:5ef53d2a-6f64-443d-bb84-aaf1f978977f",
       "@type": [
-        "prov:Entity",
-        "fsl_GaussianRunningLineDriftModel"
+        "fsl_GaussianRunningLineDriftModel",
+        "prov:Entity"
       ],
       "fsl_driftCutoffPeriod": {
         "@type": "xsd:float",
@@ -152,8 +152,8 @@
     {
       "@id": "niiri:e20fa6eb-5b8c-4f0e-84e6-1b1cdefbc937",
       "@type": [
-        "prov:Entity",
-        "nidm_StatisticMap"
+        "nidm_StatisticMap",
+        "prov:Entity"
       ],
       "crypto:sha512": "07ddd4fabb8409815459be622465fdb1462fcba124be9a521fbd51ea6d03c582dc4cae2b08cdecd0662e19ac958b5c37a58d3da6b6ee05ae212039a31f91056d",
       "dct:format": "image/nifti",
@@ -185,8 +185,8 @@
     {
       "@id": "niiri:b95b290c-397e-4077-9094-c994bb958f52",
       "@type": [
-        "prov:Entity",
-        "nidm_SearchSpaceMaskMap"
+        "nidm_SearchSpaceMaskMap",
+        "prov:Entity"
       ],
       "crypto:sha512": "d092708a9c256b3573fbe1a932f4998af141739de2ac94ca58d57af814dde086a15f49b09093ac57041123c716d195f08ebc3e2fd0bec12832068154e1816b0e",
       "dct:format": "image/nifti",
@@ -240,23 +240,29 @@
       }
     },
     {
-      "@id": "niiri:b8f4de59-d839-4f91-86a7-2697c1f65f44",
+      "@id": "niiri:cb026927-a695-48e3-83f0-587e5a3b115b",
       "@type": [
-        "nidm_CoordinateSpace",
-        "prov:Entity"
+        "prov:Activity",
+        "nidm_ModelParametersEstimation"
       ],
-      "nidm_dimensionsInVoxels": "[64, 64, 30]",
-      "nidm_inWorldCoordinateSystem": {
-        "@id": "nidm:NIDM_0000077"
+      "nidm_withEstimationMethod": {
+        "@id": "obo:STATO_0000372"
       },
-      "nidm_numberOfDimensions": {
-        "@type": "xsd:int",
-        "@value": "3"
+      "prov:used": [
+        {
+          "@id": "niiri:8553f3c7-cfbf-45e8-a4b6-aa341314a2df"
+        },
+        {
+          "@id": "niiri:b92adfa7-d5e5-4d1d-a02e-7d045fb086a0"
+        },
+        {
+          "@id": "niiri:2ce8670f-9ce0-4b2e-bff8-c3b99eff7415"
+        }
+      ],
+      "prov:wasAssociatedWith": {
+        "@id": "niiri:cbfec7a6-5ca2-4082-a179-f501d198df16"
       },
-      "nidm_voxelSize": "[3.125, 3.125, 5.0]",
-      "nidm_voxelToWorldMapping": "[[-3.125, 0.0, 0.0, 100.0], [0.0, 3.125, 0.0, -100.0], [0.0, 0.0, 5.0, -75.0], [0.0, 0.0, 0.0, 1.0]]",
-      "nidm_voxelUnits": "[\"mm\", \"mm\", \"mm\"]",
-      "rdfs:label": "Coordinate space"
+      "rdfs:label": "Model Parameters Estimation"
     },
     {
       "@id": "niiri:adef5897-53a3-4cd3-b7f7-0f32e2492a15",
@@ -285,8 +291,8 @@
     {
       "@id": "niiri:2ce8670f-9ce0-4b2e-bff8-c3b99eff7415",
       "@type": [
-        "prov:Entity",
-        "nidm_ErrorModel"
+        "nidm_ErrorModel",
+        "prov:Entity"
       ],
       "nidm_dependenceMapWiseDependence": {
         "@id": "nidm:NIDM_0000074"
@@ -305,8 +311,8 @@
     {
       "@id": "niiri:0a646337-9d58-4382-969d-fd4c6222bddb",
       "@type": [
-        "prov:Entity",
-        "obo:STATO_0000323"
+        "obo:STATO_0000323",
+        "prov:Entity"
       ],
       "nidm_contrastName": "tone counting vs baseline",
       "nidm_statisticType": {
@@ -323,13 +329,13 @@
       ],
       "prov:used": [
         {
-          "@id": "niiri:9c2b7053-2387-49ed-a0e9-9fca0cbce230"
-        },
-        {
           "@id": "niiri:c5bb1fe2-1a94-488d-b77f-88273ca7d3e0"
         },
         {
           "@id": "niiri:7beb4704-76e7-4864-98dc-ba03f149ab6b"
+        },
+        {
+          "@id": "niiri:9c2b7053-2387-49ed-a0e9-9fca0cbce230"
         }
       ],
       "prov:wasAssociatedWith": {
@@ -357,8 +363,8 @@
     {
       "@id": "niiri:cbfec7a6-5ca2-4082-a179-f501d198df16",
       "@type": [
-        "prov:SoftwareAgent",
         "prov:Agent",
+        "prov:SoftwareAgent",
         "http://scicrunch.org/resolver/SCR_002823"
       ],
       "fsl_featVersion": "6.00",
@@ -401,8 +407,8 @@
     {
       "@id": "niiri:92619b1f-73cd-40f0-b789-c48abd302508",
       "@type": [
-        "nidm_GrandMeanMap",
-        "prov:Entity"
+        "prov:Entity",
+        "nidm_GrandMeanMap"
       ],
       "crypto:sha512": "46d5f0f323c77faec3fd8ec1e608b3d9cb6697528b279bcac746129041a07b1c0af7f3396bc43a41417361b5d9f03b271f8769123111f56fa27e2a8069bdf14d",
       "dct:format": "image/nifti",
@@ -432,7 +438,7 @@
       ],
       "nidm_version": "1.3.0",
       "prov:qualifiedGeneration": {
-        "@id": "_:ub61bL106C30"
+        "@id": "_:ub5bL106C30"
       },
       "rdfs:label": "NIDM-Results"
     },
@@ -449,8 +455,8 @@
     {
       "@id": "niiri:62a7c5c8-67cf-484c-80a7-4cbf88227db6",
       "@type": [
-        "prov:Entity",
-        "nidm_ContrastMap"
+        "nidm_ContrastMap",
+        "prov:Entity"
       ],
       "crypto:sha512": "f2df3de73c023be1d8d1f73703e3ffdbf08b69a27ae304cdf053e8639da9e579fd21a52a66584e04c865239f408bd30d7b5e690985ce7a20ccd2a50c3306fd55",
       "dct:format": "image/nifti",
@@ -471,8 +477,8 @@
     {
       "@id": "niiri:a9cbc311-f192-44e1-b2ac-290dafdf4062",
       "@type": [
-        "prov:Entity",
-        "nidm_ExcursionSetMap"
+        "nidm_ExcursionSetMap",
+        "prov:Entity"
       ],
       "crypto:sha512": "d20b80683d8cf569e6c146bc4fe44506567004f1c0bf9b3571fa99e76e4f009146938a2b0b051198a46dbf7a6cd8d9701a20cf8eebe2e8f061216c1d772bb83e",
       "dc:description": {
@@ -493,46 +499,29 @@
       "rdfs:label": "Excursion Set Map"
     },
     {
-      "@id": "_:ub61bL106C30",
-      "@type": "prov:Generation",
-      "prov:activity": {
-        "@id": "niiri:adc6bec6-f644-46b2-8736-1f134bba356a"
-      },
-      "prov:atTime": {
-        "@type": "xsd:dateTime",
-        "@value": "12:20:04.255764"
-      }
-    },
-    {
-      "@id": "niiri:cb026927-a695-48e3-83f0-587e5a3b115b",
+      "@id": "niiri:b8f4de59-d839-4f91-86a7-2697c1f65f44",
       "@type": [
-        "prov:Activity",
-        "nidm_ModelParametersEstimation"
+        "prov:Entity",
+        "nidm_CoordinateSpace"
       ],
-      "nidm_withEstimationMethod": {
-        "@id": "obo:STATO_0000372"
+      "nidm_dimensionsInVoxels": "[64, 64, 30]",
+      "nidm_inWorldCoordinateSystem": {
+        "@id": "nidm:NIDM_0000077"
       },
-      "prov:used": [
-        {
-          "@id": "niiri:b92adfa7-d5e5-4d1d-a02e-7d045fb086a0"
-        },
-        {
-          "@id": "niiri:8553f3c7-cfbf-45e8-a4b6-aa341314a2df"
-        },
-        {
-          "@id": "niiri:2ce8670f-9ce0-4b2e-bff8-c3b99eff7415"
-        }
-      ],
-      "prov:wasAssociatedWith": {
-        "@id": "niiri:cbfec7a6-5ca2-4082-a179-f501d198df16"
+      "nidm_numberOfDimensions": {
+        "@type": "xsd:int",
+        "@value": "3"
       },
-      "rdfs:label": "Model Parameters Estimation"
+      "nidm_voxelSize": "[3.125, 3.125, 5.0]",
+      "nidm_voxelToWorldMapping": "[[-3.125, 0.0, 0.0, 100.0], [0.0, 3.125, 0.0, -100.0], [0.0, 0.0, 5.0, -75.0], [0.0, 0.0, 0.0, 1.0]]",
+      "nidm_voxelUnits": "[\"mm\", \"mm\", \"mm\"]",
+      "rdfs:label": "Coordinate space"
     },
     {
       "@id": "niiri:c5bb1fe2-1a94-488d-b77f-88273ca7d3e0",
       "@type": [
-        "nidm_MaskMap",
-        "prov:Entity"
+        "prov:Entity",
+        "nidm_MaskMap"
       ],
       "crypto:sha512": "d092708a9c256b3573fbe1a932f4998af141739de2ac94ca58d57af814dde086a15f49b09093ac57041123c716d195f08ebc3e2fd0bec12832068154e1816b0e",
       "dct:format": "image/nifti",
@@ -553,8 +542,8 @@
     {
       "@id": "niiri:d571cc3b-2ff7-47f6-93e5-79de687d806b",
       "@type": [
-        "prov:Entity",
-        "dctype:Image"
+        "dctype:Image",
+        "prov:Entity"
       ],
       "dct:format": "image/png",
       "nfo:fileName": "ExcursionSet.png",
@@ -585,11 +574,22 @@
       "rdfs:label": "Extent Threshold: k>=0"
     },
     {
+      "@id": "_:ub5bL106C30",
+      "@type": "prov:Generation",
+      "prov:activity": {
+        "@id": "niiri:adc6bec6-f644-46b2-8736-1f134bba356a"
+      },
+      "prov:atTime": {
+        "@type": "xsd:dateTime",
+        "@value": "12:20:04.255764"
+      }
+    },
+    {
       "@id": "niiri:4ec48ae2-e9ba-43eb-84d0-9d8362d3851a",
       "@type": [
+        "prov:Agent",
         "nidm_nidmfsl",
-        "prov:SoftwareAgent",
-        "prov:Agent"
+        "prov:SoftwareAgent"
       ],
       "nidm_softwareVersion": "0.3.6",
       "rdfs:label": "nidmfsl"
@@ -608,10 +608,10 @@
           "@id": "niiri:e20fa6eb-5b8c-4f0e-84e6-1b1cdefbc937"
         },
         {
-          "@id": "niiri:637e87d6-5ee5-415d-b6d8-aa113a5afda2"
+          "@id": "niiri:3e02d145-7ce7-4ba1-90e1-3e489fd90511"
         },
         {
-          "@id": "niiri:3e02d145-7ce7-4ba1-90e1-3e489fd90511"
+          "@id": "niiri:637e87d6-5ee5-415d-b6d8-aa113a5afda2"
         }
       ],
       "prov:wasAssociatedWith": {
@@ -622,8 +622,8 @@
     {
       "@id": "niiri:8a5bc936-da3e-44da-a03d-c2032d48cddf",
       "@type": [
-        "prov:Agent",
-        "prov:Person"
+        "prov:Person",
+        "prov:Agent"
       ],
       "rdfs:label": "Person"
     },
@@ -654,8 +654,8 @@
     {
       "@id": "niiri:adc6bec6-f644-46b2-8736-1f134bba356a",
       "@type": [
-        "prov:Activity",
-        "nidm_NIDMResultsExport"
+        "nidm_NIDMResultsExport",
+        "prov:Activity"
       ],
       "prov:wasAssociatedWith": {
         "@id": "niiri:4ec48ae2-e9ba-43eb-84d0-9d8362d3851a"
@@ -665,9 +665,9 @@
     {
       "@id": "niiri:8553f3c7-cfbf-45e8-a4b6-aa341314a2df",
       "@type": [
-        "nidm_Data",
         "prov:Entity",
-        "prov:Collection"
+        "prov:Collection",
+        "nidm_Data"
       ],
       "nidm_grandMeanScaling": true,
       "nidm_hasMRIProtocol": {

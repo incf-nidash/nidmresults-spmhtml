@@ -95,7 +95,9 @@ function NxSPM = changeNIDMtoxSPM(json)
         %Store information about the new MIP in the NIDM pack. Temporarily
         %remove the filepath from the json object.
         filepathTemp = json.filepath;
+        filenameTemp = json.filename;
         json = rmfield(json, 'filepath');
+        json = rmfield(json, 'filename');
         
         %Create a structure to store information about the MIP.
         
@@ -112,8 +114,9 @@ function NxSPM = changeNIDMtoxSPM(json)
         graph{length(graph)+1} = s;
         json.x_graph = graph;
         
-        spm_jsonwrite(fullfile(filepathTemp, 'nidm.json'), json);
+        spm_jsonwrite(fullfile(filepathTemp, '..', 'jsons', [filenameTemp '.json']), json);
         json.filepath = filepathTemp;
+        json.filename = filenameTemp;
         
     end
     
