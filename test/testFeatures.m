@@ -24,8 +24,8 @@ classdef testFeatures < matlab.unittest.TestCase
             data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default');
             if(~exist(data_path, 'dir'))
                 mkdir(data_path)
-                websave(fullfile(data_path, '\'), 'http://neurovault.org/collections/1692/ex_spm_default.nidm.zip');
-                unzip(fullfile(data_path, '\', '.zip'), fullfile(data_path, '\'));
+                websave(fullfile(data_path, 'tmp.zip'), 'http://neurovault.org/collections/1692/ex_spm_default.nidm.zip');
+                unzip(fullfile(data_path, 'tmp.zip'), fullfile(data_path, '.'));
             end
             testCase.delete_html_file(data_path);
             nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons', 'ex_spm_default.json'));
