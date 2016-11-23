@@ -62,6 +62,7 @@ classdef nidmExampleDataTest < matlab.unittest.TestCase
         %Checking the nidm json is not damaged by the viewer.
         function checkNIDMUnaffected(testCase)
             fsl_default_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'fsl_default');
+            testCase.delete_html_file(fsl_default_dir);
             nidm_results_display(fullfile(fsl_default_dir, 'nidm.json'));
             originalNIDM = spm_jsonread(fullfile(fsl_default_dir, 'nidmWithoutMip.json'));
             currentNIDM = spm_jsonread(fullfile(fsl_default_dir, 'nidm.json'));
