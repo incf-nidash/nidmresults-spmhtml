@@ -102,7 +102,18 @@ function NxSPM = changeNIDMtoxSPM(json)
         graph{length(graph)+1} = s;
         json.x_graph = graph;
         
-        spm_jsonwrite(fullfile(filepathTemp, 'nidm.json'), json);
+        json_file = fullfile(filepathTemp, 'nidm.json');
+        spm_jsonwrite(json_file, json);
+        
+        % Replace 'x_' back with '@' in the json document (Matlab cannot
+        % handle variable names starting with '@' so those are replaced when 
+        % reading with spm_jsonread)
+        json_str = fileread(json_file);
+        json_str = strrep(json_str, 'x_', '@');
+        fid = fopen(json_file, 'w');
+        fwrite(fid, json_str, '*char');
+        fclose(fid);
+        
         json.filepath = filepathTemp;
         
     end
