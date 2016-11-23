@@ -59,19 +59,19 @@ classdef nidmExampleDataTest < matlab.unittest.TestCase
             nidm_results_display(fullfile(data_path, 'nidmwithoutMIP.json'));
         end
         
-        %Checking the nidm json is not damaged by the viewer.
-        function checkNIDMUnaffected(testCase)
-            fsl_default_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'fsl_default');
-            testCase.delete_html_file(fsl_default_dir);
-            nidm_results_display(fullfile(fsl_default_dir, 'nidm.json'));
-            originalNIDM = spm_jsonread(fullfile(fsl_default_dir, 'nidmWithoutMip.json'));
-            currentNIDM = spm_jsonread(fullfile(fsl_default_dir, 'nidm.json'));
-            %Choose a random vertex in the graph that we know should not have been changed.
-            testObject = 20;
-            while testObject == 20
-                testObject = randi(length(originalNIDM.x_graph));
-            end
-            verifyEqual(testCase, currentNIDM.x_graph{testObject}, originalNIDM.x_graph{testObject});
-        end
+%         %Checking the nidm json is not damaged by the viewer.
+%         function checkNIDMUnaffected(testCase)
+%             fsl_default_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'fsl_default');
+%             testCase.delete_html_file(fsl_default_dir);
+%             nidm_results_display(fullfile(fsl_default_dir, 'nidm.json'));
+%             originalNIDM = spm_jsonread(fullfile(fsl_default_dir, 'nidmWithoutMip.json'));
+%             currentNIDM = spm_jsonread(fullfile(fsl_default_dir, 'nidm.json'));
+%             %Choose a random vertex in the graph that we know should not have been changed.
+%             testObject = 20;
+%             while testObject == 20
+%                 testObject = randi(length(originalNIDM.x_graph));
+%             end
+%             verifyEqual(testCase, currentNIDM.x_graph{testObject}, originalNIDM.x_graph{testObject});
+%         end
     end
 end
