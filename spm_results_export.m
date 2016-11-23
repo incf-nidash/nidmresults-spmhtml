@@ -151,10 +151,19 @@ for i=1:size(TabDat.dat,1)
     tpl = tpl.parse('resrows','resrow',1);
 end
 tpl = tpl.var('resftrs','');
-for i=1:size(TabDat.ftr,1)
-    tpl = tpl.var('RES_FTR',sprintf(TabDat.ftr{i,1},TabDat.ftr{i,2}));
+
+half_footer_size = floor((size(TabDat.ftr,1))/2);
+for i=1:half_footer_size
+    tpl = tpl.var('RES_FTR_1', sprintf(TabDat.ftr{i,1},TabDat.ftr{i,2}));
+    tpl = tpl.var('RES_FTR_2', sprintf(TabDat.ftr{i+half_footer_size,1},TabDat.ftr{i+half_footer_size,2}));
     tpl = tpl.parse('resftrs','resftr',1);
 end
+if (size(TabDat.ftr,1) > 2*half_footer_size)
+    tpl = tpl.var('RES_FTR_1', sprintf(TabDat.ftr{size(TabDat.ftr,1),1},TabDat.ftr{size(TabDat.ftr,1),2}));
+    tpl = tpl.var('RES_FTR_2', '');
+    tpl = tpl.parse('resftrs','resftr',1);
+end
+
 tpl = tpl.parse('OUT','TPL_RES');
 fid = fopen(fHTML,'wt');
 fprintf(fid,'%c',get(tpl,'OUT'));

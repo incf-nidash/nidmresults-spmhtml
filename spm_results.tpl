@@ -24,7 +24,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        height: 50px;
+        font-size: 0.9em;
     }    
   </style>
   <script type="text/javascript">
@@ -95,16 +95,17 @@
   <!-- END resrow -->
 </table>
 
-<p><em>{RES_STR}</em></p>
-<table>
-  <!-- BEGIN resftr -->
-  <tr><td>{RES_FTR}</td></tr>
-  <!-- END resftr -->
-</table>
-
 </div>
 
 <div class="footer">
+<hr/>
+<p><em>{RES_STR}</em></p>
+<table>
+  <!-- BEGIN resftr -->
+  <tr><td>{RES_FTR_1}</td><td>{RES_FTR_2}</td></tr>
+  <!-- END resftr -->
+</table>
+
 <hr/><address>Generated on {DATE} by <strong><a href="http://www.fil.ion.ucl.ac.uk/spm/">{SPM}</a></strong> &copy; 1991, 1994-{YEAR} Wellcome Trust Centre for NeuroImaging</address>
 </div>
 

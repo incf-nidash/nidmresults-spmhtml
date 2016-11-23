@@ -53,6 +53,14 @@ function NxSPM = changeNIDMtoxSPM(json)
         STATStrTemp = [STATTemp '_{' effectDegrees ',' errorDegrees '}'];
     end
     
+    %StatTemp is later used for the column header corresponding to the
+    %statistic in the viewer. If the statistic type is P, we do not want an
+    %extra column for 'P' as there is already one for PUncorr. Thus we
+    %delete it by setting it empty.
+    if strcmp(STATTemp, 'P')
+        STATTemp = '';
+    end
+    
     %===============================================
     %M
     
@@ -94,10 +102,10 @@ function NxSPM = changeNIDMtoxSPM(json)
         
         %Store information about the new MIP in the NIDM pack. Temporarily
         %remove the filepath from the json object.
+        
+        [~, filenameTemp] = fileparts(json.filepath);
         filepathTemp = json.filepath;
-        filenameTemp = json.filename;
         json = rmfield(json, 'filepath');
-        json = rmfield(json, 'filename');
         
         %Create a structure to store information about the MIP.
         
@@ -116,7 +124,6 @@ function NxSPM = changeNIDMtoxSPM(json)
         
         spm_jsonwrite(fullfile(filepathTemp, '..', 'jsons', [filenameTemp '.json']), json);
         json.filepath = filepathTemp;
-        json.filename = filenameTemp;
         
     end
     

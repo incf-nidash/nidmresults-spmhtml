@@ -13,8 +13,11 @@ function [type, statisticMaps] = getStatType(graph)
     %Find the statistic type information.
     statisticMaps = searchforType('nidm_StatisticMap', graph);
     for i = 1:length(statisticMaps)
-        if isfield(statisticMaps{i}, 'nidm_statisticType')
-            statType = statisticMaps{i}.('nidm_statisticType').('x_id');
+        if isfield(statisticMaps{i}, 'nidm_statisticType') 
+            anyStatType = statisticMaps{i}.('nidm_statisticType').('x_id');
+            if ~strcmp(anyStatType, 'obo:STATO_0000376')
+                statType = statisticMaps{i}.('nidm_statisticType').('x_id');
+            end
         end
     end
     
@@ -23,7 +26,7 @@ function [type, statisticMaps] = getStatType(graph)
        type = 'T';
     elseif strcmp(statType, 'obo:STATO_0000030')
        type = 'X';
-    elseif strcmp(statType, 'obo:STATO_0000378')
+    elseif strcmp(statType, 'obo:STATO_0000376')
        type = 'Z';
     elseif strcmp(statType, 'obo:STATO_0000282')
        type = 'F';

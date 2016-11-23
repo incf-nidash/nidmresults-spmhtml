@@ -26,6 +26,15 @@ classdef testFeatures < matlab.unittest.TestCase
                 mkdir(data_path)
                 websave(fullfile(data_path, 'tmp.zip'), 'http://neurovault.org/collections/1692/ex_spm_default.nidm.zip');
                 unzip(fullfile(data_path, 'tmp.zip'), fullfile(data_path, '.'));
+                
+                %Save the download link in the json.
+                json = spm_jsonread(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons', 'ex_spm_default.json'));
+                [designMatrix, dmLocation] = searchforType('nidm_DesignMatrix', json.x_graph);  
+                designMatrix{1}.prov_atLocation.x_value = 'http://neurovault.org/collections/1692/ex_spm_default.nidm/DesignMatrix.csv';
+                graph = json.x_graph;
+                graph{dmLocation{1}} = designMatrix{1};
+                json.x_graph = graph;
+                spm_jsonwrite(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons', 'ex_spm_default.json'),json);
             end
             testCase.delete_html_file(data_path);
             nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons', 'ex_spm_default.json'));

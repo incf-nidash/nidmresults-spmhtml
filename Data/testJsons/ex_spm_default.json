@@ -3819,7 +3819,7 @@
       "nidm_regressorNames": "[\"Sn(1) to*bf(1)\", \"Sn(1) \ntask001 co*bf(1)\", \"Sn(1) constant\"]",
       "prov:atLocation": {
         "@type": "xsd:anyURI",
-        "@value": "DesignMatrix.csv"
+        "@value": "http://neurovault.org/collections/1692/ex_spm_default.nidm/DesignMatrix.csv"
       },
       "rdfs:label": "Design Matrix"
     },

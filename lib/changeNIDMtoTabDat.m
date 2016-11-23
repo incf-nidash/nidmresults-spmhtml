@@ -124,7 +124,7 @@ function NTabDat = changeNIDMtoTabDat(json)
         end
     end
     
-    if ~strcmp(software, 'FSL') 
+    if strcmp(software, 'SPM') 
         
         %Expected voxels per cluster (k)
         ftrTemp{3, 1} = 'Expected voxels per cluster <k> = %0.3f';
@@ -241,6 +241,9 @@ function NTabDat = changeNIDMtoTabDat(json)
     clusters = searchforType('nidm_SupraThresholdCluster', graph);
     peakDefCriteria = searchforType('nidm_PeakDefinitionCriteria', graph);
     
+    %Obtain what type of statistic we are dealing with:    
+    statType = getStatType(graph);
+    
     if~isempty(clusters)
         
         %Sorting the clusters by descending size.
@@ -288,8 +291,7 @@ function NTabDat = changeNIDMtoTabDat(json)
         peaksFDRP = isfield(peaks{1}, 'nidm_qValueFDR');
         peaksStat = isfield(peaks{1}, 'prov_value');
         
-        %Get statistic type and number of peaks to display
-        statType = getStatType(graph);
+        %Get number of peaks to display
         if isfield(peakDefCriteria{1}, 'nidm_maxNumberOfPeaksPerCluster')
             numOfPeaks = peakDefCriteria{1}.nidm_maxNumberOfPeaksPerCluster.('x_value');
         else
@@ -325,13 +327,13 @@ function NTabDat = changeNIDMtoTabDat(json)
                     tableTemp{n, 9} = str2double(peaksTemp{j}.('prov_value').('x_value'));
                 else
                     %Calculate whichever statistic type is used.
-                    if strcmp('statType', 'T')
+                    if strcmp(statType, 'T')
                         tableTemp{n, 9} = icdf('T',1-tableTemp{n, 11},str2double(errorDegrees));
-                    elseif strcmp('statType', 'X')
+                    elseif strcmp(statType, 'X')
                         tableTemp{n, 9} = icdf('Chi',1-tableTemp{n, 11},str2double(errorDegrees));
-                    elseif strcmp('statType', 'Z')
+                    elseif strcmp(statType, 'Z')
                         tableTemp{n, 9} = icdf('Normal',1-tableTemp{n, 11}, 0, 1);
-                    elseif strcmp('statType', 'F')
+                    elseif strcmp(statType, 'F')
                         tableTemp{n, 9} = icdf('F',1-tableTemp{n, 11}, str2double(effectDegrees), str2double(errorDegrees));
                     else
                         tableTemp{n, 9} = NaN;
@@ -361,6 +363,12 @@ function NTabDat = changeNIDMtoTabDat(json)
         for i = 3:13
             tableTemp{1, i} = NaN;
         end
+    end
+    
+    %If the statType is P, as we already have the PUncorr column, remove
+    %the stat column.
+    if strcmp(statType, 'P')
+        tableTemp{:,9} = [];
     end
     
     %===========================================

@@ -16,7 +16,6 @@ function webID = nidm_results_display(jsonfilepath)
     jsondoc=spm_jsonread(jsonfilepath);
     [pathstr, str] = fileparts(jsonfilepath); 
     jsondoc.filepath = fullfile(pathstr, '..', str);
-    jsondoc.filename = str;
 
     %Add path to required methods
     if exist('changeNIDMtoSPM') ~= 2
