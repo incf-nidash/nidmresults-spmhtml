@@ -21,9 +21,11 @@ end
 %nidm-created SPM, xSPM and TabDat variables, output next to the NIDM json.
 
 if ~isfield(SPM, 'nidm')
+    software = '';
     fHTML = pwd;
     outdir  = spm_file(fullfile(pwd, 'temp'));
 else
+    software = TabDat.nidm.software;
     fHTML = SPM.nidm.filepath;
     outdir  = spm_file(fullfile(SPM.nidm.filepath,'temp'));
 end
@@ -60,7 +62,7 @@ mkdir(outdir);
 if ~isfield(xSPM, 'nidm')
     MIP     = spm_mip(xSPM.Z,xSPM.XYZmm,xSPM.M,xSPM.units);
 end
-if ~isfield(SPM, 'nidm')
+if ~isfield(SPM, 'nidm') || strcmp(software, 'FSL')
     DesMtx  = (SPM.xX.nKX + 1)*32;
 end
 
@@ -73,7 +75,7 @@ else
     mipPath = xSPM.nidm.MIP;
 end
 
-if ~isfield(SPM, 'nidm')
+if ~isfield(SPM, 'nidm') || strcmp(software, 'FSL')
     ml = floor(size(DesMtx,1)/size(DesMtx,2));
     DesMtx = reshape(repmat(DesMtx,ml,1),size(DesMtx,1),[]);
     desMatPath = spm_file(fullfile(outdir,'DesMtx.png'));
