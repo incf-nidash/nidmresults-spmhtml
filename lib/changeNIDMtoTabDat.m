@@ -172,9 +172,12 @@ function NTabDat = changeNIDMtoTabDat(json)
     %Find degrees of freedom in statisticMap objects.
     for i = 1:length(statisticMap)
         if isfield(statisticMap{i}, 'nidm_effectDegreesOfFreedom')
-            effectDegrees = statisticMap{i}.('nidm_effectDegreesOfFreedom').('x_value');
-            errorDegrees = statisticMap{i}.('nidm_errorDegreesOfFreedom').('x_value');
-            ftrTemp{rowCount,2} = [str2double(effectDegrees),  str2double(errorDegrees)];
+            anyStatType = statisticMap{i}.('nidm_statisticType').('x_id');
+            if ~strcmp(anyStatType, 'obo:STATO_0000376')
+                effectDegrees = statisticMap{i}.('nidm_effectDegreesOfFreedom').('x_value');
+                errorDegrees = statisticMap{i}.('nidm_errorDegreesOfFreedom').('x_value');
+                ftrTemp{rowCount,2} = [str2double(effectDegrees),  str2double(errorDegrees)];
+            end
         end
     end 
     
@@ -331,8 +334,6 @@ function NTabDat = changeNIDMtoTabDat(json)
                         tableTemp{n, 9} = icdf('T',1-tableTemp{n, 11},str2double(errorDegrees));
                     elseif strcmp(statType, 'X')
                         tableTemp{n, 9} = icdf('Chi',1-tableTemp{n, 11},str2double(errorDegrees));
-                    elseif strcmp(statType, 'Z')
-                        tableTemp{n, 9} = icdf('Normal',1-tableTemp{n, 11}, 0, 1);
                     elseif strcmp(statType, 'F')
                         tableTemp{n, 9} = icdf('F',1-tableTemp{n, 11}, str2double(effectDegrees), str2double(errorDegrees));
                     else
@@ -363,12 +364,6 @@ function NTabDat = changeNIDMtoTabDat(json)
         for i = 3:13
             tableTemp{1, i} = NaN;
         end
-    end
-    
-    %If the statType is P, as we already have the PUncorr column, remove
-    %the stat column.
-    if strcmp(statType, 'P')
-        tableTemp{:,9} = [];
     end
     
     %===========================================

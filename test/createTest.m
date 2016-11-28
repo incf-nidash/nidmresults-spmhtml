@@ -1,23 +1,12 @@
 %==========================================================================
 %This function writes a function, testDataSets, for testing the viewer on
-%all jsons stored locally in the Data/jsons directory. It takes in one
-%input:
-%
-%-skip - this is a boolean - when true we don't test any jsons that do not
-%have corresponding zips stored locally or online, when false we ask the
-%user if they can provide information for downloading these zips.
+%all jsons stored locally in the Data/jsons directory. 
 %
 %Authors: Thomas Maullin, Camille Maumet, Thomas Nichols
 %==========================================================================
 
-function createTest(skip)
-    
-    %If the user didn't specify we assume they wish to skip jsons with no
-    %corresponding zip files.
-    if nargin < 1
-        skip = 1;
-    end
-    
+function createTest()
+       
     %Create new test file for editing.
     FID = fopen(fullfile(fileparts(mfilename('fullpath')), 'testDataSets.m'),'wt');
 
@@ -45,9 +34,6 @@ function createTest(skip)
     fprintf(FID, start);
     
     %Make a list of all json names stored locally.
-%    filelist = cellstr(ls(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons')));
-%    jsonFileList = filelist([contains(filelist, 'json')]);
-%    jsonFileNameList = strrep(jsonFileList, '.json', '');
     files=dir([fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons','*.json')]);
     jsonFileList={files.name};
     jsonFileNameList = strrep(jsonFileList, '.json', '');
@@ -60,61 +46,13 @@ function createTest(skip)
         [designMatrix, dmLocation] = searchforType('nidm_DesignMatrix', json.x_graph);
         goAhead = true;
         jsonLocation = [fileparts(designMatrix{1}.prov_atLocation.x_value), '.zip'];
-        %If there isn't a stored web URL, the user has chosen not to skip this and
-        %there is no folder corresponding to the name of this json, ask the user
-        %to provide a link.
-        if ((strcmp(jsonLocation,'')) || (strcmp(jsonLocation(1),'.'))) &&...
-                ~skip &&...
-                ~exist(fullfile(fileparts(mfilename('fullpath')),'..','Data',jsonFileNameList{i}), 'dir')
-            
-             link = inputdlg(['There is no stored download zip web link for ',...
-                    jsonFileNameList{i}, '. Please provide one below or cancel to avoid testing ',...
-                    jsonFileNameList{i}, '.'],'Download required');
-                
-             %Check the download link either works or is empty.
-             notDownloadable = false; 
-             if ~isempty(link)
-                 link = link{1};
-                 try
-                     websave(pwd, link);
-                 catch
-                     notDownloadable = true;
-                 end
-             end
-             
-             %If it was not a usable link ask the user again.
-             while notDownloadable && ~isempty(link)
-                 notDownloadable = false;
-                 try
-                     websave(pwd, link);
-                 catch
-                     notDownloadable = true;
-                     link = inputdlg('This link does not work. Please try again.','Download required');
-                     if ~isempty(link)
-                         link = link{1};
-                     end
-                 end
-             end         
-             if isempty(link) 
-                 goAhead = false;
-             else
-                 goAhead = true;
-                 jsonLocation = link;
-                 %Save the location in the json.
-                 designMatrix{1}.prov_atLocation.x_value = strrep(jsonLocation, '.zip', '/DesignMatrix.csv');
-                 graph = json.x_graph;
-                 graph{dmLocation{1}} = designMatrix{1};
-                 json.x_graph = graph;
-                 disp(json.x_graph{dmLocation{1}}.prov_atLocation.x_value);
-                 spm_jsonwrite(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons', jsonFileList{i}),json);
-                 disp(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons', jsonFileList{i}));
-             end
+        %ex_spm_default is an exception.
+        if strcmp(jsonFileNameList{i}, 'ex_spm_default')
+            jsonLocation = 'http://neurovault.org/collections/1692/ex_spm_default.nidm.zip';
         end
-        
+        %In case this is a json we cannot test, don't make a test for it.
         if ((strcmp(jsonLocation,'')) || (strcmp(jsonLocation(1),'.')))...
-                && skip...
                 &&~exist(fullfile(fileparts(mfilename('fullpath')),'..','Data',jsonFileNameList{i}), 'dir')
-            
             goAhead = false;     
         end
         
