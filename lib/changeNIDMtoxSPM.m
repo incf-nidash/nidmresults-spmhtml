@@ -38,8 +38,8 @@ function NxSPM = changeNIDMtoxSPM(json)
         if isfield(statisticMaps{i}, 'nidm_errorDegreesOfFreedom')
             anyStatType = statisticMaps{i}.('nidm_statisticType').('x_id');
             if ~strcmp(anyStatType, 'obo:STATO_0000376')
-                effectDegrees = statisticMaps{i}.('nidm_effectDegreesOfFreedom').('x_value');
-                errorDegrees = statisticMaps{i}.('nidm_errorDegreesOfFreedom').('x_value');
+                effectDegrees = get_value(statisticMaps{i}.('nidm_effectDegreesOfFreedom'));
+                errorDegrees = get_value(statisticMaps{i}.('nidm_errorDegreesOfFreedom'));
             end
         end
     end 

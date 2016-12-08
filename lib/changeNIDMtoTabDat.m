@@ -67,7 +67,7 @@ function NTabDat = changeNIDMtoTabDat(json)
     %If there exists a unCorrected P-Value threshold record it.
     if hPositions(3) ~= 0
         strPuncorr = 'p = %0.3f';
-        height_2 = str2double(heightThresholds{hPositions(3)}.('prov_value').('x_value'));
+        height_2 = str2double(get_value(heightThresholds{hPositions(3)}.('prov_value')));
         threshList = [threshList, height_2];
     else
         strPuncorr = '';
@@ -174,8 +174,8 @@ function NTabDat = changeNIDMtoTabDat(json)
         if isfield(statisticMap{i}, 'nidm_effectDegreesOfFreedom')
             anyStatType = statisticMap{i}.('nidm_statisticType').('x_id');
             if ~strcmp(anyStatType, 'obo:STATO_0000376')
-                effectDegrees = statisticMap{i}.('nidm_effectDegreesOfFreedom').('x_value');
-                errorDegrees = statisticMap{i}.('nidm_errorDegreesOfFreedom').('x_value');
+                effectDegrees = get_value(statisticMap{i}.('nidm_effectDegreesOfFreedom'));
+                errorDegrees = get_value(statisticMap{i}.('nidm_errorDegreesOfFreedom'));
                 ftrTemp{rowCount,2} = [str2double(effectDegrees),  str2double(errorDegrees)];
             end
         end
@@ -200,9 +200,9 @@ function NTabDat = changeNIDMtoTabDat(json)
     %Volume
     
     rowCount = rowCount+1;
-    volumeUnits = str2double(searchLinkedToCoord.('nidm_searchVolumeInUnits').('x_value'));
-    volumeResels = str2double(searchLinkedToCoord.('nidm_searchVolumeInResels').('x_value'));
-    volumeVoxels = str2double(searchLinkedToCoord.('nidm_searchVolumeInVoxels').('x_value'));
+    volumeUnits = str2double(get_value(searchLinkedToCoord.('nidm_searchVolumeInUnits')));
+    volumeResels = str2double(get_value(searchLinkedToCoord.('nidm_searchVolumeInResels')));
+    volumeVoxels = str2double(get_value(searchLinkedToCoord.('nidm_searchVolumeInVoxels')));
     
     ftrTemp{rowCount, 1} = 'Volume: %0.0f = %0.0f voxels = %0.1f resels';
     ftrTemp{rowCount, 2} = [volumeUnits, volumeVoxels, volumeResels];
@@ -212,7 +212,7 @@ function NTabDat = changeNIDMtoTabDat(json)
     rowCount = rowCount+1;
     voxelSize = str2num(searchSpace.('nidm_voxelSize'));
     voxelUnits = strrep(strrep(strrep(strrep(searchSpace.('nidm_voxelUnits'), '\"', ''), '[', ''), ']', ''), ',', '');
-    reselSize = str2double(searchLinkedToCoord.('nidm_reselSizeInVoxels').('x_value'));
+    reselSize = str2double(get_value(searchLinkedToCoord.('nidm_reselSizeInVoxels')));
     
     ftrTemp{rowCount, 1} = ['Voxel size: %3.1f %3.1f %3.1f ', voxelUnits, '; (resel = %0.2f voxels)'];
     ftrTemp{rowCount, 2} = [voxelSize reselSize];
@@ -372,9 +372,9 @@ function NTabDat = changeNIDMtoTabDat(json)
     if(~isempty(peakDefCriteria))
         units = strtok(voxelUnits, ' ');
         if isfield(peakDefCriteria{1}, 'nidm_maxNumberOfPeaksPerCluster')
-            strTemp = ['table shows ', peakDefCriteria{1}.nidm_maxNumberOfPeaksPerCluster.('x_value'), ' local maxima more than ', peakDefCriteria{1}.nidm_minDistanceBetweenPeaks.('x_value'), units, ' apart'];
+            strTemp = ['table shows ', get_value(peakDefCriteria{1}.nidm_maxNumberOfPeaksPerCluster), ' local maxima more than ', peakDefCriteria{1}.nidm_minDistanceBetweenPeaks.('x_value'), units, ' apart'];
         else
-            strTemp = ['table shows 3 local maxima more than ', peakDefCriteria{1}.nidm_minDistanceBetweenPeaks.('x_value'), units, ' apart'];
+            strTemp = ['table shows 3 local maxima more than ', get_value(peakDefCriteria{1}.nidm_minDistanceBetweenPeaks), units, ' apart'];
         end
     else 
         strTemp = '';
