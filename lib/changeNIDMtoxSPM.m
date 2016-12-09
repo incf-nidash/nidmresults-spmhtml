@@ -8,9 +8,8 @@
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
-function NxSPM = changeNIDMtoxSPM(json)
+function NxSPM = changeNIDMtoxSPM(graph, jsonFile)
     
-    graph = json.('x_graph');
     NxSPM = struct;
     
     %======================================================================
@@ -83,7 +82,7 @@ function NxSPM = changeNIDMtoxSPM(json)
     %If there's already an MIP, save it's location, else generate one.
     if isfield(excursionSetMaps{1}, 'nidm_hasMaximumIntensityProjection')
         mipFilepath = searchforID(excursionSetMaps{1}.nidm_hasMaximumIntensityProjection.('x_id'),graph);
-        nidmTemp.MIP = getPathDetails(mipFilepath.('prov_atLocation').('x_value'), json.filepath);
+        nidmTemp.MIP = getPathDetails(mipFilepath.('prov_atLocation').('x_value'), jsonFile);
     else
         %Find the units of the MIP.
         searchSpaceMaskMap = searchforType('nidm_SearchSpaceMaskMap', graph);
@@ -92,34 +91,34 @@ function NxSPM = changeNIDMtoxSPM(json)
         
         %Generate the MIP.
         filenameNII = excursionSetMaps{1}.('nfo_fileName');
-        generateMIP(json.filepath, filenameNII, dimTemp, voxelUnits);
-        nidmTemp.MIP = spm_file(fullfile(json.filepath,'MIP.png'));
+        generateMIP(jsonFile, filenameNII, dimTemp, voxelUnits);
+        nidmTemp.MIP = spm_file(fullfile(jsonFile,'MIP.png'));
         
         %Store information about the new MIP in the NIDM pack. Temporarily
         %remove the filepath from the json object.
         
-        [~, filenameTemp] = fileparts(json.filepath);
-        filepathTemp = json.filepath;
-        json = rmfield(json, 'filepath');
-        
-        %Create a structure to store information about the MIP.
-        
-        s = struct;
-        s.x_id = ['niiri:', char(java.util.UUID.randomUUID)];
-        s.x_type = {'dctype:Image'; 'prov:Entity'};
-        s.dcterms_format = 'image/png';
-        s.nfo_fileName = 'MIP.png';
-        s.prov_atLocation.x_type = 'xsd:anyURI';
-        s.prov_atLocation.x_value = 'MIP.png';
-        
-        %Update the graph.
-        graph{excurIndices{1}}.nidm_hasMaximumIntensityProjection.x_id = s.x_id;
-        graph{length(graph)+1} = s;
-        json.x_graph = graph;
-        
 % Update of the json file is commented out until we can have: a function 
 % that checks that two json graphs are identical (irrespective of the order
 % of the fields) and be able to output an indented json file.
+%         [~, filenameTemp] = fileparts(jsonFile);
+%         filepathTemp = jsonFile;
+%         json = rmfield(json, 'filepath');
+%         
+%         %Create a structure to store information about the MIP.
+%         
+%         s = struct;
+%         s.x_id = ['niiri:', char(java.util.UUID.randomUUID)];
+%         s.x_type = {'dctype:Image'; 'prov:Entity'};
+%         s.dcterms_format = 'image/png';
+%         s.nfo_fileName = 'MIP.png';
+%         s.prov_atLocation.x_type = 'xsd:anyURI';
+%         s.prov_atLocation.x_value = 'MIP.png';
+%         
+%         %Update the graph.
+%         graph{excurIndices{1}}.nidm_hasMaximumIntensityProjection.x_id = s.x_id;
+%         graph{length(graph)+1} = s;
+%         json.x_graph = graph;
+%         
 %         spm_jsonwrite(json_file, json);
 %         
 %         % Replace 'x_' back with '@' in the json document (Matlab cannot
@@ -130,8 +129,8 @@ function NxSPM = changeNIDMtoxSPM(json)
 %         fid = fopen(json_file, 'w');
 %         fwrite(fid, json_str, '*char');
 %         fclose(fid);
-        
-        json.filepath = filepathTemp;
+%         
+%         jsonFile = filepathTemp;
         
     end
     

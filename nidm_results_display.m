@@ -25,7 +25,15 @@ function webID = nidm_results_display(jsonfilepath)
         addpath(fullfile(fileparts(mfilename('fullpath')), 'lib'));
     end
     
+    graph = jsondoc.('x_graph');
+    if iscell(graph)
+        % Sub-graphs
+        graph = graph{2}.('x_graph');
+    end
+
+    filepathTemp = jsondoc.filepath;
+
     %Display the page and obtain the pages ID.
-    webID = spm_results_export(changeNIDMtoSPM(jsondoc),changeNIDMtoxSPM(jsondoc),changeNIDMtoTabDat(jsondoc));
+    webID = spm_results_export(changeNIDMtoSPM(graph,filepathTemp),changeNIDMtoxSPM(graph, filepathTemp),changeNIDMtoTabDat(graph));
     
 end

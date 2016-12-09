@@ -8,9 +8,8 @@
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
-function NTabDat = changeNIDMtoTabDat(json)
+function NTabDat = changeNIDMtoTabDat(graph)
     
-    graph = json.('x_graph');
     NTabDat = struct;
     
     %======================================================================

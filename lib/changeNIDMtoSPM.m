@@ -8,10 +8,8 @@
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
-function NSPM = changeNIDMtoSPM(json)
+function NSPM = changeNIDMtoSPM(graph, filepathTemp)
 
-    graph = json.('x_graph');
-    filepathTemp = json.filepath;
     NSPM = struct;
     
     %======================================================================
@@ -23,10 +21,10 @@ function NSPM = changeNIDMtoSPM(json)
     
     %Find the location of the design matrix.
     locationID = searchforID(designMatrix{1}.('dc_description').('x_id'), graph);
-    nidmTemp.DesMat = getPathDetails(locationID.('prov_atLocation').('x_value'), json.filepath);
+    nidmTemp.DesMat = getPathDetails(locationID.('prov_atLocation').('x_value'), filepathTemp);
     
     %Read the csv file and obtain it's dimensions.
-    csvFilePath = getPathDetails(designMatrix{1}.('prov_atLocation').('x_value'), json.filepath);
+    csvFilePath = getPathDetails(designMatrix{1}.('prov_atLocation').('x_value'), filepathTemp);
     csvFile = csvread(csvFilePath);
     nidmTemp.dim = size(csvFile);
     
