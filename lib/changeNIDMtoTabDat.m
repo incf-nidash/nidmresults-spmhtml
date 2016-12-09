@@ -25,13 +25,16 @@ function NTabDat = changeNIDMtoTabDat(graph)
     
     %Check all agent objects for one with the software version stored.
     for i = 1:length(agentObjects)
-        if any(ismember(agentObjects{i}.('x_type'), 'http://scicrunch.org/resolver/SCR_002823'))...
+        soft_type = agentObjects{i}.('x_type');
+        if any(ismember(soft_type, 'http://scicrunch.org/resolver/SCR_002823'))...
                 || any(ismember(agentObjects{i}.('x_type'), 'src_FSL'))
             software = 'FSL';
-        end
-        if any(ismember(agentObjects{i}.('x_type'), 'http://scicrunch.org/resolver/SCR_007037'))...
-                || any(ismember(agentObjects{i}.('x_type'), 'src_SPM'))
+        elseif any(ismember(soft_type, 'http://scicrunch.org/resolver/SCR_007037'))...
+                || any(ismember(soft_type, 'src_SPM'))
             software = 'SPM';
+        else
+            disp(soft_type);
+            error('nidm:UnrecognisedSoftware', 'Unrecognised software')
         end
     end 
     
