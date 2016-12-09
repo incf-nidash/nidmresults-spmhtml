@@ -55,10 +55,15 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp)
     %Get the regressor names in required format.
     remain = strrep(strrep(strrep(strrep(designMatrices{1}.nidm_regressorNames, '\"', ''), '[', ''), ']', ''), ',', '');
     counter = 1;
-    while ~isempty(remain)
-        [token, remain] = strtok(remain, ' ');
-        regNameCell{counter} = token;
-        counter = counter+1;
+    % Deal with the case of empty regressor names
+    if isempty(remain)
+        regNameCell{1} = '';
+    else
+        while ~isempty(remain)
+            [token, remain] = strtok(remain, ' ');
+            regNameCell{counter} = token;
+            counter = counter+1;
+        end
     end
     
     xXtemp.name = regNameCell;
