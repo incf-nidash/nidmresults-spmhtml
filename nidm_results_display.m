@@ -26,9 +26,9 @@ function webID = nidm_results_display(jsonfilepath)
     end
     
     graph = jsondoc.('x_graph');
-    if iscell(graph)
-        % Sub-graphs
-        graph = graph{2}.('x_graph');
+    % Deal with sub-graphs (bundle)
+    if isfield(graph{2}, 'x_graph')
+        graph = graph{2}.x_graph;
     end
 
     filepathTemp = jsondoc.filepath;

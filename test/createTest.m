@@ -43,7 +43,14 @@ function createTest()
     for i = 1:length(jsonFileList)      
         %Find the json download location.
         json = spm_jsonread(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons', jsonFileList{i}));
-        [designMatrix, dmLocation] = searchforType('nidm_DesignMatrix', json.x_graph);
+        
+        % Deal with sub-graphs (bundle)
+        graph = json.x_graph;
+        if isfield(graph{2}, 'x_graph')
+            graph = graph{2}.x_graph;
+        end
+        
+        [designMatrix, dmLocation] = searchforType('nidm_DesignMatrix', graph);
         goAhead = true;
         jsonLocation = [fileparts(designMatrix{1}.prov_atLocation.x_value), '.zip'];
         %ex_spm_default is an exception.
