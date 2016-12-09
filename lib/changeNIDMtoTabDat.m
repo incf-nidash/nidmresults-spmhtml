@@ -57,7 +57,7 @@ function NTabDat = changeNIDMtoTabDat(graph)
     %If there exists a statistic threshold record it.
     if hPositions(4) ~= 0
         strStat = 'Height threshold: T = %0.2f, ';
-        height_1 = str2double(heightThresholds{hPositions(4)}.('prov_value').('x_value'));
+        height_1 = str2double(get_value(heightThresholds{hPositions(4)}.('prov_value')));
         threshList = [threshList, height_1];
     else
         strStat = '';
@@ -74,12 +74,12 @@ function NTabDat = changeNIDMtoTabDat(graph)
     
     %If there exists a FWE threshold record it.
     if hPositions(2) ~= 0
-        height_3 = str2double(heightThresholds{hPositions(2)}.('prov_value').('x_value')); 
+        height_3 = str2double(get_value(heightThresholds{hPositions(2)}.('prov_value'))); 
         strFWEFDR = '(%0.3f FDR)';
         threshList = [threshList, height_3];
     %Else, if there exists a FDR threshold record it.
     elseif hPositions(1) ~= 0
-        height_4 = str2double(heightThresholds{hPositions(1)}.('prov_value').('x_value'));
+        height_4 = str2double(get_value(heightThresholds{hPositions(1)}.('prov_value')));
         strFWEFDR = '(%0.3f FWE)';
         threshList = [threshList, height_4];
     else
@@ -98,16 +98,16 @@ function NTabDat = changeNIDMtoTabDat(graph)
     %thresholds themselves.
     if ePositions(4) ~= 0
         ftrTemp{2, 1} = 'Extent threshold: k = %0.0f voxels';  
-        ftrTemp{2, 2} = str2double(extentThresholds{ePositions(4)}.('nidm_clusterSizeInVoxels').('x_value'));
+        ftrTemp{2, 2} = str2double(get_value(extentThresholds{ePositions(4)}.('nidm_clusterSizeInVoxels')));
     elseif ePositions(1) ~= 0
         ftrTemp{2, 1} = 'Extent threshold: p < %0.0f (FWE)';  
-        ftrTemp{2, 2} = str2double(extentThresholds{ePositions(1)}.('prov_value').('x_value'));
+        ftrTemp{2, 2} = str2double(get_value(extentThresholds{ePositions(1)}.('prov_value')));
     elseif ePositions(2) ~= 0
         ftrTemp{2, 1} = 'Extent threshold: p < %0.0f (FDR)';  
-        ftrTemp{2, 2} = str2double(extentThresholds{ePositions(2)}.('prov_value').('x_value'));
+        ftrTemp{2, 2} = str2double(get_value(extentThresholds{ePositions(2)}.('prov_value')));
     elseif ePositions(3) ~= 0
         ftrTemp{2, 1} = 'Extent threshold: p < %0.0f (Uncorrected)';  
-        ftrTemp{2, 2} = str2double(extentThresholds{ePositions(3)}.('prov_value').('x_value'));
+        ftrTemp{2, 2} = str2double(get_value(extentThresholds{ePositions(3)}.('prov_value')));
     else
         ftrTemp{2, 1} = '';  
         ftrTemp{2, 2} = NaN;
@@ -127,28 +127,28 @@ function NTabDat = changeNIDMtoTabDat(graph)
         
         %Expected voxels per cluster (k)
         ftrTemp{3, 1} = 'Expected voxels per cluster <k> = %0.3f';
-        ftrTemp{3, 2} = str2double(searchLinkedToCoord.('nidm_expectedNumberOfVoxelsPerCluster').('x_value'));
+        ftrTemp{3, 2} = str2double(get_value(searchLinkedToCoord.('nidm_expectedNumberOfVoxelsPerCluster')));
     
         %Expected number of clusters (c)
         ftrTemp{4, 1} = 'Expected number of clusters <c> = %0.2f';
-        ftrTemp{4, 2} = str2double(searchLinkedToCoord.('nidm_expectedNumberOfClusters').('x_value'));
+        ftrTemp{4, 2} = str2double(get_value(searchLinkedToCoord.('nidm_expectedNumberOfClusters')));
     
         %FWEp, FDRp
-        FWEp = str2double(searchLinkedToCoord.('nidm_heightCriticalThresholdFWE05').('x_value'));
-        FDRp = str2double(searchLinkedToCoord.('nidm_heightCriticalThresholdFDR05').('x_value'));
+        FWEp = str2double(get_value(searchLinkedToCoord.('nidm_heightCriticalThresholdFWE05')));
+        FDRp = str2double(get_value(searchLinkedToCoord.('nidm_heightCriticalThresholdFDR05')));
         stringTemp = 'FWEp: %0.3f, FDRp: %0.3f';
         arrayTemp = [FWEp, FDRp];
         
         %If its there, include FWEc
         if(isfield(searchLinkedToCoord, 'spm_smallestSignificantClusterSizeInVoxelsFWE05'))
-            FWEc = str2double(searchLinkedToCoord.('spm_smallestSignificantClusterSizeInVoxelsFWE05').('x_value'));
+            FWEc = str2double(get_value(searchLinkedToCoord.('spm_smallestSignificantClusterSizeInVoxelsFWE05')));
             stringTemp = [stringTemp, ', FWEc: %0.0f'];
             arrayTemp = [arrayTemp, FWEc];
         end
         
         %If its there, include FDRc
         if(isfield(searchLinkedToCoord, 'spm_smallestSignificantClusterSizeInVoxelsFDR05'))
-            FDRc = str2double(searchLinkedToCoord.('spm_smallestSignificantClusterSizeInVoxelsFDR05').('x_value'));
+            FDRc = str2double(get_value(searchLinkedToCoord.('spm_smallestSignificantClusterSizeInVoxelsFDR05')));
             stringTemp = [stringTemp, ', FDRc: %0.0f'];
             arrayTemp = [arrayTemp, FDRc];
         end
@@ -234,8 +234,8 @@ function NTabDat = changeNIDMtoTabDat(graph)
     %map in the nidm json.
     if strcmp(software, 'SPM') 
         excursionSetMap = searchforType('nidm_ExcursionSetMap', graph);
-        tableTemp{1, 1} = str2double(excursionSetMap{1}.('nidm_pValue').('x_value'));
-        tableTemp{1, 2} = str2double(excursionSetMap{1}.('nidm_numberOfSupraThresholdClusters').('x_value'));
+        tableTemp{1, 1} = str2double(get_value(excursionSetMap{1}.('nidm_pValue')));
+        tableTemp{1, 2} = str2double(get_value(excursionSetMap{1}.('nidm_numberOfSupraThresholdClusters')));
     end
     
     %Cluster and peak level:
@@ -249,7 +249,7 @@ function NTabDat = changeNIDMtoTabDat(graph)
     if~isempty(clusters)
         
         %Sorting the clusters by descending size.
-        oo=cellfun(@(x) x.('nidm_clusterSizeInVoxels').('x_value'), clusters, 'UniformOutput', false);
+        oo=cellfun(@(x) get_value(x.('nidm_clusterSizeInVoxels')), clusters, 'UniformOutput', false);
         aa=str2num(char(oo{:}));
         [~, idx]=sort(aa, 'descend');
         clusters = clusters(idx);
@@ -275,7 +275,7 @@ function NTabDat = changeNIDMtoTabDat(graph)
         for i = 1:length(keySet)
             clusterID = keySet{i};
             clustmaptemp=clusterPeakMap(clusterID);
-            clusSet=cellfun(@(x) x.('nidm_equivalentZStatistic').('x_value'), clustmaptemp, 'UniformOutput', false);
+            clusSet=cellfun(@(x) get_value(x.('nidm_equivalentZStatistic')), clustmaptemp, 'UniformOutput', false);
             orderedClusSet=str2num(char(clusSet{:}));
             [~, idx]=sort(orderedClusSet, 'descend');
             clusterPeakMap(clusterID) = clustmaptemp(idx);
@@ -295,22 +295,22 @@ function NTabDat = changeNIDMtoTabDat(graph)
         
         %Get number of peaks to display
         if isfield(peakDefCriteria{1}, 'nidm_maxNumberOfPeaksPerCluster')
-            numOfPeaks = peakDefCriteria{1}.nidm_maxNumberOfPeaksPerCluster.('x_value');
+            numOfPeaks = get_value(peakDefCriteria{1}.nidm_maxNumberOfPeaksPerCluster);
         else
             numOfPeaks = 3;
         end 
         
         for i = 1:length(keySet)
             %Fill in the values we know.
-            tableTemp{n, 3} = str2double(clusters{i}.('nidm_pValueFWER').('x_value'));
+            tableTemp{n, 3} = str2double(get_value(clusters{i}.('nidm_pValueFWER')));
             if clustersFDRP
-                tableTemp{n, 4} = str2double(clusters{i}.('nidm_qValueFDR').('x_value'));
+                tableTemp{n, 4} = str2double(get_value(clusters{i}.('nidm_qValueFDR')));
             else
                 tableTemp{n, 4} = NaN;
             end
-            tableTemp{n, 5} = str2double(clusters{i}.('nidm_clusterSizeInVoxels').('x_value'));
+            tableTemp{n, 5} = str2double(get_value(clusters{i}.('nidm_clusterSizeInVoxels')));
             if clustersPUncorr
-                tableTemp{n, 6} = str2double(clusters{i}.('nidm_pValueUncorrected').('x_value'));
+                tableTemp{n, 6} = str2double(get_value(clusters{i}.('nidm_pValueUncorrected')));
             else
                 tableTemp{n, 6} = NaN;
             end
@@ -319,14 +319,14 @@ function NTabDat = changeNIDMtoTabDat(graph)
             for j = 1:min(numOfPeaks, length(peaksTemp))
                 %Fill the values we know.
                 if peaksFWEP
-                    tableTemp{n, 7} = str2double(peaksTemp{j}.('nidm_pValueFWER').('x_value'));
+                    tableTemp{n, 7} = get_value(str2double(peaksTemp{j}.('nidm_pValueFWER')));
                 end
                 if peaksFDRP
-                    tableTemp{n, 8} = str2double(peaksTemp{j}.('nidm_qValueFDR').('x_value'));
+                    tableTemp{n, 8} = get_value(str2double(peaksTemp{j}.('nidm_qValueFDR')));
                 end
-                tableTemp{n, 11} = str2double(peaksTemp{j}.('nidm_pValueUncorrected').('x_value'));
+                tableTemp{n, 11} = get_value(str2double(peaksTemp{j}.('nidm_pValueUncorrected')));
                 if peaksStat
-                    tableTemp{n, 9} = str2double(peaksTemp{j}.('prov_value').('x_value'));
+                    tableTemp{n, 9} = get_value(str2double(peaksTemp{j}.('prov_value')));
                 else
                     %Calculate whichever statistic type is used.
                     if strcmp(statType, 'T')
@@ -339,7 +339,7 @@ function NTabDat = changeNIDMtoTabDat(graph)
                         tableTemp{n, 9} = NaN;
                     end
                 end 
-                tableTemp{n, 10} = str2double(peaksTemp{j}.('nidm_equivalentZStatistic').('x_value'));
+                tableTemp{n, 10} = str2double(get_value(peaksTemp{j}.('nidm_equivalentZStatistic')));
                 locTemp = peaksTemp{j}.('prov_atLocation').('x_id');
                 locTemp = searchforID(locTemp, graph);
                 tableTemp{n, 12} = str2num(locTemp.nidm_coordinateVector);
@@ -371,7 +371,7 @@ function NTabDat = changeNIDMtoTabDat(graph)
     if(~isempty(peakDefCriteria))
         units = strtok(voxelUnits, ' ');
         if isfield(peakDefCriteria{1}, 'nidm_maxNumberOfPeaksPerCluster')
-            strTemp = ['table shows ', get_value(peakDefCriteria{1}.nidm_maxNumberOfPeaksPerCluster), ' local maxima more than ', peakDefCriteria{1}.nidm_minDistanceBetweenPeaks.('x_value'), units, ' apart'];
+            strTemp = ['table shows ', get_value(peakDefCriteria{1}.nidm_maxNumberOfPeaksPerCluster), ' local maxima more than ', get_value(peakDefCriteria{1}.nidm_minDistanceBetweenPeaks), units, ' apart'];
         else
             strTemp = ['table shows 3 local maxima more than ', get_value(peakDefCriteria{1}.nidm_minDistanceBetweenPeaks), units, ' apart'];
         end
