@@ -43,9 +43,13 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile)
         end
     end 
     
+    if ischar(effectDegrees)
+        effectDegrees = str2num(effectDegrees)
+        errorDegrees = str2num(errorDegrees)
+    end
     %Add the degrees of freedom as a subscript,.
-    effectDegrees = sprintf('%4.1f',str2num(effectDegrees));
-    errorDegrees = sprintf('%4.1f',str2num(errorDegrees));
+    effectDegrees = sprintf('%4.1f', effectDegrees);
+    errorDegrees = sprintf('%4.1f', errorDegrees);
     
     if strcmp(STATTemp, 'T') || strcmp(STATTemp, 'X')
         STATStrTemp = [STATTemp '_{' errorDegrees '}'];
