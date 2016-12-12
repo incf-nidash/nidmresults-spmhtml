@@ -27,10 +27,10 @@ function NTabDat = changeNIDMtoTabDat(graph)
     for i = 1:length(agentObjects)
         soft_type = agentObjects{i}.('x_type');
         if any(ismember(soft_type, 'http://scicrunch.org/resolver/SCR_002823'))...
-                || any(ismember(agentObjects{i}.('x_type'), 'src_FSL'))
+                || any(ismember(agentObjects{i}.('x_type'), 'scr_FSL'))
             software = 'FSL';
         elseif any(ismember(soft_type, 'http://scicrunch.org/resolver/SCR_007037'))...
-                || any(ismember(soft_type, 'src_SPM'))
+                || any(ismember(soft_type, 'scr_SPM'))
             software = 'SPM';
         else
             disp(soft_type);

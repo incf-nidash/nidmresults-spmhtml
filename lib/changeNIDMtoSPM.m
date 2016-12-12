@@ -20,7 +20,11 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp)
     designMatrix = searchforType('nidm_DesignMatrix', graph);
     
     %Find the location of the design matrix.
-    locationID = searchforID(designMatrix{1}.('dc_description').('x_id'), graph);
+    try
+        locationID = searchforID(designMatrix{1}.('dc_description').('x_id'), graph);
+    catch
+        locationID = searchforID(designMatrix{1}.('dc_Description').('x_id'), graph);
+    end
     nidmTemp.DesMat = getPathDetails(locationID.('prov_atLocation').('x_value'), filepathTemp);
     
     %Read the csv file and obtain it's dimensions.
