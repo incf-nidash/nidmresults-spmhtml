@@ -1,7 +1,22 @@
+%==========================================================================
+%Generate an object with a similar format to the SPM-output variable, SPM, 
+%using the information from an input NIDM-Results json pack. This takes in 
+%one argument:
+%
+%json - the spm_jsonread form of the NIDM-Results json file.
+%
+%Authors: Thomas Maullin, Camille Maumet.
+%==========================================================================
+
 function NSPM = changeNIDMtoSPM(json)
     graph = json.('x_graph');
     filepathTemp = json.filepath;
-    NSPM = struct;
+    
+    %Create NSPM hashmap.
+    ExcursionSets = searchforType('nidm_ExcursionSetMap', graph);
+    ExSetName = cellfun(@(x) x.nfo_fileName, ExcursionSets, 'UniformOutput', false)
+    SPMStruct = arrayfun(@(x) struct(), 1:length(ExcursionSets), 'UniformOutput', false)
+    NSPM = containers.Map(ExSetName, SPMStruct, 'UniformValues', false);
     
     %============================================================
     %nidm - NOTE: In the standard format for the SPM file the design
