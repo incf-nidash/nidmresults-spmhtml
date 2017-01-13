@@ -22,7 +22,7 @@ function NSPM = changeNIDMtoSPM(json)
     designMatrix = searchforType('nidm_DesignMatrix', graph);
     
     %Find the location of the design matrix.
-    locationID = searchforID(designMatrix{1}.('dc_description').('x_id'), graph);
+    locationID = searchforID(designMatrix{1}.('dc_Description').('x_id'), graph);
     nidmTemp.DesMat = getPathDetails(locationID.('prov_atLocation').('x_value'), json.filepath);
     
     %Read the csv file and obtain it's dimensions.
