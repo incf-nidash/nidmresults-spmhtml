@@ -26,4 +26,4 @@ Data/*.png
 *.zip
 
 #data
-Data/
+Data/*
