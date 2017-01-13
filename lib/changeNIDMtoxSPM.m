@@ -44,9 +44,9 @@ function NxSPM = changeNIDMtoxSPM(json)
         end
     end 
     
-    %Add the degrees of freedom as a subscript.
-    effectDegrees = num2str(round(str2num(effectDegrees)));
-    errorDegrees = num2str(round(str2num(errorDegrees)));
+    %Add the degrees of freedom as a subscript,.
+    effectDegrees = sprintf('%4.1f',str2num(effectDegrees));
+    errorDegrees = sprintf('%4.1f',str2num(errorDegrees));
     
     if strcmp(STATTemp, 'T') || strcmp(STATTemp, 'X')
         STATStrTemp = [STATTemp '_{' errorDegrees '}'];

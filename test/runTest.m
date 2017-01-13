@@ -8,18 +8,17 @@
 
 function runTest()
     
+    %Clear previous classes.
+    clear all;
+
     %Setup steps for the test.
     import matlab.unittest.TestSuite;
+    addpath(fullfile(fileparts(mfilename('fullpath')),'..', 'Data'));
+    addpath(fullfile(fileparts(mfilename('fullpath')),'..', 'lib'));
+    addpath(fullfile(fileparts(mfilename('fullpath')),'..'));
     
     %Create the testDataSets tests.
     createTest();
-    
-    %Clear all classes we can.
-    warning('off','MATLAB:objectStillExists');
-    warning('off','MATLAB:ClassInstanceExists');
-    clear classes; 
-    warning('on','MATLAB:objectStillExists');
-    warning('on','MATLAB:ClassInstanceExists');
     
     %Run all tests.
     tests = [matlab.unittest.TestSuite.fromFile(which('testDataSets')),...

@@ -50,7 +50,8 @@ function createTest()
         if strcmp(jsonFileNameList{i}, 'ex_spm_default')
             jsonLocation = 'http://neurovault.org/collections/1692/ex_spm_default.nidm.zip';
         end
-        %In case this is a json we cannot test, don't make a test for it.
+        %In case this is a json we cannot test, as we cannot obtain the 
+        %json's corresponding files, so we don't make a test for it.
         if ((strcmp(jsonLocation,'')) || (strcmp(jsonLocation(1),'.')))...
                 &&~exist(fullfile(fileparts(mfilename('fullpath')),'..','Data',jsonFileNameList{i}), 'dir')
             goAhead = false;     

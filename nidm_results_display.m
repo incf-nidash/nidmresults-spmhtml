@@ -14,7 +14,10 @@ function webID = nidm_results_display(jsonfilepath)
 
     %Record users choice and filepath.
     jsondoc=spm_jsonread(jsonfilepath);
-    [pathstr, str] = fileparts(jsonfilepath); 
+    [pathstr, str] = fileparts(jsonfilepath);
+    
+    %We expect the files for the nidm pack to be stored in a folder, of the
+    %same name, located next to the jsons folder.
     jsondoc.filepath = fullfile(pathstr, '..', str);
 
     %Add path to required methods

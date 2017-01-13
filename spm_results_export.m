@@ -91,6 +91,9 @@ con = (con/max(abs(con(:)))+1)*32;
 con = kron(con,ones(ml,10));
 imwrite(con,gray(64),contrastPath,'png');
 
+%Check if the coordinates of the first peak are in the table. If not there
+%are no peaks and we should set the cursor to be blank. Otherwise it is an
+%arrow.
 if(~isnan(TabDat.dat{1,12}))
     cursorString = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAALCAIAAADN+VtyAAAABnRSTlMAAAAAAABupgeRAAAAB3RJTUUH4AoLERQaiQnJ6gAAADFJREFUGJVjYMAG/jMwMGIKQQAjLlFGXAoZ/yPpQNbOgsVE/Dpw20HAVZhy2MF/BgYAbK0KCmhBjJQAAAAASUVORK5CYII=';
 else
@@ -152,6 +155,7 @@ for i=1:size(TabDat.dat,1)
 end
 tpl = tpl.var('resftrs','');
 
+%Information is split into two columns for presentation purposes.
 half_footer_size = floor((size(TabDat.ftr,1))/2);
 for i=1:half_footer_size
     tpl = tpl.var('RES_FTR_1', sprintf(TabDat.ftr{i,1},TabDat.ftr{i,2}));
