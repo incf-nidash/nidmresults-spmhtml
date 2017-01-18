@@ -57,6 +57,10 @@ function createTest()
         if strcmp(jsonFileNameList{i}, 'ex_spm_default')
             jsonLocation = 'http://neurovault.org/collections/1692/ex_spm_default.nidm.zip';
         end
+        if strcmp(jsonLocation, '.zip')
+            % Design matrix file was define with relative path
+            jsonLocation = ['http://neurovault.org/collections/IBRBTZPC/' jsonFileNameList{i} '.nidm.zip'];
+        end
         %In case this is a json we cannot test, as we cannot obtain the 
         %json's corresponding files, so we don't make a test for it.
         if ((strcmp(jsonLocation,'')) || (strcmp(jsonLocation(1),'.')))...
