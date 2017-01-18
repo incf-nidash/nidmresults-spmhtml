@@ -25,7 +25,4 @@ Data/*.png
 #ZIP files
 *.zip
 
-#data
-/Data/*
-
 _ignored*
