@@ -27,3 +27,5 @@ Data/*.png
 
 #data
 /Data/*
+
+_ignored*
