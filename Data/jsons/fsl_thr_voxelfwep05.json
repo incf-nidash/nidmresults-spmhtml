@@ -1,0 +1,2484 @@
+{
+  "@context": {
+    "crypto": "http://id.loc.gov/vocabulary/preservation/cryptographicHashFunctions#",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "dct": "http://purl.org/dc/terms/",
+    "fsl": "http://purl.org/nidash/fsl#",
+    "fsl_FSLsGammaHRF": "http://purl.org/nidash/fsl#FSL_0000006",
+    "fsl_GaussianRunningLineDriftModel": "http://purl.org/nidash/fsl#FSL_0000002",
+    "fsl_driftCutoffPeriod": "http://purl.org/nidash/fsl#FSL_0000004",
+    "fsl_featVersion": "http://purl.org/nidash/fsl#FSL_0000005",
+    "nfo": "http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#",
+    "nidm": "http://purl.org/nidash/nidm#",
+    "nidm_ClusterCenterOfGravity": "http://purl.org/nidash/nidm#NIDM_0000140",
+    "nidm_ClusterDefinitionCriteria": "http://purl.org/nidash/nidm#NIDM_0000007",
+    "nidm_ClusterLabelsMap": "http://purl.org/nidash/nidm#NIDM_0000008",
+    "nidm_ContrastEstimation": "http://purl.org/nidash/nidm#NIDM_0000001",
+    "nidm_ContrastMap": "http://purl.org/nidash/nidm#NIDM_0000002",
+    "nidm_ContrastStandardErrorMap": "http://purl.org/nidash/nidm#NIDM_0000013",
+    "nidm_ContrastVarianceMap": "http://purl.org/nidash/nidm#NIDM_0000135",
+    "nidm_Coordinate": "http://purl.org/nidash/nidm#NIDM_0000015",
+    "nidm_CoordinateSpace": "http://purl.org/nidash/nidm#NIDM_0000016",
+    "nidm_Data": "http://purl.org/nidash/nidm#NIDM_0000169",
+    "nidm_DesignMatrix": "http://purl.org/nidash/nidm#NIDM_0000019",
+    "nidm_ErrorModel": "http://purl.org/nidash/nidm#NIDM_0000023",
+    "nidm_ExcursionSetMap": "http://purl.org/nidash/nidm#NIDM_0000025",
+    "nidm_ExtentThreshold": "http://purl.org/nidash/nidm#NIDM_0000026",
+    "nidm_GrandMeanMap": "http://purl.org/nidash/nidm#NIDM_0000033",
+    "nidm_HeightThreshold": "http://purl.org/nidash/nidm#NIDM_0000034",
+    "nidm_IndependentParameter": "http://purl.org/nidash/nidm#NIDM_0000073",
+    "nidm_Inference": "http://purl.org/nidash/nidm#NIDM_0000049",
+    "nidm_MaskMap": "http://purl.org/nidash/nidm#NIDM_0000054",
+    "nidm_ModelParametersEstimation": "http://purl.org/nidash/nidm#NIDM_0000056",
+    "nidm_NIDMResults": "http://purl.org/nidash/nidm#NIDM_0000027",
+    "nidm_NIDMResultsExport": "http://purl.org/nidash/nidm#NIDM_0000166",
+    "nidm_OneTailedTest": "http://purl.org/nidash/nidm#NIDM_0000060",
+    "nidm_ParameterEstimateMap": "http://purl.org/nidash/nidm#NIDM_0000061",
+    "nidm_Peak": "http://purl.org/nidash/nidm#NIDM_0000062",
+    "nidm_PeakDefinitionCriteria": "http://purl.org/nidash/nidm#NIDM_0000063",
+    "nidm_RegularizedParameter": "http://purl.org/nidash/nidm#NIDM_0000074",
+    "nidm_ResidualMeanSquaresMap": "http://purl.org/nidash/nidm#NIDM_0000066",
+    "nidm_SearchSpaceMaskMap": "http://purl.org/nidash/nidm#NIDM_0000068",
+    "nidm_StatisticMap": "http://purl.org/nidash/nidm#NIDM_0000076",
+    "nidm_SubjectCoordinateSystem": "http://purl.org/nidash/nidm#NIDM_0000077",
+    "nidm_SupraThresholdCluster": "http://purl.org/nidash/nidm#NIDM_0000070",
+    "nidm_clusterLabelId": "http://purl.org/nidash/nidm#NIDM_0000082",
+    "nidm_clusterSizeInVoxels": "http://purl.org/nidash/nidm#NIDM_0000084",
+    "nidm_contrastName": "http://purl.org/nidash/nidm#NIDM_0000085",
+    "nidm_coordinateVector": "http://purl.org/nidash/nidm#NIDM_0000086",
+    "nidm_coordinateVectorInVoxels": "http://purl.org/nidash/nidm#NIDM_0000139",
+    "nidm_dependenceMapWiseDependence": "http://purl.org/nidash/nidm#NIDM_0000089",
+    "nidm_dimensionsInVoxels": "http://purl.org/nidash/nidm#NIDM_0000090",
+    "nidm_effectDegreesOfFreedom": "http://purl.org/nidash/nidm#NIDM_0000091",
+    "nidm_equivalentZStatistic": "http://purl.org/nidash/nidm#NIDM_0000092",
+    "nidm_errorDegreesOfFreedom": "http://purl.org/nidash/nidm#NIDM_0000093",
+    "nidm_errorVarianceHomogeneous": "http://purl.org/nidash/nidm#NIDM_0000094",
+    "nidm_grandMeanScaling": "http://purl.org/nidash/nidm#NIDM_0000096",
+    "nidm_hasAlternativeHypothesis": "http://purl.org/nidash/nidm#NIDM_0000097",
+    "nidm_hasClusterLabelsMap": "http://purl.org/nidash/nidm#NIDM_0000098",
+    "nidm_hasConnectivityCriterion": "http://purl.org/nidash/nidm#NIDM_0000099",
+    "nidm_hasDriftModel": "http://purl.org/nidash/nidm#NIDM_0000088",
+    "nidm_hasErrorDependence": "http://purl.org/nidash/nidm#NIDM_0000100",
+    "nidm_hasErrorDistribution": "http://purl.org/nidash/nidm#NIDM_0000101",
+    "nidm_hasHRFBasis": "http://purl.org/nidash/nidm#NIDM_0000102",
+    "nidm_hasMRIProtocol": "http://purl.org/nidash/nidm#NIDM_0000172",
+    "nidm_inCoordinateSpace": "http://purl.org/nidash/nidm#NIDM_0000104",
+    "nidm_inWorldCoordinateSystem": "http://purl.org/nidash/nidm#NIDM_0000105",
+    "nidm_isUserDefined": "http://purl.org/nidash/nidm#NIDM_0000106",
+    "nidm_maskedMedian": "http://purl.org/nidash/nidm#NIDM_0000107",
+    "nidm_minDistanceBetweenPeaks": "http://purl.org/nidash/nidm#NIDM_0000109",
+    "nidm_nidmfsl": "http://purl.org/nidash/nidm#NIDM_0000167",
+    "nidm_noiseFWHMInUnits": "http://purl.org/nidash/nidm#NIDM_0000157",
+    "nidm_noiseFWHMInVoxels": "http://purl.org/nidash/nidm#NIDM_0000159",
+    "nidm_noiseRoughnessInVoxels": "http://purl.org/nidash/nidm#NIDM_0000145",
+    "nidm_numberOfDimensions": "http://purl.org/nidash/nidm#NIDM_0000112",
+    "nidm_pValueFWER": "http://purl.org/nidash/nidm#NIDM_0000115",
+    "nidm_pValueUncorrected": "http://purl.org/nidash/nidm#NIDM_0000116",
+    "nidm_randomFieldStationarity": "http://purl.org/nidash/nidm#NIDM_0000120",
+    "nidm_regressorNames": "http://purl.org/nidash/nidm#NIDM_0000021",
+    "nidm_reselSizeInVoxels": "http://purl.org/nidash/nidm#NIDM_0000148",
+    "nidm_searchVolumeInResels": "http://purl.org/nidash/nidm#NIDM_0000149",
+    "nidm_searchVolumeInUnits": "http://purl.org/nidash/nidm#NIDM_0000136",
+    "nidm_searchVolumeInVoxels": "http://purl.org/nidash/nidm#NIDM_0000121",
+    "nidm_softwareVersion": "http://purl.org/nidash/nidm#NIDM_0000122",
+    "nidm_statisticType": "http://purl.org/nidash/nidm#NIDM_0000123",
+    "nidm_targetIntensity": "http://purl.org/nidash/nidm#NIDM_0000124",
+    "nidm_varianceMapWiseDependence": "http://purl.org/nidash/nidm#NIDM_0000126",
+    "nidm_version": "http://purl.org/nidash/nidm#NIDM_0000127",
+    "nidm_voxel26connected": "http://purl.org/nidash/nidm#NIDM_0000129",
+    "nidm_voxelSize": "http://purl.org/nidash/nidm#NIDM_0000131",
+    "nidm_voxelToWorldMapping": "http://purl.org/nidash/nidm#NIDM_0000132",
+    "nidm_voxelUnits": "http://purl.org/nidash/nidm#NIDM_0000133",
+    "nidm_withEstimationMethod": "http://purl.org/nidash/nidm#NIDM_0000134",
+    "nif": "http://uri.neuinfo.org/nif/nifstd/",
+    "niiri": "http://iri.nidash.org/",
+    "obo": "http://purl.obolibrary.org/obo/",
+    "prov": "http://www.w3.org/ns/prov#",
+    "scr": "http://scicrunch.org/resolver/",
+    "xsd": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsi": "http://www.w3.org/2001/XMLSchema-instance"
+  },
+  "@graph": [
+    {
+      "@graph": [
+        {
+          "@id": "niiri:b6f89ea2-26f2-4621-9097-335031137d5e",
+          "@type": [
+            "prov:Agent",
+            "prov:SoftwareAgent",
+            "nidm_nidmfsl"
+          ],
+          "nidm_softwareVersion": "1.1.0",
+          "xsd:label": "nidmfsl"
+        },
+        {
+          "@id": "niiri:41f32650-8c64-4209-a2d9-2a69f3bd7225",
+          "@type": [
+            "nidm_NIDMResults",
+            "prov:Entity",
+            "prov:Bundle"
+          ],
+          "nidm_version": "1.3.0",
+          "prov:qualifiedGeneration": {
+            "@id": "_:N9046f73b383446f4909ce4fa57bb5d13"
+          },
+          "xsd:label": "NIDM-Results"
+        },
+        {
+          "@id": "niiri:832db87b-929f-4019-ad94-f5b174ab2f04",
+          "@type": [
+            "nidm_NIDMResultsExport",
+            "prov:Activity"
+          ],
+          "prov:wasAssociatedWith": {
+            "@id": "niiri:b6f89ea2-26f2-4621-9097-335031137d5e"
+          },
+          "xsd:label": "NIDM-Results export"
+        },
+        {
+          "@id": "_:N9046f73b383446f4909ce4fa57bb5d13",
+          "@type": "prov:Generation",
+          "prov:activity": {
+            "@id": "niiri:832db87b-929f-4019-ad94-f5b174ab2f04"
+          },
+          "prov:atTime": {
+            "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
+            "@value": "2016-12-09T10:17:50.177516"
+          }
+        }
+      ]
+    },
+    {
+      "@graph": [
+        {
+          "@id": "niiri:8e5d0971-1dcb-4767-93f6-3e3e38d1e528",
+          "@type": [
+            "nidm_ClusterCenterOfGravity",
+            "prov:Entity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:736a5080-c9ef-49ad-be3d-1d3dcfdbf66d"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:96366b1b-f111-4f87-adec-0be1307e68dd"
+          },
+          "xsd:label": "Center of gravity 13"
+        },
+        {
+          "@id": "niiri:dccb90f8-f20d-4e65-b458-36720eff6d12",
+          "@type": [
+            "nidm_SupraThresholdCluster",
+            "prov:Entity"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "11"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "5"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "0.00012"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0011"
+        },
+        {
+          "@id": "niiri:c9289d99-eebb-4bf6-93e6-7e7723227506",
+          "@type": [
+            "nidm_ResidualMeanSquaresMap",
+            "prov:Entity"
+          ],
+          "crypto:sha512": "61d38cc67f56974aabcb7b4aaf32868cb0a3f7a4b3ec2d2bf867d889907073ad0ea6aa51e419f6e4dedd6659d56eff879c9ed17e4da903807ed7fce4a2d6efbb",
+          "dct:format": "image/nifti",
+          "nfo:fileName": "ResidualMeanSquares.nii.gz",
+          "nidm_inCoordinateSpace": {
+            "@id": "niiri:23d9225f-8534-4e58-be22-8b2309c18398"
+          },
+          "prov:atLocation": {
+            "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+            "@value": "ResidualMeanSquares.nii.gz"
+          },
+          "prov:wasGeneratedBy": {
+            "@id": "niiri:d9883336-22c6-4ed3-a6e0-6737a4f78ff6"
+          },
+          "xsd:label": "Residual Mean Squares Map"
+        },
+        {
+          "@id": "niiri:ce9ef4af-25e0-4d6c-8384-505ed0d6fc0d",
+          "@type": [
+            "prov:Entity",
+            "nidm_ClusterCenterOfGravity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:0206201c-27ca-4a4e-84cf-7d8b3905711d"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:8320216b-ca56-481e-b2f6-5b51a982d81f"
+          },
+          "xsd:label": "Center of gravity 15"
+        },
+        {
+          "@id": "niiri:ad4bcb4b-337f-450b-8769-ecd86bf3321b",
+          "@type": [
+            "prov:Entity",
+            "nidm_ClusterCenterOfGravity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:44b9d525-ee0a-47b7-852d-bd03e1a67b9a"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:f3fd493a-0013-4847-9773-d8a5600c84ff"
+          },
+          "xsd:label": "Center of gravity 1"
+        },
+        {
+          "@id": "niiri:916e7f5d-71a3-4332-b7c2-98463c935f25",
+          "@type": [
+            "nidm_ClusterCenterOfGravity",
+            "prov:Entity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:48562784-3b39-4d78-9afa-67c0071c8643"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:0e00022c-b2b2-45d8-b2b4-c84e0de11e05"
+          },
+          "xsd:label": "Center of gravity 10"
+        },
+        {
+          "@id": "niiri:8a29989e-31cd-4617-85fb-4b18cee41450",
+          "@type": [
+            "prov:Entity",
+            "nidm_ParameterEstimateMap"
+          ],
+          "crypto:sha512": "f2df3de73c023be1d8d1f73703e3ffdbf08b69a27ae304cdf053e8639da9e579fd21a52a66584e04c865239f408bd30d7b5e690985ce7a20ccd2a50c3306fd55",
+          "dct:format": "image/nifti",
+          "nfo:fileName": "ParameterEstimate_001.nii.gz",
+          "nidm_inCoordinateSpace": {
+            "@id": "niiri:23d9225f-8534-4e58-be22-8b2309c18398"
+          },
+          "prov:atLocation": {
+            "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+            "@value": "ParameterEstimate_001.nii.gz"
+          },
+          "prov:wasGeneratedBy": {
+            "@id": "niiri:d9883336-22c6-4ed3-a6e0-6737a4f78ff6"
+          },
+          "xsd:label": "Parameter estimate 1"
+        },
+        {
+          "@id": "niiri:2f29428f-fa28-4f43-847b-5b3d59316eaf",
+          "@type": [
+            "nidm_Peak",
+            "prov:Entity"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "5.09"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "1.7903175719702347e-07"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:5e082bdb-b1a6-4015-b269-12dbb47d28b0"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:edfcb617-8c46-4f3c-9971-5d44ec1df0b4"
+          },
+          "xsd:label": "Peak 09_01"
+        },
+        {
+          "@id": "niiri:a6c5e305-411a-43fc-ab5d-b70b26251aaa",
+          "@type": [
+            "prov:Entity",
+            "nidm_SupraThresholdCluster"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "2"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "1"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "0.000373"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0002"
+        },
+        {
+          "@id": "niiri:363af9ba-e877-4975-8327-b990af0461ac",
+          "@type": [
+            "prov:Entity",
+            "nidm_SupraThresholdCluster"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "17"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "10"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "3.57e-06"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0017"
+        },
+        {
+          "@id": "niiri:98d7edb8-18a6-4b36-a6b5-e94f63ae400b",
+          "@type": [
+            "nidm_Peak",
+            "prov:Entity"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "6.1"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "5.303423256108886e-10"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:ef8b7d05-1473-451d-83f3-7842084d7a84"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:aa53e202-61f8-4473-8276-5d6770dd676a"
+          },
+          "xsd:label": "Peak 16_01"
+        },
+        {
+          "@id": "niiri:6e6ee941-fa30-4d54-ae88-8b3e67d454e8",
+          "@type": [
+            "nidm_ClusterCenterOfGravity",
+            "prov:Entity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:c5d7a15e-72c9-4ac4-b4b7-e44b97b04429"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:2c82139f-3180-4277-a26d-c5ad48bf9929"
+          },
+          "xsd:label": "Center of gravity 5"
+        },
+        {
+          "@id": "niiri:ef5239e7-5a74-440d-ba34-3e1aad4da9bf",
+          "@type": [
+            "nidm_ClusterCenterOfGravity",
+            "prov:Entity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:08ab3673-957a-41a3-ba22-6c3dc6ad3263"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:aeb2a4de-4f5d-44ca-b87d-7edeaddc8f92"
+          },
+          "xsd:label": "Center of gravity 12"
+        },
+        {
+          "@id": "niiri:8c23233d-2d41-4462-ab7c-2002331722a2",
+          "@type": [
+            "nidm_Coordinate",
+            "prov:Entity",
+            "prov:Location"
+          ],
+          "nidm_coordinateVector": "[-46.9, 12.5, 15.0]",
+          "nidm_coordinateVectorInVoxels": "[47, 36, 18]",
+          "xsd:label": "Coordinate 18_02"
+        },
+        {
+          "@id": "niiri:a3b93118-85c6-421b-a9ab-38f01e80b21b",
+          "@type": [
+            "prov:Entity",
+            "nidm_Coordinate",
+            "prov:Location"
+          ],
+          "nidm_coordinateVector": "[41.3, 26.0, 14.3]",
+          "nidm_coordinateVectorInVoxels": "[18.8, 40.3, 17.9]",
+          "xsd:label": "Coordinate 0020"
+        },
+        {
+          "@id": "niiri:23cd7b40-4ffb-4ff7-8009-20ddf97b2281",
+          "@type": [
+            "prov:Entity",
+            "nidm_ClusterCenterOfGravity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:a265df66-56fd-4379-922b-a03ba87fd3f6"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:4c6085ea-b677-48c9-9ebc-4d6c6bd2bd2f"
+          },
+          "xsd:label": "Center of gravity 3"
+        },
+        {
+          "@id": "niiri:8a40187c-44be-4e44-8cb3-aa801c9c312b",
+          "@type": [
+            "nidm_Peak",
+            "prov:Entity"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "7.49"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "3.441691376337985e-14"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:e549f047-a92b-44b4-9278-3300483dfed9"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:e0c2f249-fb06-4113-840a-9804e899b987"
+          },
+          "xsd:label": "Peak 19_01"
+        },
+        {
+          "@id": "niiri:7cc91c00-ca53-4ee9-9086-1cd7a0b42c4a",
+          "@type": [
+            "prov:Agent",
+            "prov:Person"
+          ],
+          "xsd:label": "Person"
+        },
+        {
+          "@id": "niiri:551258eb-c5e7-4a65-b016-2ab48671d7ea",
+          "@type": [
+            "nidm_ClusterCenterOfGravity",
+            "prov:Entity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:10f4866b-f04f-498e-90e9-7910b38d4a96"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:198c75f8-2494-4d4c-a0dd-fb3a42380f4c"
+          },
+          "xsd:label": "Center of gravity 4"
+        },
+        {
+          "@id": "niiri:8c7b9f7f-ad5e-40cd-bab1-a979e8e924e4",
+          "@type": [
+            "prov:Entity",
+            "prov:Location",
+            "nidm_Coordinate"
+          ],
+          "nidm_coordinateVector": "[46.9, -40.6, 45.0]",
+          "nidm_coordinateVectorInVoxels": "[21, 14, 9]",
+          "xsd:label": "Coordinate 03_01"
+        },
+        {
+          "@id": "niiri:0206201c-27ca-4a4e-84cf-7d8b3905711d",
+          "@type": [
+            "prov:Entity",
+            "prov:Location",
+            "nidm_Coordinate"
+          ],
+          "nidm_coordinateVector": "[-12.1, 14.9, 37.6]",
+          "nidm_coordinateVectorInVoxels": "[35.9, 36.8, 22.5]",
+          "xsd:label": "Coordinate 0015"
+        },
+        {
+          "@id": "niiri:c3414c96-00bc-472d-a0b9-cbc7a91ed099",
+          "@type": [
+            "prov:Entity",
+            "nidm_Peak"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "5.86"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "2.314335834086023e-09"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:3ba6e076-2266-4319-b27a-ef64e7028577"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:e1ff26bf-aeb0-4698-9602-24bd8df43ad7"
+          },
+          "xsd:label": "Peak 06_01"
+        },
+        {
+          "@id": "niiri:a924f949-19a3-4e90-aa99-f05db469b216",
+          "@type": [
+            "http://purl.org/dc/dcmitype/Image",
+            "prov:Entity"
+          ],
+          "dct:format": "image/png",
+          "nfo:fileName": "DesignMatrix.png",
+          "prov:atLocation": {
+            "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+            "@value": "DesignMatrix.png"
+          }
+        },
+        {
+          "@id": "niiri:2c82139f-3180-4277-a26d-c5ad48bf9929",
+          "@type": [
+            "nidm_SupraThresholdCluster",
+            "prov:Entity"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "5"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "2"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "0.0135"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0005"
+        },
+        {
+          "@id": "niiri:3fb15870-5ac1-4a93-933b-3a31dcb09f4f",
+          "@type": [
+            "prov:Agent",
+            "nif:birnlex_2100"
+          ],
+          "xsd:label": "MRI Scanner"
+        },
+        {
+          "@id": "niiri:95e7e45a-60ed-4ccd-a1ff-5a6761f6eef8",
+          "@type": [
+            "prov:Entity",
+            "nidm_SupraThresholdCluster"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "8"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "2"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "0.00755"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0008"
+        },
+        {
+          "@id": "niiri:edfcb617-8c46-4f3c-9971-5d44ec1df0b4",
+          "@type": [
+            "nidm_SupraThresholdCluster",
+            "prov:Entity"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "9"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "2"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "0.0403"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0009"
+        },
+        {
+          "@id": "niiri:2d59f0df-ac32-4b85-a8e7-cfa37c08098d",
+          "@type": [
+            "nidm_ClusterCenterOfGravity",
+            "prov:Entity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:edd7b68a-6edd-42fe-970b-61919e4360ef"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:73f66dab-e8af-49e3-911a-4c8fa78042de"
+          },
+          "xsd:label": "Center of gravity 7"
+        },
+        {
+          "@id": "niiri:a265df66-56fd-4379-922b-a03ba87fd3f6",
+          "@type": [
+            "prov:Entity",
+            "prov:Location",
+            "nidm_Coordinate"
+          ],
+          "nidm_coordinateVector": "[45.4, -42.1, 42.6]",
+          "nidm_coordinateVectorInVoxels": "[21.5, 14.0, 9.0]",
+          "xsd:label": "Coordinate 0003"
+        },
+        {
+          "@id": "niiri:81fd6d09-7990-4322-a93b-904244ad4fa7",
+          "@type": [
+            "prov:Entity",
+            "nidm_ClusterCenterOfGravity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:e799a62f-b352-4920-b4da-c63faa5d0f1b"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:edfcb617-8c46-4f3c-9971-5d44ec1df0b4"
+          },
+          "xsd:label": "Center of gravity 9"
+        },
+        {
+          "@id": "niiri:fe78b016-e79c-4f60-bada-0115b167d900",
+          "@type": [
+            "prov:Entity",
+            "nidm_MaskMap"
+          ],
+          "crypto:sha512": "d092708a9c256b3573fbe1a932f4998af141739de2ac94ca58d57af814dde086a15f49b09093ac57041123c716d195f08ebc3e2fd0bec12832068154e1816b0e",
+          "dct:format": "image/nifti",
+          "nfo:fileName": "Mask.nii.gz",
+          "nidm_inCoordinateSpace": {
+            "@id": "niiri:23d9225f-8534-4e58-be22-8b2309c18398"
+          },
+          "nidm_isUserDefined": false,
+          "prov:atLocation": {
+            "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+            "@value": "Mask.nii.gz"
+          },
+          "prov:wasGeneratedBy": {
+            "@id": "niiri:d9883336-22c6-4ed3-a6e0-6737a4f78ff6"
+          },
+          "xsd:label": "Mask"
+        },
+        {
+          "@id": "niiri:57fb0d57-59fb-42a6-8356-c8ba42db4ffc",
+          "@type": [
+            "prov:Entity",
+            "nidm_Peak"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "5.63"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "9.010481027971196e-09"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:8c23233d-2d41-4462-ab7c-2002331722a2"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:3223351f-75b2-4f8f-a8ac-843bf3b4f5bc"
+          },
+          "xsd:label": "Peak 18_02"
+        },
+        {
+          "@id": "niiri:ff7fa3b1-1d9d-427d-b0f2-a49c9d90d370",
+          "@type": [
+            "nidm_GrandMeanMap",
+            "prov:Entity"
+          ],
+          "crypto:sha512": "46d5f0f323c77faec3fd8ec1e608b3d9cb6697528b279bcac746129041a07b1c0af7f3396bc43a41417361b5d9f03b271f8769123111f56fa27e2a8069bdf14d",
+          "dct:format": "image/nifti",
+          "nfo:fileName": "GrandMean.nii.gz",
+          "nidm_inCoordinateSpace": {
+            "@id": "niiri:23d9225f-8534-4e58-be22-8b2309c18398"
+          },
+          "nidm_maskedMedian": 9565.2548828125,
+          "prov:atLocation": {
+            "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+            "@value": "GrandMean.nii.gz"
+          },
+          "prov:wasGeneratedBy": {
+            "@id": "niiri:d9883336-22c6-4ed3-a6e0-6737a4f78ff6"
+          },
+          "xsd:label": "Grand Mean Map"
+        },
+        {
+          "@id": "niiri:46c2d5ff-bc33-483d-9596-e984c503eb25",
+          "@type": [
+            "prov:Activity",
+            "nidm_ContrastEstimation"
+          ],
+          "prov:used": [
+            {
+              "@id": "niiri:8a29989e-31cd-4617-85fb-4b18cee41450"
+            },
+            {
+              "@id": "niiri:c9289d99-eebb-4bf6-93e6-7e7723227506"
+            },
+            {
+              "@id": "niiri:fe78b016-e79c-4f60-bada-0115b167d900"
+            }
+          ],
+          "prov:wasAssociatedWith": {
+            "@id": "niiri:0b84e812-9b6f-4771-a110-ea124f55b5ae"
+          },
+          "xsd:label": "Contrast estimation: tone counting vs baseline"
+        },
+        {
+          "@id": "niiri:7d5f46d0-25cd-4e93-a13f-8c6b24a8216a",
+          "@type": [
+            "prov:Location",
+            "nidm_Coordinate",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[21.9, -71.9, -5.0]",
+          "nidm_coordinateVectorInVoxels": "[25, 9, 14]",
+          "xsd:label": "Coordinate 14_01"
+        },
+        {
+          "@id": "niiri:a0df7bec-572d-4c36-82e6-6c2f8b43eb86",
+          "@type": [
+            "prov:Entity",
+            "nidm_Coordinate",
+            "prov:Location"
+          ],
+          "nidm_coordinateVector": "[40.6, 25.0, 15.0]",
+          "nidm_coordinateVectorInVoxels": "[19, 40, 18]",
+          "xsd:label": "Coordinate 20_01"
+        },
+        {
+          "@id": "niiri:79b2ec84-7ea0-482a-bd25-85193f98d0f5",
+          "@type": [
+            "nidm_Data",
+            "prov:Collection",
+            "prov:Entity"
+          ],
+          "nidm_grandMeanScaling": true,
+          "nidm_hasMRIProtocol": {
+            "@id": "nif:birnlex_2250"
+          },
+          "nidm_targetIntensity": 10000.0,
+          "prov:wasAttributedTo": [
+            {
+              "@id": "niiri:7cc91c00-ca53-4ee9-9086-1cd7a0b42c4a"
+            },
+            {
+              "@id": "niiri:3fb15870-5ac1-4a93-933b-3a31dcb09f4f"
+            }
+          ],
+          "xsd:label": "Data"
+        },
+        {
+          "@id": "niiri:596c1bb8-5b72-4bb5-aa03-23a08e7435df",
+          "@type": [
+            "prov:Entity",
+            "nidm_Peak"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "6.7"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "1.042099739834157e-11"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:66b374d4-929b-4c0e-a011-be6796684ce7"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:363af9ba-e877-4975-8327-b990af0461ac"
+          },
+          "xsd:label": "Peak 17_02"
+        },
+        {
+          "@id": "niiri:74640a9e-44e4-4fe4-802c-901888bce182",
+          "@type": [
+            "prov:Entity",
+            "nidm_Peak"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "6.19"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "3.0082114577112407e-10"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:2557ba21-db04-473f-8e21-4047a25933c4"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:dccb90f8-f20d-4e65-b458-36720eff6d12"
+          },
+          "xsd:label": "Peak 11_01"
+        },
+        {
+          "@id": "niiri:f8a2ba2b-f1f2-4dee-8238-186c775c2a18",
+          "@type": [
+            "prov:Location",
+            "prov:Entity",
+            "nidm_Coordinate"
+          ],
+          "nidm_coordinateVector": "[-62.5, 17.2, 10.0]",
+          "nidm_coordinateVectorInVoxels": "[13.0, 22.5, 18.0]",
+          "xsd:label": "Coordinate 0006"
+        },
+        {
+          "@id": "niiri:12cbf816-db65-4711-bf72-739c8d8310f4",
+          "@type": [
+            "prov:Entity",
+            "nidm_Peak"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "6.76"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "6.899592008835498e-12"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:e2c7e5ca-3357-414e-8aad-fa8477421e82"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:363af9ba-e877-4975-8327-b990af0461ac"
+          },
+          "xsd:label": "Peak 17_01"
+        },
+        {
+          "@id": "niiri:3ba6e076-2266-4319-b27a-ef64e7028577",
+          "@type": [
+            "nidm_Coordinate",
+            "prov:Location",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[-62.5, 15.6, 10.0]",
+          "nidm_coordinateVectorInVoxels": "[13, 23, 18]",
+          "xsd:label": "Coordinate 06_01"
+        },
+        {
+          "@id": "niiri:d3ac6d52-1dcc-4a9f-acdc-deae33928edd",
+          "@type": [
+            "nidm_Peak",
+            "prov:Entity"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "5.43"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "2.817702604573924e-08"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:7cf7d9f9-944f-40f6-8d21-d90222718644"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:95e7e45a-60ed-4ccd-a1ff-5a6761f6eef8"
+          },
+          "xsd:label": "Peak 08_01"
+        },
+        {
+          "@id": "niiri:9a5f2f0b-43c9-4fe5-982e-2aed43a78af5",
+          "@type": [
+            "prov:Entity",
+            "nidm_StatisticMap"
+          ],
+          "crypto:sha512": "38649b9e17afa0cbd95002eaffdd81f81d61b06fd8c5f4cf1d614e494d2d3ec3b97e1d808f5a6c92134a506aaa85b19eeefcb9b0a30d68788e9ef02b3e1fcb62",
+          "dct:format": "image/nifti",
+          "nfo:fileName": "TStatistic.nii.gz",
+          "nidm_contrastName": "tone counting vs baseline",
+          "nidm_effectDegreesOfFreedom": 1.0,
+          "nidm_errorDegreesOfFreedom": 102.0,
+          "nidm_inCoordinateSpace": {
+            "@id": "niiri:23d9225f-8534-4e58-be22-8b2309c18398"
+          },
+          "nidm_statisticType": {
+            "@id": "obo:STATO_0000176"
+          },
+          "prov:atLocation": {
+            "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+            "@value": "TStatistic.nii.gz"
+          },
+          "prov:wasGeneratedBy": {
+            "@id": "niiri:46c2d5ff-bc33-483d-9596-e984c503eb25"
+          },
+          "xsd:label": "T-Statistic Map: tone counting vs baseline"
+        },
+        {
+          "@id": "niiri:bf44c0b3-5e8a-4d4c-82ba-53f65e163412",
+          "@type": [
+            "prov:Entity",
+            "nidm_Coordinate",
+            "prov:Location"
+          ],
+          "nidm_coordinateVector": "[-37.5, 9.38, 35.0]",
+          "nidm_coordinateVectorInVoxels": "[44, 35, 22]",
+          "xsd:label": "Coordinate 13_02"
+        },
+        {
+          "@id": "niiri:62e01fa8-1639-495d-b10b-32d9674996dc",
+          "@type": [
+            "nidm_PeakDefinitionCriteria",
+            "prov:Entity"
+          ],
+          "nidm_minDistanceBetweenPeaks": 0.0,
+          "xsd:label": "Peak Definition Criteria"
+        },
+        {
+          "@id": "niiri:87aa24dd-6c84-4f8a-85b4-c3ebcf82c5d7",
+          "@type": [
+            "nidm_Peak",
+            "prov:Entity"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "6.03"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "8.197984513458323e-10"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:e05d38a5-35fa-4768-8daf-57b015d67954"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:8320216b-ca56-481e-b2f6-5b51a982d81f"
+          },
+          "xsd:label": "Peak 15_01"
+        },
+        {
+          "@id": "niiri:c16715c3-2f38-442a-a87e-e92914c2873d",
+          "@type": [
+            "prov:Entity",
+            "nidm_Peak"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "5.18"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "1.1094295016000899e-07"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:8c7b9f7f-ad5e-40cd-bab1-a979e8e924e4"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:4c6085ea-b677-48c9-9ebc-4d6c6bd2bd2f"
+          },
+          "xsd:label": "Peak 03_01"
+        },
+        {
+          "@id": "niiri:aeb2a4de-4f5d-44ca-b87d-7edeaddc8f92",
+          "@type": [
+            "nidm_SupraThresholdCluster",
+            "prov:Entity"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "12"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "6"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "6.52e-05"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0012"
+        },
+        {
+          "@id": "niiri:8320216b-ca56-481e-b2f6-5b51a982d81f",
+          "@type": [
+            "nidm_SupraThresholdCluster",
+            "prov:Entity"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "15"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "8"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "0.000301"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0015"
+        },
+        {
+          "@id": "niiri:2557ba21-db04-473f-8e21-4047a25933c4",
+          "@type": [
+            "prov:Entity",
+            "prov:Location",
+            "nidm_Coordinate"
+          ],
+          "nidm_coordinateVector": "[53.1, -37.5, 35.0]",
+          "nidm_coordinateVectorInVoxels": "[15, 20, 22]",
+          "xsd:label": "Coordinate 11_01"
+        },
+        {
+          "@id": "niiri:e2c7e5ca-3357-414e-8aad-fa8477421e82",
+          "@type": [
+            "nidm_Coordinate",
+            "prov:Location",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[34.4, -68.8, -20.0]",
+          "nidm_coordinateVectorInVoxels": "[21, 10, 11]",
+          "xsd:label": "Coordinate 17_01"
+        },
+        {
+          "@id": "niiri:af87331f-510d-486e-a770-1e01bc7a7721",
+          "@type": [
+            "nidm_ClusterCenterOfGravity",
+            "prov:Entity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:595ff473-c9df-4585-bee6-3592b71da90e"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:aa53e202-61f8-4473-8276-5d6770dd676a"
+          },
+          "xsd:label": "Center of gravity 16"
+        },
+        {
+          "@id": "niiri:4a3a1a0a-abe6-4193-9558-435191848f69",
+          "@type": [
+            "nidm_Coordinate",
+            "prov:Location",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[59.4, -28.1, 35.0]",
+          "nidm_coordinateVectorInVoxels": "[13.0, 23.0, 22.0]",
+          "xsd:label": "Coordinate 0002"
+        },
+        {
+          "@id": "niiri:5e861c17-5d11-475f-b19e-ff02e696ab37",
+          "@type": [
+            "nidm_Coordinate",
+            "prov:Location",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[28.1, 9.38, 35.0]",
+          "nidm_coordinateVectorInVoxels": "[23, 35, 22]",
+          "xsd:label": "Coordinate 12_01"
+        },
+        {
+          "@id": "niiri:44ce2116-fdf0-41ba-a0bd-2dfd3de8d558",
+          "@type": [
+            "prov:Entity",
+            "nidm_SearchSpaceMaskMap"
+          ],
+          "crypto:sha512": "d092708a9c256b3573fbe1a932f4998af141739de2ac94ca58d57af814dde086a15f49b09093ac57041123c716d195f08ebc3e2fd0bec12832068154e1816b0e",
+          "dct:format": "image/nifti",
+          "nfo:fileName": "SearchSpaceMask.nii.gz",
+          "nidm_inCoordinateSpace": {
+            "@id": "niiri:23d9225f-8534-4e58-be22-8b2309c18398"
+          },
+          "nidm_noiseFWHMInUnits": "[7.30301, 7.28026, 6.07038]",
+          "nidm_noiseFWHMInVoxels": "[2.33696, 2.32968, 1.21408]",
+          "nidm_noiseRoughnessInVoxels": 0.700797,
+          "nidm_randomFieldStationarity": true,
+          "nidm_reselSizeInVoxels": 6.60989,
+          "nidm_searchVolumeInResels": 5801.004252718275,
+          "nidm_searchVolumeInUnits": 1872265.625,
+          "nidm_searchVolumeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "38344"
+          },
+          "prov:atLocation": {
+            "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+            "@value": "SearchSpaceMask.nii.gz"
+          },
+          "prov:wasGeneratedBy": {
+            "@id": "niiri:65466c9b-cb03-46c2-aaa7-a3112b68f12b"
+          },
+          "xsd:label": "Search Space Mask Map"
+        },
+        {
+          "@id": "niiri:2d9c4d12-6b1e-4a4d-8581-8bc6e7921cb9",
+          "@type": [
+            "nidm_SupraThresholdCluster",
+            "prov:Entity"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "20"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "27"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "2.83e-08"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0020"
+        },
+        {
+          "@id": "niiri:4c64b772-99c1-48d0-acb5-b522cd6578c2",
+          "@type": [
+            "nidm_ClusterCenterOfGravity",
+            "prov:Entity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:ae9a263c-32f5-49a6-a2d2-8d66ac76a2eb"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:dccb90f8-f20d-4e65-b458-36720eff6d12"
+          },
+          "xsd:label": "Center of gravity 11"
+        },
+        {
+          "@id": "niiri:10f4866b-f04f-498e-90e9-7910b38d4a96",
+          "@type": [
+            "nidm_Coordinate",
+            "prov:Location",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[1.59, 21.9, 35.0]",
+          "nidm_coordinateVectorInVoxels": "[17.5, 18.5, 23.5]",
+          "xsd:label": "Coordinate 0004"
+        },
+        {
+          "@id": "niiri:3223351f-75b2-4f8f-a8ac-843bf3b4f5bc",
+          "@type": [
+            "prov:Entity",
+            "nidm_SupraThresholdCluster"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "18"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "11"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "1.28e-07"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0018"
+        },
+        {
+          "@id": "niiri:198c75f8-2494-4d4c-a0dd-fb3a42380f4c",
+          "@type": [
+            "prov:Entity",
+            "nidm_SupraThresholdCluster"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "4"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "2"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "0.0116"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0004"
+        },
+        {
+          "@id": "niiri:5e082bdb-b1a6-4015-b269-12dbb47d28b0",
+          "@type": [
+            "nidm_Coordinate",
+            "prov:Location",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[34.4, -56.2, -30.0]",
+          "nidm_coordinateVectorInVoxels": "[15, 24, 13]",
+          "xsd:label": "Coordinate 09_01"
+        },
+        {
+          "@id": "niiri:c5d7a15e-72c9-4ac4-b4b7-e44b97b04429",
+          "@type": [
+            "prov:Location",
+            "nidm_Coordinate",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[59.4, -29.6, 15.0]",
+          "nidm_coordinateVectorInVoxels": "[31.5, 39.0, 22.0]",
+          "xsd:label": "Coordinate 0005"
+        },
+        {
+          "@id": "niiri:31dc166d-200e-4ba5-a62d-4870c07ab142",
+          "@type": [
+            "nidm_Coordinate",
+            "prov:Location",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[-37.5, 3.12, 35.0]",
+          "nidm_coordinateVectorInVoxels": "[44, 33, 22]",
+          "xsd:label": "Coordinate 13_01"
+        },
+        {
+          "@id": "niiri:bef90e58-5796-4d1a-bdad-d9ee0529400c",
+          "@type": [
+            "nidm_Coordinate",
+            "prov:Location",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[50.0, 31.2, 5.0]",
+          "nidm_coordinateVectorInVoxels": "[52, 37, 17]",
+          "xsd:label": "Coordinate 07_01"
+        },
+        {
+          "@id": "niiri:c552230a-a832-4b88-ad83-06aac9924177",
+          "@type": [
+            "nidm_ContrastVarianceMap",
+            "prov:Entity"
+          ],
+          "crypto:sha512": "32ec7259f2c39d9b242965331145529a1efbfb5b32e133b7e5b93b8ba4d566bf476f0ffac79e9ae0bb49e3db419cc1da9e6f9b7b070194dc1be124bab11a9fc8",
+          "dct:format": "image/nifti",
+          "nfo:fileName": "varcope1.nii.gz"
+        },
+        {
+          "@id": "niiri:bf293f30-14cd-44fb-bb9d-cdde9768476a",
+          "@type": [
+            "nidm_DesignMatrix",
+            "prov:Entity"
+          ],
+          "dc:description": {
+            "@id": "niiri:a924f949-19a3-4e90-aa99-f05db469b216"
+          },
+          "dct:format": "text/csv",
+          "nfo:fileName": "DesignMatrix.csv",
+          "nidm_hasDriftModel": {
+            "@id": "niiri:d93d811d-555e-41c2-acb4-76a48d5cf132"
+          },
+          "nidm_hasHRFBasis": {
+            "@id": "fsl:FSL_0000006"
+          },
+          "nidm_regressorNames": "[\"tone_counting\", \"tone_counting_probe\"]",
+          "prov:atLocation": {
+            "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+            "@value": "DesignMatrix.csv"
+          },
+          "xsd:label": "Design Matrix"
+        },
+        {
+          "@id": "niiri:0b84e812-9b6f-4771-a110-ea124f55b5ae",
+          "@type": [
+            "prov:Agent",
+            "prov:SoftwareAgent",
+            "scr:SCR_002823"
+          ],
+          "fsl_featVersion": "6.00",
+          "nidm_softwareVersion": "5.0.x",
+          "xsd:label": "FSL"
+        },
+        {
+          "@id": "niiri:e1ff26bf-aeb0-4698-9602-24bd8df43ad7",
+          "@type": [
+            "nidm_SupraThresholdCluster",
+            "prov:Entity"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "6"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "2"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "0.000803"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0006"
+        },
+        {
+          "@id": "niiri:e549f047-a92b-44b4-9278-3300483dfed9",
+          "@type": [
+            "prov:Entity",
+            "prov:Location",
+            "nidm_Coordinate"
+          ],
+          "nidm_coordinateVector": "[50.0, -21.9, 25.0]",
+          "nidm_coordinateVectorInVoxels": "[16, 25, 20]",
+          "xsd:label": "Coordinate 19_01"
+        },
+        {
+          "@id": "niiri:a6058b61-a0c7-4f3e-8617-616180464418",
+          "@type": [
+            "prov:Entity",
+            "nidm_Coordinate",
+            "prov:Location"
+          ],
+          "nidm_coordinateVector": "[32.1, -68.2, -22.1]",
+          "nidm_coordinateVectorInVoxels": "[21.7, 10.2, 10.6]",
+          "xsd:label": "Coordinate 0017"
+        },
+        {
+          "@id": "niiri:f1ae4f81-ddba-4353-9bb3-ac766ba1f52b",
+          "@type": [
+            "prov:Entity",
+            "nidm_ClusterCenterOfGravity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:4a3a1a0a-abe6-4193-9558-435191848f69"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:a6c5e305-411a-43fc-ab5d-b70b26251aaa"
+          },
+          "xsd:label": "Center of gravity 2"
+        },
+        {
+          "@id": "niiri:73f66dab-e8af-49e3-911a-4c8fa78042de",
+          "@type": [
+            "nidm_SupraThresholdCluster",
+            "prov:Entity"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "7"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "2"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "0.00053"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0007"
+        },
+        {
+          "@id": "niiri:d9883336-22c6-4ed3-a6e0-6737a4f78ff6",
+          "@type": [
+            "prov:Activity",
+            "nidm_ModelParametersEstimation"
+          ],
+          "nidm_withEstimationMethod": {
+            "@id": "obo:STATO_0000372"
+          },
+          "prov:used": [
+            {
+              "@id": "niiri:aa01ad44-db98-4a3d-a746-63f01a1d3b51"
+            },
+            {
+              "@id": "niiri:bf293f30-14cd-44fb-bb9d-cdde9768476a"
+            },
+            {
+              "@id": "niiri:79b2ec84-7ea0-482a-bd25-85193f98d0f5"
+            }
+          ],
+          "prov:wasAssociatedWith": {
+            "@id": "niiri:0b84e812-9b6f-4771-a110-ea124f55b5ae"
+          },
+          "xsd:label": "Model Parameters Estimation"
+        },
+        {
+          "@id": "niiri:4c6085ea-b677-48c9-9ebc-4d6c6bd2bd2f",
+          "@type": [
+            "nidm_SupraThresholdCluster",
+            "prov:Entity"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "3"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "2"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "0.0266"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0003"
+        },
+        {
+          "@id": "niiri:ac74b404-e5bf-4164-96dd-8da9c8934a9b",
+          "@type": [
+            "prov:Entity",
+            "nidm_ClusterLabelsMap"
+          ],
+          "crypto:sha512": "6498dcbdf0594e9924338c12b816793d6c6b447929254c6fd4862c4f57e3023e463a1b77cf917e4580083c5243038050dac2ffeb72f4179860bd746c6707321e",
+          "dct:format": "image/nifti",
+          "nfo:fileName": "ClusterLabels.nii.gz",
+          "nidm_inCoordinateSpace": {
+            "@id": "niiri:23d9225f-8534-4e58-be22-8b2309c18398"
+          },
+          "prov:atLocation": {
+            "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+            "@value": "ClusterLabels.nii.gz"
+          },
+          "xsd:label": "Cluster Labels Map"
+        },
+        {
+          "@id": "niiri:4730992e-d277-4bc7-907a-8734ddff2d68",
+          "@type": [
+            "obo:OBI_0001265",
+            "nidm_HeightThreshold",
+            "prov:Entity"
+          ],
+          "prov:value": 0.05,
+          "xsd:label": "Height Threshold: p<0.05 (FWE)"
+        },
+        {
+          "@id": "niiri:6ae39f71-5cdc-42c7-9f01-6a9c58f2388d",
+          "@type": [
+            "prov:Entity",
+            "obo:STATO_0000323"
+          ],
+          "nidm_contrastName": "tone counting vs baseline",
+          "nidm_statisticType": {
+            "@id": "obo:STATO_0000176"
+          },
+          "prov:value": "[1, 0]",
+          "xsd:label": "Contrast Weights: tone counting vs baseline"
+        },
+        {
+          "@id": "niiri:ae9a263c-32f5-49a6-a2d2-8d66ac76a2eb",
+          "@type": [
+            "prov:Location",
+            "nidm_Coordinate",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[50.1, -36.9, 31.2]",
+          "nidm_coordinateVectorInVoxels": "[16.0, 20.2, 21.2]",
+          "xsd:label": "Coordinate 0011"
+        },
+        {
+          "@id": "niiri:ef8b7d05-1473-451d-83f3-7842084d7a84",
+          "@type": [
+            "prov:Entity",
+            "prov:Location",
+            "nidm_Coordinate"
+          ],
+          "nidm_coordinateVector": "[28.1, 37.5, -10.0]",
+          "nidm_coordinateVectorInVoxels": "[23, 44, 13]",
+          "xsd:label": "Coordinate 16_01"
+        },
+        {
+          "@id": "niiri:d0f205c9-f4df-4af3-b58a-9b24d643a030",
+          "@type": [
+            "prov:Entity",
+            "nidm_ClusterCenterOfGravity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:a3b93118-85c6-421b-a9ab-38f01e80b21b"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:2d9c4d12-6b1e-4a4d-8581-8bc6e7921cb9"
+          },
+          "xsd:label": "Center of gravity 20"
+        },
+        {
+          "@id": "niiri:0d753f4f-e944-4fe9-97fc-2a18874f26c3",
+          "@type": [
+            "nidm_Peak",
+            "prov:Entity"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "5.99"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "1.049205167191758e-09"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:c0743061-43c3-4687-9a9e-242e9db83941"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:a6c5e305-411a-43fc-ab5d-b70b26251aaa"
+          },
+          "xsd:label": "Peak 02_01"
+        },
+        {
+          "@id": "niiri:e799a62f-b352-4920-b4da-c63faa5d0f1b",
+          "@type": [
+            "nidm_Coordinate",
+            "prov:Location",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[32.8, -56.2, -30.0]",
+          "nidm_coordinateVectorInVoxels": "[15.5, 24.0, 13.0]",
+          "xsd:label": "Coordinate 0009"
+        },
+        {
+          "@id": "niiri:d96b518d-2c35-482b-8493-1c2c2992d792",
+          "@type": [
+            "obo:STATO_0000039",
+            "nidm_ExtentThreshold",
+            "prov:Entity"
+          ],
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "0"
+          },
+          "xsd:label": "Extent Threshold: k>=0"
+        },
+        {
+          "@id": "niiri:e76b15c8-82ba-49f1-835e-c49b7b18d261",
+          "@type": [
+            "prov:Entity",
+            "nidm_Coordinate",
+            "prov:Location"
+          ],
+          "nidm_coordinateVector": "[51.6, -25.0, -10.0]",
+          "nidm_coordinateVectorInVoxels": "[16.0, 42.5, 16.0]",
+          "xsd:label": "Coordinate 0008"
+        },
+        {
+          "@id": "niiri:66b374d4-929b-4c0e-a011-be6796684ce7",
+          "@type": [
+            "nidm_Coordinate",
+            "prov:Location",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[28.1, -68.8, -25.0]",
+          "nidm_coordinateVectorInVoxels": "[23, 10, 10]",
+          "xsd:label": "Coordinate 17_02"
+        },
+        {
+          "@id": "niiri:125a9100-e6ab-42f0-a431-5c292934724a",
+          "@type": [
+            "prov:Location",
+            "nidm_Coordinate",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[3.12, 21.9, 35.0]",
+          "nidm_coordinateVectorInVoxels": "[17, 19, 24]",
+          "xsd:label": "Coordinate 04_01"
+        },
+        {
+          "@id": "niiri:aa01ad44-db98-4a3d-a746-63f01a1d3b51",
+          "@type": [
+            "nidm_ErrorModel",
+            "prov:Entity"
+          ],
+          "nidm_dependenceMapWiseDependence": {
+            "@id": "nidm:NIDM_0000074"
+          },
+          "nidm_errorVarianceHomogeneous": true,
+          "nidm_hasErrorDependence": {
+            "@id": "obo:STATO_0000357"
+          },
+          "nidm_hasErrorDistribution": {
+            "@id": "obo:STATO_0000227"
+          },
+          "nidm_varianceMapWiseDependence": {
+            "@id": "nidm:NIDM_0000073"
+          }
+        },
+        {
+          "@id": "niiri:6c3cd7f4-82d0-4518-b07c-969ffd29ed2f",
+          "@type": [
+            "nidm_Peak",
+            "prov:Entity"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "6.3"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "1.488228429380456e-10"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:5e861c17-5d11-475f-b19e-ff02e696ab37"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:aeb2a4de-4f5d-44ca-b87d-7edeaddc8f92"
+          },
+          "xsd:label": "Peak 12_01"
+        },
+        {
+          "@id": "niiri:f3fd493a-0013-4847-9773-d8a5600c84ff",
+          "@type": [
+            "nidm_SupraThresholdCluster",
+            "prov:Entity"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "1"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "1"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "0.0176"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0001"
+        },
+        {
+          "@id": "niiri:552daded-99db-466e-af78-2ef7350d29ca",
+          "@type": [
+            "nidm_ContrastMap",
+            "prov:Entity"
+          ],
+          "crypto:sha512": "f2df3de73c023be1d8d1f73703e3ffdbf08b69a27ae304cdf053e8639da9e579fd21a52a66584e04c865239f408bd30d7b5e690985ce7a20ccd2a50c3306fd55",
+          "dct:format": "image/nifti",
+          "nfo:fileName": "Contrast.nii.gz",
+          "nidm_contrastName": "tone counting vs baseline",
+          "nidm_inCoordinateSpace": {
+            "@id": "niiri:23d9225f-8534-4e58-be22-8b2309c18398"
+          },
+          "prov:atLocation": {
+            "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+            "@value": "Contrast.nii.gz"
+          },
+          "prov:wasGeneratedBy": {
+            "@id": "niiri:46c2d5ff-bc33-483d-9596-e984c503eb25"
+          },
+          "xsd:label": "Contrast Map: tone counting vs baseline"
+        },
+        {
+          "@id": "niiri:1fc0d5b8-e01b-4bcf-add2-ff9dd46db0c2",
+          "@type": [
+            "prov:Entity",
+            "nidm_Peak"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "5.7"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "5.9903714211273495e-09"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:36e40fa2-c7d7-4afd-9352-262660c2354f"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:e35acb64-b004-45d2-bfbd-5ca93683290c"
+          },
+          "xsd:label": "Peak 14_02"
+        },
+        {
+          "@id": "niiri:9048a023-1d26-4815-b088-00547765cf97",
+          "@type": [
+            "nidm_Peak",
+            "prov:Entity"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "5.26"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "7.20277008037229e-08"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:4b58f098-d579-4f0e-bc71-fe1521fa8c53"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:f3fd493a-0013-4847-9773-d8a5600c84ff"
+          },
+          "xsd:label": "Peak 01_01"
+        },
+        {
+          "@id": "niiri:edd7b68a-6edd-42fe-970b-61919e4360ef",
+          "@type": [
+            "nidm_Coordinate",
+            "prov:Entity",
+            "prov:Location"
+          ],
+          "nidm_coordinateVector": "[50.0, 32.8, 5.0]",
+          "nidm_coordinateVectorInVoxels": "[52.0, 37.5, 17.0]",
+          "xsd:label": "Coordinate 0007"
+        },
+        {
+          "@id": "niiri:68ce0305-4b8e-4804-ab76-ff262bc02576",
+          "@type": [
+            "nidm_ClusterCenterOfGravity",
+            "prov:Entity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:6fab6402-33f5-489a-b99b-3b751a56197b"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:3223351f-75b2-4f8f-a8ac-843bf3b4f5bc"
+          },
+          "xsd:label": "Center of gravity 18"
+        },
+        {
+          "@id": "niiri:4025b5ea-bbfd-43c8-969b-f25e52dba8d4",
+          "@type": [
+            "nidm_ClusterDefinitionCriteria",
+            "prov:Entity"
+          ],
+          "nidm_hasConnectivityCriterion": {
+            "@id": "nidm:NIDM_0000129"
+          },
+          "xsd:label": "Cluster Connectivity Criterion: 26"
+        },
+        {
+          "@id": "niiri:736a5080-c9ef-49ad-be3d-1d3dcfdbf66d",
+          "@type": [
+            "prov:Entity",
+            "nidm_Coordinate",
+            "prov:Location"
+          ],
+          "nidm_coordinateVector": "[-37.5, 3.66, 35.0]",
+          "nidm_coordinateVectorInVoxels": "[44.0, 33.2, 22.0]",
+          "xsd:label": "Coordinate 0013"
+        },
+        {
+          "@id": "niiri:48f8d18a-bb1a-40bd-a7c7-c59f79bf1b5c",
+          "@type": [
+            "nidm_ParameterEstimateMap",
+            "prov:Entity"
+          ],
+          "crypto:sha512": "43cd79a08a78b1873136d33e871af5a5bc85ab6e8193b8dfd2c5add4765c91ae502be137dbab45d38f13ddc74d82cf06ecd5ea633841afdd4df589c14be9e345",
+          "dct:format": "image/nifti",
+          "nfo:fileName": "ParameterEstimate_002.nii.gz",
+          "nidm_inCoordinateSpace": {
+            "@id": "niiri:23d9225f-8534-4e58-be22-8b2309c18398"
+          },
+          "prov:atLocation": {
+            "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+            "@value": "ParameterEstimate_002.nii.gz"
+          },
+          "prov:wasGeneratedBy": {
+            "@id": "niiri:d9883336-22c6-4ed3-a6e0-6737a4f78ff6"
+          },
+          "xsd:label": "Parameter estimate 2"
+        },
+        {
+          "@id": "niiri:5bbd31ba-eb3e-4baf-a9ec-09dfe6a1bd1f",
+          "@type": [
+            "prov:Entity",
+            "prov:Location",
+            "nidm_Coordinate"
+          ],
+          "nidm_coordinateVector": "[59.4, -28.1, 15.0]",
+          "nidm_coordinateVectorInVoxels": "[31, 39, 22]",
+          "xsd:label": "Coordinate 05_01"
+        },
+        {
+          "@id": "niiri:e35acb64-b004-45d2-bfbd-5ca93683290c",
+          "@type": [
+            "nidm_SupraThresholdCluster",
+            "prov:Entity"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "14"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "6"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "0.000798"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0014"
+        },
+        {
+          "@id": "niiri:c3d413b5-98da-4339-8e30-a3d6cfebe2ba",
+          "@type": [
+            "prov:Entity",
+            "nidm_Peak"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "6.52"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "3.5153657762521107e-11"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:31dc166d-200e-4ba5-a62d-4870c07ab142"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:96366b1b-f111-4f87-adec-0be1307e68dd"
+          },
+          "xsd:label": "Peak 13_01"
+        },
+        {
+          "@id": "niiri:694cbe69-b9ba-41e0-ab99-c12be0ddd976",
+          "@type": [
+            "nidm_Coordinate",
+            "prov:Location",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[24.3, -70.3, -6.64]",
+          "nidm_coordinateVectorInVoxels": "[24.2, 9.49, 13.7]",
+          "xsd:label": "Coordinate 0014"
+        },
+        {
+          "@id": "niiri:501313ba-b16c-4bb4-9c58-eb449479d6d8",
+          "@type": [
+            "nidm_ClusterCenterOfGravity",
+            "prov:Entity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:f8a2ba2b-f1f2-4dee-8238-186c775c2a18"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:e1ff26bf-aeb0-4698-9602-24bd8df43ad7"
+          },
+          "xsd:label": "Center of gravity 6"
+        },
+        {
+          "@id": "niiri:595ff473-c9df-4585-bee6-3592b71da90e",
+          "@type": [
+            "prov:Entity",
+            "nidm_Coordinate",
+            "prov:Location"
+          ],
+          "nidm_coordinateVector": "[26.9, 36.9, -7.07]",
+          "nidm_coordinateVectorInVoxels": "[23.4, 43.8, 13.6]",
+          "xsd:label": "Coordinate 0016"
+        },
+        {
+          "@id": "niiri:23d9225f-8534-4e58-be22-8b2309c18398",
+          "@type": [
+            "nidm_CoordinateSpace",
+            "prov:Entity"
+          ],
+          "nidm_dimensionsInVoxels": "[64, 64, 30]",
+          "nidm_inWorldCoordinateSystem": {
+            "@id": "nidm:NIDM_0000077"
+          },
+          "nidm_numberOfDimensions": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "3"
+          },
+          "nidm_voxelSize": "[3.125, 3.125, 5.0]",
+          "nidm_voxelToWorldMapping": "[[-3.125, 0.0, 0.0, 100.0], [0.0, 3.125, 0.0, -100.0], [0.0, 0.0, 5.0, -75.0], [0.0, 0.0, 0.0, 1.0]]",
+          "nidm_voxelUnits": "[\"mm\", \"mm\", \"mm\"]",
+          "xsd:label": "Coordinate space"
+        },
+        {
+          "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51",
+          "@type": [
+            "nidm_ExcursionSetMap",
+            "prov:Entity"
+          ],
+          "crypto:sha512": "bb9b7380a33344b863751b4b168ac72f8cbef05fdc99581e34bae24f1641edb4a156132bc8655bf2fc32eae33155fea092907332a83ed9c00ab3172b272dd43f",
+          "dc:description": {
+            "@id": "niiri:8fd288a9-2126-4ffe-8cb4-d9602f6d0a9f"
+          },
+          "dct:format": "image/nifti",
+          "nfo:fileName": "ExcursionSet.nii.gz",
+          "nidm_hasClusterLabelsMap": {
+            "@id": "niiri:ac74b404-e5bf-4164-96dd-8da9c8934a9b"
+          },
+          "nidm_inCoordinateSpace": {
+            "@id": "niiri:23d9225f-8534-4e58-be22-8b2309c18398"
+          },
+          "prov:atLocation": {
+            "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+            "@value": "ExcursionSet.nii.gz"
+          },
+          "prov:wasGeneratedBy": {
+            "@id": "niiri:65466c9b-cb03-46c2-aaa7-a3112b68f12b"
+          },
+          "xsd:label": "Excursion Set Map"
+        },
+        {
+          "@id": "niiri:08ab3673-957a-41a3-ba22-6c3dc6ad3263",
+          "@type": [
+            "prov:Entity",
+            "prov:Location",
+            "nidm_Coordinate"
+          ],
+          "nidm_coordinateVector": "[28.6, 9.35, 32.6]",
+          "nidm_coordinateVectorInVoxels": "[22.9, 35.0, 21.5]",
+          "xsd:label": "Coordinate 0012"
+        },
+        {
+          "@id": "niiri:44b9d525-ee0a-47b7-852d-bd03e1a67b9a",
+          "@type": [
+            "prov:Entity",
+            "nidm_Coordinate",
+            "prov:Location"
+          ],
+          "nidm_coordinateVector": "[34.4, 28.1, 40.0]",
+          "nidm_coordinateVectorInVoxels": "[21.0, 41.0, 23.0]",
+          "xsd:label": "Coordinate 0001"
+        },
+        {
+          "@id": "niiri:cd1af08b-80cb-4ed1-a7db-d6d6ce6ba8f5",
+          "@type": [
+            "prov:Entity",
+            "nidm_ClusterCenterOfGravity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:e76b15c8-82ba-49f1-835e-c49b7b18d261"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:95e7e45a-60ed-4ccd-a1ff-5a6761f6eef8"
+          },
+          "xsd:label": "Center of gravity 8"
+        },
+        {
+          "@id": "niiri:d93d811d-555e-41c2-acb4-76a48d5cf132",
+          "@type": [
+            "fsl_GaussianRunningLineDriftModel",
+            "prov:Entity"
+          ],
+          "fsl_driftCutoffPeriod": 60.0,
+          "xsd:label": "FSL's Gaussian Running Line Drift Model"
+        },
+        {
+          "@id": "niiri:56520da1-d3c2-4830-b534-1fb82d0034d6",
+          "@type": [
+            "prov:Entity",
+            "nidm_Peak"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "5.35"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "4.3977115948834467e-08"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:125a9100-e6ab-42f0-a431-5c292934724a"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:198c75f8-2494-4d4c-a0dd-fb3a42380f4c"
+          },
+          "xsd:label": "Peak 04_01"
+        },
+        {
+          "@id": "niiri:61198ced-37f7-46cc-b545-6fea143f73ec",
+          "@type": [
+            "nidm_StatisticMap",
+            "prov:Entity"
+          ],
+          "crypto:sha512": "07ddd4fabb8409815459be622465fdb1462fcba124be9a521fbd51ea6d03c582dc4cae2b08cdecd0662e19ac958b5c37a58d3da6b6ee05ae212039a31f91056d",
+          "dct:format": "image/nifti",
+          "nfo:fileName": "ZStatistic.nii.gz",
+          "nidm_contrastName": "tone counting vs baseline",
+          "nidm_effectDegreesOfFreedom": 1.0,
+          "nidm_errorDegreesOfFreedom": Infinity,
+          "nidm_inCoordinateSpace": {
+            "@id": "niiri:23d9225f-8534-4e58-be22-8b2309c18398"
+          },
+          "nidm_statisticType": {
+            "@id": "obo:STATO_0000376"
+          },
+          "prov:atLocation": {
+            "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+            "@value": "ZStatistic.nii.gz"
+          },
+          "prov:wasGeneratedBy": {
+            "@id": "niiri:46c2d5ff-bc33-483d-9596-e984c503eb25"
+          },
+          "xsd:label": "Z-Statistic Map: tone counting vs baseline"
+        },
+        {
+          "@id": "niiri:b3707f4b-717b-41de-9b2d-a0acff575308",
+          "@type": [
+            "nidm_Peak",
+            "prov:Entity"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "7.47"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "4.007905118896815e-14"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:a0df7bec-572d-4c36-82e6-6c2f8b43eb86"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:2d9c4d12-6b1e-4a4d-8581-8bc6e7921cb9"
+          },
+          "xsd:label": "Peak 20_01"
+        },
+        {
+          "@id": "niiri:96366b1b-f111-4f87-adec-0be1307e68dd",
+          "@type": [
+            "nidm_SupraThresholdCluster",
+            "prov:Entity"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "13"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "6"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "1.66e-05"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0013"
+        },
+        {
+          "@id": "niiri:c08a3dfb-2c4b-4e97-bc4d-bf3c4b401864",
+          "@type": [
+            "prov:Entity",
+            "nidm_Peak"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "5.32"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "5.188362606212138e-08"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:5bbd31ba-eb3e-4baf-a9ec-09dfe6a1bd1f"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:2c82139f-3180-4277-a26d-c5ad48bf9929"
+          },
+          "xsd:label": "Peak 05_01"
+        },
+        {
+          "@id": "niiri:ee5942d0-f732-4c38-b300-5d2f1438d8ba",
+          "@type": [
+            "nidm_Peak",
+            "prov:Entity"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "5.86"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "2.314335834086023e-09"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:7d5f46d0-25cd-4e93-a13f-8c6b24a8216a"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:e35acb64-b004-45d2-bfbd-5ca93683290c"
+          },
+          "xsd:label": "Peak 14_01"
+        },
+        {
+          "@id": "niiri:c0743061-43c3-4687-9a9e-242e9db83941",
+          "@type": [
+            "prov:Location",
+            "nidm_Coordinate",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[59.4, -28.1, 35.0]",
+          "nidm_coordinateVectorInVoxels": "[13, 23, 22]",
+          "xsd:label": "Coordinate 02_01"
+        },
+        {
+          "@id": "niiri:36e40fa2-c7d7-4afd-9352-262660c2354f",
+          "@type": [
+            "prov:Entity",
+            "nidm_Coordinate",
+            "prov:Location"
+          ],
+          "nidm_coordinateVector": "[28.1, -68.8, -10.0]",
+          "nidm_coordinateVectorInVoxels": "[23, 10, 13]",
+          "xsd:label": "Coordinate 14_02"
+        },
+        {
+          "@id": "niiri:5525ee9f-e98c-4d38-883a-9f8903fff49b",
+          "@type": [
+            "prov:Entity",
+            "nidm_Peak"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "5.78"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "3.735031284257673e-09"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:bf44c0b3-5e8a-4d4c-82ba-53f65e163412"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:96366b1b-f111-4f87-adec-0be1307e68dd"
+          },
+          "xsd:label": "Peak 13_02"
+        },
+        {
+          "@id": "niiri:4b58f098-d579-4f0e-bc71-fe1521fa8c53",
+          "@type": [
+            "prov:Entity",
+            "nidm_Coordinate",
+            "prov:Location"
+          ],
+          "nidm_coordinateVector": "[34.4, 28.1, 40.0]",
+          "nidm_coordinateVectorInVoxels": "[21, 41, 23]",
+          "xsd:label": "Coordinate 01_01"
+        },
+        {
+          "@id": "niiri:4df7fea5-e268-4be9-86af-a9c1639a7a74",
+          "@type": [
+            "prov:Entity",
+            "nidm_ClusterCenterOfGravity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:306030be-289c-409f-b525-96c9d26eceab"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:e0c2f249-fb06-4113-840a-9804e899b987"
+          },
+          "xsd:label": "Center of gravity 19"
+        },
+        {
+          "@id": "niiri:5d98a500-4a65-45fa-a14e-7704e9c0c159",
+          "@type": [
+            "nidm_Peak",
+            "prov:Entity"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "5.93"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "1.5146733867155149e-09"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:bef90e58-5796-4d1a-bdad-d9ee0529400c"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:73f66dab-e8af-49e3-911a-4c8fa78042de"
+          },
+          "xsd:label": "Peak 07_01"
+        },
+        {
+          "@id": "niiri:e05d38a5-35fa-4768-8daf-57b015d67954",
+          "@type": [
+            "nidm_Coordinate",
+            "prov:Location",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[-12.5, 15.6, 40.0]",
+          "nidm_coordinateVectorInVoxels": "[36, 37, 23]",
+          "xsd:label": "Coordinate 15_01"
+        },
+        {
+          "@id": "niiri:8fd288a9-2126-4ffe-8cb4-d9602f6d0a9f",
+          "@type": [
+            "http://purl.org/dc/dcmitype/Image",
+            "prov:Entity"
+          ],
+          "dct:format": "image/png",
+          "nfo:fileName": "ExcursionSet.png",
+          "prov:atLocation": {
+            "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+            "@value": "ExcursionSet.png"
+          }
+        },
+        {
+          "@id": "niiri:306030be-289c-409f-b525-96c9d26eceab",
+          "@type": [
+            "nidm_Coordinate",
+            "prov:Entity",
+            "prov:Location"
+          ],
+          "nidm_coordinateVector": "[50.4, -21.8, 24.6]",
+          "nidm_coordinateVectorInVoxels": "[15.9, 25.0, 19.9]",
+          "xsd:label": "Coordinate 0019"
+        },
+        {
+          "@id": "niiri:19427284-6a91-4b83-878d-e80d32f7e1c4",
+          "@type": [
+            "nidm_Peak",
+            "prov:Entity"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "7.26"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "1.936228954946273e-13"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:a84616dc-8f3e-411f-b30e-056219f63aad"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:3223351f-75b2-4f8f-a8ac-843bf3b4f5bc"
+          },
+          "xsd:label": "Peak 18_01"
+        },
+        {
+          "@id": "niiri:23ea7e4d-e254-4a3b-836b-f5eea44e9391",
+          "@type": [
+            "nidm_Peak",
+            "prov:Entity"
+          ],
+          "nidm_equivalentZStatistic": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "5.58"
+          },
+          "nidm_pValueUncorrected": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "1.202592925242385e-08"
+          },
+          "prov:atLocation": {
+            "@id": "niiri:72a8aae5-a5e6-4dc0-ab42-937ef07630ab"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:0e00022c-b2b2-45d8-b2b4-c84e0de11e05"
+          },
+          "xsd:label": "Peak 10_01"
+        },
+        {
+          "@id": "niiri:ee7c0613-1126-430d-b84f-56798cf3437b",
+          "@type": [
+            "nidm_ContrastStandardErrorMap",
+            "prov:Entity"
+          ],
+          "crypto:sha512": "5f6c299048c1245e76c1c3ea09e6bf78ebf21e7380b2abf6ef8e0ca40723cbbbb731c436e99d458324aaa884cf97e42736f26e46d182ae16640c2ce8db1fdb4c",
+          "dct:format": "image/nifti",
+          "nfo:fileName": "ContrastStandardError.nii.gz",
+          "nidm_inCoordinateSpace": {
+            "@id": "niiri:23d9225f-8534-4e58-be22-8b2309c18398"
+          },
+          "prov:atLocation": {
+            "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+            "@value": "ContrastStandardError.nii.gz"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:c552230a-a832-4b88-ad83-06aac9924177"
+          },
+          "prov:wasGeneratedBy": {
+            "@id": "niiri:46c2d5ff-bc33-483d-9596-e984c503eb25"
+          },
+          "xsd:label": "Contrast Standard Error Map"
+        },
+        {
+          "@id": "niiri:65466c9b-cb03-46c2-aaa7-a3112b68f12b",
+          "@type": [
+            "prov:Activity",
+            "nidm_Inference"
+          ],
+          "nidm_hasAlternativeHypothesis": {
+            "@id": "nidm:NIDM_0000060"
+          },
+          "prov:used": [
+            {
+              "@id": "niiri:4730992e-d277-4bc7-907a-8734ddff2d68"
+            },
+            {
+              "@id": "niiri:62e01fa8-1639-495d-b10b-32d9674996dc"
+            },
+            {
+              "@id": "niiri:d96b518d-2c35-482b-8493-1c2c2992d792"
+            },
+            {
+              "@id": "niiri:61198ced-37f7-46cc-b545-6fea143f73ec"
+            },
+            {
+              "@id": "niiri:4025b5ea-bbfd-43c8-969b-f25e52dba8d4"
+            }
+          ],
+          "prov:wasAssociatedWith": {
+            "@id": "niiri:0b84e812-9b6f-4771-a110-ea124f55b5ae"
+          },
+          "xsd:label": "Inference: tone counting vs baseline"
+        },
+        {
+          "@id": "niiri:72a8aae5-a5e6-4dc0-ab42-937ef07630ab",
+          "@type": [
+            "nidm_Coordinate",
+            "prov:Location",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[37.5, -50.0, 25.0]",
+          "nidm_coordinateVectorInVoxels": "[20, 16, 20]",
+          "xsd:label": "Coordinate 10_01"
+        },
+        {
+          "@id": "niiri:7cf7d9f9-944f-40f6-8d21-d90222718644",
+          "@type": [
+            "prov:Location",
+            "nidm_Coordinate",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[53.1, -25.0, -10.0]",
+          "nidm_coordinateVectorInVoxels": "[16, 42, 16]",
+          "xsd:label": "Coordinate 08_01"
+        },
+        {
+          "@id": "niiri:a84616dc-8f3e-411f-b30e-056219f63aad",
+          "@type": [
+            "prov:Location",
+            "nidm_Coordinate",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[-53.1, 6.25, 25.0]",
+          "nidm_coordinateVectorInVoxels": "[49, 34, 20]",
+          "xsd:label": "Coordinate 18_01"
+        },
+        {
+          "@id": "niiri:0e00022c-b2b2-45d8-b2b4-c84e0de11e05",
+          "@type": [
+            "prov:Entity",
+            "nidm_SupraThresholdCluster"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "10"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "3"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "0.00361"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0010"
+        },
+        {
+          "@id": "niiri:48562784-3b39-4d78-9afa-67c0071c8643",
+          "@type": [
+            "prov:Location",
+            "nidm_Coordinate",
+            "prov:Entity"
+          ],
+          "nidm_coordinateVector": "[36.4, -50.1, 26.7]",
+          "nidm_coordinateVectorInVoxels": "[20.3, 16.0, 20.3]",
+          "xsd:label": "Coordinate 0010"
+        },
+        {
+          "@id": "niiri:cc58a2fc-8eba-4c80-bfcf-c1663e5476a4",
+          "@type": [
+            "prov:Entity",
+            "nidm_ClusterCenterOfGravity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:a6058b61-a0c7-4f3e-8617-616180464418"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:363af9ba-e877-4975-8327-b990af0461ac"
+          },
+          "xsd:label": "Center of gravity 17"
+        },
+        {
+          "@id": "niiri:89ebba49-6528-4b47-9449-5e6d15863208",
+          "@type": [
+            "prov:Entity",
+            "nidm_ClusterCenterOfGravity"
+          ],
+          "prov:atLocation": {
+            "@id": "niiri:694cbe69-b9ba-41e0-ab99-c12be0ddd976"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:e35acb64-b004-45d2-bfbd-5ca93683290c"
+          },
+          "xsd:label": "Center of gravity 14"
+        },
+        {
+          "@id": "niiri:e0c2f249-fb06-4113-840a-9804e899b987",
+          "@type": [
+            "prov:Entity",
+            "nidm_SupraThresholdCluster"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "19"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "13"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "2.45e-08"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0019"
+        },
+        {
+          "@id": "niiri:6fab6402-33f5-489a-b99b-3b751a56197b",
+          "@type": [
+            "prov:Entity",
+            "prov:Location",
+            "nidm_Coordinate"
+          ],
+          "nidm_coordinateVector": "[-52.4, 7.87, 22.0]",
+          "nidm_coordinateVectorInVoxels": "[48.8, 34.5, 19.4]",
+          "xsd:label": "Coordinate 0018"
+        },
+        {
+          "@id": "niiri:aa53e202-61f8-4473-8276-5d6770dd676a",
+          "@type": [
+            "prov:Entity",
+            "nidm_SupraThresholdCluster"
+          ],
+          "nidm_clusterLabelId": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "16"
+          },
+          "nidm_clusterSizeInVoxels": {
+            "@type": "http://www.w3.org/2001/XMLSchema#int",
+            "@value": "10"
+          },
+          "nidm_pValueFWER": {
+            "@type": "http://www.w3.org/2001/XMLSchema#float",
+            "@value": "0.000205"
+          },
+          "prov:wasDerivedFrom": {
+            "@id": "niiri:fc09d5e0-a7ca-438b-95f1-2efc025f3f51"
+          },
+          "xsd:label": "Supra-Threshold Cluster 0016"
+        }
+      ],
+      "@id": "niiri:41f32650-8c64-4209-a2d9-2a69f3bd7225"
+    }
+  ]
+}
