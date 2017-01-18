@@ -4,9 +4,6 @@
 # Mac .DS_Store files
 *.DS_Store
 
-# html folder
-**/html
-
 # images in data folder
 Data/*.png
 
@@ -24,3 +21,9 @@ Data/*.png
 
 #ttl files
 *.ttl
+
+#ZIP files
+*.zip
+
+#data
+/Data/*

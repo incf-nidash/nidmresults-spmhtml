@@ -1,11 +1,14 @@
-%To run the below tests use the following code:
-%import matlab.unittest.TestSuite;
-%tests = matlab.unittest.TestSuite.fromFile(which('nidmExampleDataTest'))
-%result = run(tests)
+%==========================================================================
+%Unit tests for testing features of the viewer. To run the below run the 
+%runTest function.
+%
+%Authors: Thomas Maullin, Camille Maumet.
+%==========================================================================
 
-classdef nidmExampleDataTest < matlab.unittest.TestCase
+classdef testFeatures < matlab.unittest.TestCase
        
     methods
+        %Function for deleting any HTML generated previously by the viewer.
         function delete_html_file(testCase, data_path)
             index = fullfile(data_path, 'index.html');
             if exist(index, 'file')
@@ -19,8 +22,22 @@ classdef nidmExampleDataTest < matlab.unittest.TestCase
         %Checking the viewer runs on SPM-nidm input.
         function checkViewerRunsSPM(testCase)
             data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default');
+            if(~exist(data_path, 'dir'))
+                mkdir(data_path)
+                websave(fullfile(data_path, 'tmp.zip'), 'http://neurovault.org/collections/1692/ex_spm_default.nidm.zip');
+                unzip(fullfile(data_path, 'tmp.zip'), fullfile(data_path, '.'));
+                
+                %Save the download link in the json.
+                json = spm_jsonread(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons', 'ex_spm_default.json'));
+                [designMatrix, dmLocation] = searchforType('nidm_DesignMatrix', json.x_graph);  
+                designMatrix{1}.prov_atLocation.x_value = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default', 'DesignMatrix.csv');
+                graph = json.x_graph;
+                graph{dmLocation{1}} = designMatrix{1};
+                json.x_graph = graph;
+                spm_jsonwrite(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons', 'ex_spm_default.json'),json);
+            end
             testCase.delete_html_file(data_path);
-            nidm_results_display(fullfile(data_path, 'nidm.json'));
+            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons', 'ex_spm_default.json'));
         end
         
         %Checking the experiment title is somewhere in the output HTML
@@ -28,7 +45,7 @@ classdef nidmExampleDataTest < matlab.unittest.TestCase
         function checkForTitle(testCase)
             data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default');
             testCase.delete_html_file(data_path);
-            nidm_results_display(fullfile(data_path, 'nidm.json'));
+            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons', 'ex_spm_default.json'));
             text = fileread(fullfile(data_path, 'index.html'));
             verifySubstring(testCase, text, 'tone counting vs baseline');
         end
@@ -49,14 +66,14 @@ classdef nidmExampleDataTest < matlab.unittest.TestCase
         function checkViewerRunsFSL(testCase)
             data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'fsl_default');
             testCase.delete_html_file(data_path);
-            nidm_results_display(fullfile(data_path, 'nidm.json'));
+            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons', 'fsl_default.json'));
         end
         
         %Checking the viewer runs on SPM-nidm output with no MIP.
         function checkViewerRunsSPMwoMIP(testCase)
             data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default');
             testCase.delete_html_file(data_path);
-            nidm_results_display(fullfile(data_path, 'nidmwithoutMIP.json'));
+            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'testJsons', 'ex_spm_default.json'));
         end
         
 %         %Checking the nidm json is not damaged by the viewer.
@@ -73,5 +90,6 @@ classdef nidmExampleDataTest < matlab.unittest.TestCase
 %             end
 %             verifyEqual(testCase, currentNIDM.x_graph{testObject}, originalNIDM.x_graph{testObject});
 %         end
+
     end
 end
