@@ -21,31 +21,31 @@ classdef testFeatures < matlab.unittest.TestCase
         
         %Checking the viewer runs on SPM-nidm input.
         function checkViewerRunsSPM(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default');
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default');
             if(~exist(data_path, 'dir'))
                 mkdir(data_path)
                 websave(fullfile(data_path, 'tmp.zip'), 'http://neurovault.org/collections/1692/ex_spm_default.nidm.zip');
                 unzip(fullfile(data_path, 'tmp.zip'), fullfile(data_path, '.'));
                 
                 %Save the download link in the json.
-                json = spm_jsonread(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons', 'ex_spm_default.json'));
+                json = spm_jsonread(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons', 'ex_spm_default.json'));
                 [designMatrix, dmLocation] = searchforType('nidm_DesignMatrix', json.x_graph);  
-                designMatrix{1}.prov_atLocation.x_value = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default', 'DesignMatrix.csv');
+                designMatrix{1}.prov_atLocation.x_value = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default', 'DesignMatrix.csv');
                 graph = json.x_graph;
                 graph{dmLocation{1}} = designMatrix{1};
                 json.x_graph = graph;
-                spm_jsonwrite(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons', 'ex_spm_default.json'),json);
+                spm_jsonwrite(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons', 'ex_spm_default.json'),json);
             end
             testCase.delete_html_file(data_path);
-            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons', 'ex_spm_default.json'));
+            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons', 'ex_spm_default.json'));
         end
         
         %Checking the experiment title is somewhere in the output HTML
         %file.
         function checkForTitle(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default');
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default');
             testCase.delete_html_file(data_path);
-            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons', 'ex_spm_default.json'));
+            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons', 'ex_spm_default.json'));
             text = fileread(fullfile(data_path, 'index.html'));
             verifySubstring(testCase, text, 'tone counting vs baseline');
         end
@@ -53,7 +53,7 @@ classdef testFeatures < matlab.unittest.TestCase
         %Checking the original functionality of the viewer with the
         %original SPM, xSPM and TabDat functions is unaffected.
         function checkOriginalViewerRuns(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_output');
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_output');
             testCase.delete_html_file(data_path);
             cwd = pwd;
             cd(data_path)
@@ -64,21 +64,21 @@ classdef testFeatures < matlab.unittest.TestCase
         
         %Checking the viewer runs on FSL-nidm output.
         function checkViewerRunsFSL(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'fsl_default');
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'fsl_default');
             testCase.delete_html_file(data_path);
-            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons', 'fsl_default.json'));
+            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons', 'fsl_default.json'));
         end
         
         %Checking the viewer runs on SPM-nidm output with no MIP.
         function checkViewerRunsSPMwoMIP(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'ex_spm_default');
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default');
             testCase.delete_html_file(data_path);
-            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'testJsons', 'ex_spm_default.json'));
+            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'testJsons', 'ex_spm_default.json'));
         end
         
 %         %Checking the nidm json is not damaged by the viewer.
 %         function checkNIDMUnaffected(testCase)
-%             fsl_default_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'fsl_default');
+%             fsl_default_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'fsl_default');
 %             testCase.delete_html_file(fsl_default_dir);
 %             nidm_results_display(fullfile(fsl_default_dir, 'nidm.json'));
 %             originalNIDM = spm_jsonread(fullfile(fsl_default_dir, 'nidmWithoutMip.json'));
