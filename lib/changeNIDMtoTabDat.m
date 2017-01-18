@@ -27,11 +27,20 @@ function NTabDat = changeNIDMtoTabDat(graph)
     for i = 1:length(agentObjects)
         soft_type = agentObjects{i}.('x_type');
         if any(ismember(soft_type, 'http://scicrunch.org/resolver/SCR_002823'))...
-                || any(ismember(agentObjects{i}.('x_type'), 'scr_FSL'))
+                || any(ismember(soft_type, 'scr_FSL')) ...
+                || any(ismember(soft_type, 'src_FSL'))
             software = 'FSL';
         elseif any(ismember(soft_type, 'http://scicrunch.org/resolver/SCR_007037'))...
-                || any(ismember(soft_type, 'scr_SPM'))
+                || any(ismember(soft_type, 'scr_SPM')) ...
+                || any(ismember(soft_type, 'src_SPM'))
             software = 'SPM';
+        % The two options here are assuming analysis software and export
+        % software are the same (ideally we should instead explicitely
+        % check for the analysis software)
+        elseif any(ismember(soft_type, 'nidm_spm_results_nidm'))
+            software = 'SPM';
+        elseif any(ismember(soft_type, 'nidm_nidmfsl'))
+            software = 'FSL';
         else
             disp(soft_type);
             error('nidm:UnrecognisedSoftware', 'Unrecognised software')
