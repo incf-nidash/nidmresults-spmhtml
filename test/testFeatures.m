@@ -66,7 +66,7 @@ classdef testFeatures < matlab.unittest.TestCase
         function checkViewerRunsFSL(testCase)
             data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'fsl_default');
             testCase.delete_html_file(data_path);
-            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons', 'fsl_default.json'));
+            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons', 'fsl_default_130.json'));
         end
         
         %Checking the viewer runs on SPM-nidm output with no MIP.
