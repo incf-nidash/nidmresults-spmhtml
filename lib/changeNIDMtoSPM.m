@@ -19,10 +19,12 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp)
     nidmTemp = struct;
     designMatrix = searchforType('nidm_DesignMatrix', graph);
     
-    %Find the location of the design matrix.
-    try
+    % Find the location of the design matrix (case depends on the version of 
+    % the exporter, in the future we should look at the URI to avoid relying on 
+    % attribute names)
+    if isfield(designMatrix{1}, 'dc_description')
         locationID = searchforID(designMatrix{1}.('dc_description').('x_id'), graph);
-    catch
+    elseif isfield(designMatrix{1}, 'dc_Description')
         locationID = searchforID(designMatrix{1}.('dc_Description').('x_id'), graph);
     end
     nidmTemp.DesMat = getPathDetails(locationID.('prov_atLocation').('x_value'), filepathTemp);
