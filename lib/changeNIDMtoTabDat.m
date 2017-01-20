@@ -331,14 +331,14 @@ function NTabDat = changeNIDMtoTabDat(graph)
             for j = 1:min(numOfPeaks, length(peaksTemp))
                 %Fill the values we know.
                 if peaksFWEP
-                    tableTemp{n, 7} = get_value(str2double(peaksTemp{j}.('nidm_pValueFWER')));
+                    tableTemp{n, 7} = str2double(get_value(peaksTemp{j}.('nidm_pValueFWER')));
                 end
                 if peaksFDRP
-                    tableTemp{n, 8} = get_value(str2double(peaksTemp{j}.('nidm_qValueFDR')));
+                    tableTemp{n, 8} = str2double(get_value(peaksTemp{j}.('nidm_qValueFDR')));
                 end
-                tableTemp{n, 11} = get_value(str2double(peaksTemp{j}.('nidm_pValueUncorrected')));
+                tableTemp{n, 11} = str2double(get_value(peaksTemp{j}.('nidm_pValueUncorrected')));
                 if peaksStat
-                    tableTemp{n, 9} = get_value(str2double(peaksTemp{j}.('prov_value')));
+                    tableTemp{n, 9} = str2double(get_value(peaksTemp{j}.('prov_value')));
                 else
                     %Calculate whichever statistic type is used.
                     if strcmp(statType, 'T')
