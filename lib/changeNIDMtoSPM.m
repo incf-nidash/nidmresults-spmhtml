@@ -8,10 +8,8 @@
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
-function NSPM = changeNIDMtoSPM(json)
+function NSPM = changeNIDMtoSPM(graph, filepathTemp)
 
-    graph = json.('x_graph');
-    filepathTemp = json.filepath;
     NSPM = struct;
     
     %======================================================================
@@ -21,12 +19,18 @@ function NSPM = changeNIDMtoSPM(json)
     nidmTemp = struct;
     designMatrix = searchforType('nidm_DesignMatrix', graph);
     
-    %Find the location of the design matrix.
-    locationID = searchforID(designMatrix{1}.('dc_description').('x_id'), graph);
-    nidmTemp.DesMat = getPathDetails(locationID.('prov_atLocation').('x_value'), json.filepath);
+    % Find the location of the design matrix (case depends on the version of 
+    % the exporter, in the future we should look at the URI to avoid relying on 
+    % attribute names)
+    if isfield(designMatrix{1}, 'dc_description')
+        locationID = searchforID(designMatrix{1}.('dc_description').('x_id'), graph);
+    elseif isfield(designMatrix{1}, 'dc_Description')
+        locationID = searchforID(designMatrix{1}.('dc_Description').('x_id'), graph);
+    end
+    nidmTemp.DesMat = getPathDetails(locationID.('prov_atLocation').('x_value'), filepathTemp);
     
     %Read the csv file and obtain it's dimensions.
-    csvFilePath = getPathDetails(designMatrix{1}.('prov_atLocation').('x_value'), json.filepath);
+    csvFilePath = getPathDetails(designMatrix{1}.('prov_atLocation').('x_value'), filepathTemp);
     csvFile = csvread(csvFilePath);
     nidmTemp.dim = size(csvFile);
     
@@ -57,10 +61,15 @@ function NSPM = changeNIDMtoSPM(json)
     %Get the regressor names in required format.
     remain = strrep(strrep(strrep(strrep(designMatrices{1}.nidm_regressorNames, '\"', ''), '[', ''), ']', ''), ',', '');
     counter = 1;
-    while ~isempty(remain)
-        [token, remain] = strtok(remain, ' ');
-        regNameCell{counter} = token;
-        counter = counter+1;
+    % Deal with the case of empty regressor names
+    if isempty(remain)
+        regNameCell{1} = '';
+    else
+        while ~isempty(remain)
+            [token, remain] = strtok(remain, ' ');
+            regNameCell{counter} = token;
+            counter = counter+1;
+        end
     end
     
     xXtemp.name = regNameCell;

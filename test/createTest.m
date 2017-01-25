@@ -34,7 +34,7 @@ function createTest()
     fprintf(FID, start);
     
     %Make a list of all json names stored locally.
-    files=dir([fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons','*.json')]);
+    files=dir([fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons','*.json')]);
     jsonFileList={files.name};
     jsonFileNameList = strrep(jsonFileList, '.json', '');
 
@@ -42,32 +42,43 @@ function createTest()
     
     for i = 1:length(jsonFileList)      
         %Find the json download location.
-        json = spm_jsonread(fullfile(fileparts(mfilename('fullpath')), '..', 'Data', 'jsons', jsonFileList{i}));
-        [designMatrix, dmLocation] = searchforType('nidm_DesignMatrix', json.x_graph);
+        json = spm_jsonread(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons', jsonFileList{i}));
+        
+        % Deal with sub-graphs (bundle)
+        graph = json.x_graph;
+        if isfield(graph{2}, 'x_graph')
+            graph = graph{2}.x_graph;
+        end
+        
+        [designMatrix, dmLocation] = searchforType('nidm_DesignMatrix', graph);
         goAhead = true;
         jsonLocation = [fileparts(designMatrix{1}.prov_atLocation.x_value), '.zip'];
         %ex_spm_default is an exception.
         if strcmp(jsonFileNameList{i}, 'ex_spm_default')
             jsonLocation = 'http://neurovault.org/collections/1692/ex_spm_default.nidm.zip';
         end
+        if strcmp(jsonLocation, '.zip')
+            % Design matrix file was define with relative path
+            jsonLocation = ['http://neurovault.org/collections/IBRBTZPC/' jsonFileNameList{i} '.nidm.zip'];
+        end
         %In case this is a json we cannot test, as we cannot obtain the 
         %json's corresponding files, so we don't make a test for it.
         if ((strcmp(jsonLocation,'')) || (strcmp(jsonLocation(1),'.')))...
-                &&~exist(fullfile(fileparts(mfilename('fullpath')),'..','Data',jsonFileNameList{i}), 'dir')
+                &&~exist(fullfile(fileparts(mfilename('fullpath')),'..','test', 'data',jsonFileNameList{i}), 'dir')
             goAhead = false;     
         end
         
         if(goAhead)
             tests = sprintf('%s' , '\n \n \t \t %%Test viewer displays ',jsonFileNameList{i},... 
                 '\n \t \t function test_', jsonFileNameList{i},'(testCase)',...
-                '\n \t \t \t data_path = fullfile(fileparts(mfilename(', sprintf('''fullpath'''), ')),', sprintf('''..'','), sprintf('''Data'','), '''', jsonFileNameList{i}, '''', ');',...
+                '\n \t \t \t data_path = fullfile(fileparts(mfilename(', sprintf('''fullpath'''), ')),', sprintf('''..'','), sprintf('''test'','), sprintf('''data'','), '''', jsonFileNameList{i}, '''', ');',...
                 '\n \t \t \t', sprintf(' if(~exist(data_path, ''dir''))'),...
                 '\n \t \t \t \t mkdir(data_path);',...
                 '\n \t \t \t \t websave([data_path, filesep, ''temp.zip''], ''', jsonLocation,''');',...
                 '\n \t \t \t \t unzip([data_path, filesep, ''temp.zip''], [data_path, filesep]);',...
                 '\n \t \t \t end',...
                 '\n \t \t \t testCase.delete_html_file(data_path);',...
-                '\n \t \t \t nidm_results_display(fullfile(fileparts(mfilename(''fullpath'')), ''..'', ''Data'', ''jsons'',','''', jsonFileList{i},'''', '));',...
+                '\n \t \t \t nidm_results_display(fullfile(fileparts(mfilename(''fullpath'')), ''..'', ''test'',''data'', ''jsons'',','''', jsonFileList{i},'''', '));',...
                 '\n \t \t end');
             fprintf(FID, tests);
         end 

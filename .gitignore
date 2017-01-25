@@ -7,6 +7,9 @@
 # images in data folder
 Data/*.png
 
+# Test data (if missing will be downloaded from NeuroVault)
+test/data
+
 #nii files
 *.nii
 
@@ -25,5 +28,4 @@ Data/*.png
 #ZIP files
 *.zip
 
-#data
-/Data/*
+_ignored*

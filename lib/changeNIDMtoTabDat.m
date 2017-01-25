@@ -8,9 +8,8 @@
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
-function NTabDat = changeNIDMtoTabDat(json)
+function NTabDat = changeNIDMtoTabDat(graph)
     
-    graph = json.('x_graph');
     NTabDat = struct;
     
     %======================================================================
@@ -26,13 +25,25 @@ function NTabDat = changeNIDMtoTabDat(json)
     
     %Check all agent objects for one with the software version stored.
     for i = 1:length(agentObjects)
-        if any(ismember(agentObjects{i}.('x_type'), 'http://scicrunch.org/resolver/SCR_002823'))...
-                || any(ismember(agentObjects{i}.('x_type'), 'src_FSL'))
+        soft_type = agentObjects{i}.('x_type');
+        if any(ismember(soft_type, 'http://scicrunch.org/resolver/SCR_002823'))...
+                || any(ismember(soft_type, 'scr_FSL')) ...
+                || any(ismember(soft_type, 'src_FSL'))
             software = 'FSL';
-        end
-        if any(ismember(agentObjects{i}.('x_type'), 'http://scicrunch.org/resolver/SCR_007037'))...
-                || any(ismember(agentObjects{i}.('x_type'), 'src_SPM'))
+        elseif any(ismember(soft_type, 'http://scicrunch.org/resolver/SCR_007037'))...
+                || any(ismember(soft_type, 'scr_SPM')) ...
+                || any(ismember(soft_type, 'src_SPM'))
             software = 'SPM';
+        % The two options here are assuming analysis software and export
+        % software are the same (ideally we should instead explicitely
+        % check for the analysis software)
+        elseif any(ismember(soft_type, 'nidm_spm_results_nidm'))
+            software = 'SPM';
+        elseif any(ismember(soft_type, 'nidm_nidmfsl'))
+            software = 'FSL';
+        else
+            disp(soft_type);
+            error('nidm:UnrecognisedSoftware', 'Unrecognised software')
         end
     end 
     
@@ -58,7 +69,7 @@ function NTabDat = changeNIDMtoTabDat(json)
     %If there exists a statistic threshold record it.
     if hPositions(4) ~= 0
         strStat = 'Height threshold: T = %0.2f, ';
-        height_1 = str2double(heightThresholds{hPositions(4)}.('prov_value').('x_value'));
+        height_1 = str2double(get_value(heightThresholds{hPositions(4)}.('prov_value')));
         threshList = [threshList, height_1];
     else
         strStat = '';
@@ -67,7 +78,7 @@ function NTabDat = changeNIDMtoTabDat(json)
     %If there exists a unCorrected P-Value threshold record it.
     if hPositions(3) ~= 0
         strPuncorr = 'p = %0.3f';
-        height_2 = str2double(heightThresholds{hPositions(3)}.('prov_value').('x_value'));
+        height_2 = str2double(get_value(heightThresholds{hPositions(3)}.('prov_value')));
         threshList = [threshList, height_2];
     else
         strPuncorr = '';
@@ -75,12 +86,12 @@ function NTabDat = changeNIDMtoTabDat(json)
     
     %If there exists a FWE threshold record it.
     if hPositions(2) ~= 0
-        height_3 = str2double(heightThresholds{hPositions(2)}.('prov_value').('x_value')); 
+        height_3 = str2double(get_value(heightThresholds{hPositions(2)}.('prov_value'))); 
         strFWEFDR = '(%0.3f FDR)';
         threshList = [threshList, height_3];
     %Else, if there exists a FDR threshold record it.
     elseif hPositions(1) ~= 0
-        height_4 = str2double(heightThresholds{hPositions(1)}.('prov_value').('x_value'));
+        height_4 = str2double(get_value(heightThresholds{hPositions(1)}.('prov_value')));
         strFWEFDR = '(%0.3f FWE)';
         threshList = [threshList, height_4];
     else
@@ -99,16 +110,16 @@ function NTabDat = changeNIDMtoTabDat(json)
     %thresholds themselves.
     if ePositions(4) ~= 0
         ftrTemp{2, 1} = 'Extent threshold: k = %0.0f voxels';  
-        ftrTemp{2, 2} = str2double(extentThresholds{ePositions(4)}.('nidm_clusterSizeInVoxels').('x_value'));
+        ftrTemp{2, 2} = str2double(get_value(extentThresholds{ePositions(4)}.('nidm_clusterSizeInVoxels')));
     elseif ePositions(1) ~= 0
         ftrTemp{2, 1} = 'Extent threshold: p < %0.0f (FWE)';  
-        ftrTemp{2, 2} = str2double(extentThresholds{ePositions(1)}.('prov_value').('x_value'));
+        ftrTemp{2, 2} = str2double(get_value(extentThresholds{ePositions(1)}.('prov_value')));
     elseif ePositions(2) ~= 0
         ftrTemp{2, 1} = 'Extent threshold: p < %0.0f (FDR)';  
-        ftrTemp{2, 2} = str2double(extentThresholds{ePositions(2)}.('prov_value').('x_value'));
+        ftrTemp{2, 2} = str2double(get_value(extentThresholds{ePositions(2)}.('prov_value')));
     elseif ePositions(3) ~= 0
         ftrTemp{2, 1} = 'Extent threshold: p < %0.0f (Uncorrected)';  
-        ftrTemp{2, 2} = str2double(extentThresholds{ePositions(3)}.('prov_value').('x_value'));
+        ftrTemp{2, 2} = str2double(get_value(extentThresholds{ePositions(3)}.('prov_value')));
     else
         ftrTemp{2, 1} = '';  
         ftrTemp{2, 2} = NaN;
@@ -128,28 +139,28 @@ function NTabDat = changeNIDMtoTabDat(json)
         
         %Expected voxels per cluster (k)
         ftrTemp{3, 1} = 'Expected voxels per cluster <k> = %0.3f';
-        ftrTemp{3, 2} = str2double(searchLinkedToCoord.('nidm_expectedNumberOfVoxelsPerCluster').('x_value'));
+        ftrTemp{3, 2} = str2double(get_value(searchLinkedToCoord.('nidm_expectedNumberOfVoxelsPerCluster')));
     
         %Expected number of clusters (c)
         ftrTemp{4, 1} = 'Expected number of clusters <c> = %0.2f';
-        ftrTemp{4, 2} = str2double(searchLinkedToCoord.('nidm_expectedNumberOfClusters').('x_value'));
+        ftrTemp{4, 2} = str2double(get_value(searchLinkedToCoord.('nidm_expectedNumberOfClusters')));
     
         %FWEp, FDRp
-        FWEp = str2double(searchLinkedToCoord.('nidm_heightCriticalThresholdFWE05').('x_value'));
-        FDRp = str2double(searchLinkedToCoord.('nidm_heightCriticalThresholdFDR05').('x_value'));
+        FWEp = str2double(get_value(searchLinkedToCoord.('nidm_heightCriticalThresholdFWE05')));
+        FDRp = str2double(get_value(searchLinkedToCoord.('nidm_heightCriticalThresholdFDR05')));
         stringTemp = 'FWEp: %0.3f, FDRp: %0.3f';
         arrayTemp = [FWEp, FDRp];
         
         %If its there, include FWEc
         if(isfield(searchLinkedToCoord, 'spm_smallestSignificantClusterSizeInVoxelsFWE05'))
-            FWEc = str2double(searchLinkedToCoord.('spm_smallestSignificantClusterSizeInVoxelsFWE05').('x_value'));
+            FWEc = str2double(get_value(searchLinkedToCoord.('spm_smallestSignificantClusterSizeInVoxelsFWE05')));
             stringTemp = [stringTemp, ', FWEc: %0.0f'];
             arrayTemp = [arrayTemp, FWEc];
         end
         
         %If its there, include FDRc
         if(isfield(searchLinkedToCoord, 'spm_smallestSignificantClusterSizeInVoxelsFDR05'))
-            FDRc = str2double(searchLinkedToCoord.('spm_smallestSignificantClusterSizeInVoxelsFDR05').('x_value'));
+            FDRc = str2double(get_value(searchLinkedToCoord.('spm_smallestSignificantClusterSizeInVoxelsFDR05')));
             stringTemp = [stringTemp, ', FDRc: %0.0f'];
             arrayTemp = [arrayTemp, FDRc];
         end
@@ -174,8 +185,8 @@ function NTabDat = changeNIDMtoTabDat(json)
         if isfield(statisticMap{i}, 'nidm_effectDegreesOfFreedom')
             anyStatType = statisticMap{i}.('nidm_statisticType').('x_id');
             if ~strcmp(anyStatType, 'obo:STATO_0000376')
-                effectDegrees = statisticMap{i}.('nidm_effectDegreesOfFreedom').('x_value');
-                errorDegrees = statisticMap{i}.('nidm_errorDegreesOfFreedom').('x_value');
+                effectDegrees = get_value(statisticMap{i}.('nidm_effectDegreesOfFreedom'));
+                errorDegrees = get_value(statisticMap{i}.('nidm_errorDegreesOfFreedom'));
                 ftrTemp{rowCount,2} = [str2double(effectDegrees),  str2double(errorDegrees)];
             end
         end
@@ -200,9 +211,9 @@ function NTabDat = changeNIDMtoTabDat(json)
     %Volume
     
     rowCount = rowCount+1;
-    volumeUnits = str2double(searchLinkedToCoord.('nidm_searchVolumeInUnits').('x_value'));
-    volumeResels = str2double(searchLinkedToCoord.('nidm_searchVolumeInResels').('x_value'));
-    volumeVoxels = str2double(searchLinkedToCoord.('nidm_searchVolumeInVoxels').('x_value'));
+    volumeUnits = str2double(get_value(searchLinkedToCoord.('nidm_searchVolumeInUnits')));
+    volumeResels = str2double(get_value(searchLinkedToCoord.('nidm_searchVolumeInResels')));
+    volumeVoxels = str2double(get_value(searchLinkedToCoord.('nidm_searchVolumeInVoxels')));
     
     ftrTemp{rowCount, 1} = 'Volume: %0.0f = %0.0f voxels = %0.1f resels';
     ftrTemp{rowCount, 2} = [volumeUnits, volumeVoxels, volumeResels];
@@ -212,7 +223,7 @@ function NTabDat = changeNIDMtoTabDat(json)
     rowCount = rowCount+1;
     voxelSize = str2num(searchSpace.('nidm_voxelSize'));
     voxelUnits = strrep(strrep(strrep(strrep(searchSpace.('nidm_voxelUnits'), '\"', ''), '[', ''), ']', ''), ',', '');
-    reselSize = str2double(searchLinkedToCoord.('nidm_reselSizeInVoxels').('x_value'));
+    reselSize = str2double(get_value(searchLinkedToCoord.('nidm_reselSizeInVoxels')));
     
     ftrTemp{rowCount, 1} = ['Voxel size: %3.1f %3.1f %3.1f ', voxelUnits, '; (resel = %0.2f voxels)'];
     ftrTemp{rowCount, 2} = [voxelSize reselSize];
@@ -235,8 +246,8 @@ function NTabDat = changeNIDMtoTabDat(json)
     %map in the nidm json.
     if strcmp(software, 'SPM') 
         excursionSetMap = searchforType('nidm_ExcursionSetMap', graph);
-        tableTemp{1, 1} = str2double(excursionSetMap{1}.('nidm_pValue').('x_value'));
-        tableTemp{1, 2} = str2double(excursionSetMap{1}.('nidm_numberOfSupraThresholdClusters').('x_value'));
+        tableTemp{1, 1} = str2double(get_value(excursionSetMap{1}.('nidm_pValue')));
+        tableTemp{1, 2} = str2double(get_value(excursionSetMap{1}.('nidm_numberOfSupraThresholdClusters')));
     end
     
     %Cluster and peak level:
@@ -250,7 +261,7 @@ function NTabDat = changeNIDMtoTabDat(json)
     if~isempty(clusters)
         
         %Sorting the clusters by descending size.
-        oo=cellfun(@(x) x.('nidm_clusterSizeInVoxels').('x_value'), clusters, 'UniformOutput', false);
+        oo=cellfun(@(x) get_value(x.('nidm_clusterSizeInVoxels')), clusters, 'UniformOutput', false);
         aa=str2num(char(oo{:}));
         [~, idx]=sort(aa, 'descend');
         clusters = clusters(idx);
@@ -276,7 +287,7 @@ function NTabDat = changeNIDMtoTabDat(json)
         for i = 1:length(keySet)
             clusterID = keySet{i};
             clustmaptemp=clusterPeakMap(clusterID);
-            clusSet=cellfun(@(x) x.('nidm_equivalentZStatistic').('x_value'), clustmaptemp, 'UniformOutput', false);
+            clusSet=cellfun(@(x) get_value(x.('nidm_equivalentZStatistic')), clustmaptemp, 'UniformOutput', false);
             orderedClusSet=str2num(char(clusSet{:}));
             [~, idx]=sort(orderedClusSet, 'descend');
             clusterPeakMap(clusterID) = clustmaptemp(idx);
@@ -296,22 +307,22 @@ function NTabDat = changeNIDMtoTabDat(json)
         
         %Get number of peaks to display
         if isfield(peakDefCriteria{1}, 'nidm_maxNumberOfPeaksPerCluster')
-            numOfPeaks = peakDefCriteria{1}.nidm_maxNumberOfPeaksPerCluster.('x_value');
+            numOfPeaks = get_value(peakDefCriteria{1}.nidm_maxNumberOfPeaksPerCluster);
         else
             numOfPeaks = 3;
         end 
         
         for i = 1:length(keySet)
             %Fill in the values we know.
-            tableTemp{n, 3} = str2double(clusters{i}.('nidm_pValueFWER').('x_value'));
+            tableTemp{n, 3} = str2double(get_value(clusters{i}.('nidm_pValueFWER')));
             if clustersFDRP
-                tableTemp{n, 4} = str2double(clusters{i}.('nidm_qValueFDR').('x_value'));
+                tableTemp{n, 4} = str2double(get_value(clusters{i}.('nidm_qValueFDR')));
             else
                 tableTemp{n, 4} = NaN;
             end
-            tableTemp{n, 5} = str2double(clusters{i}.('nidm_clusterSizeInVoxels').('x_value'));
+            tableTemp{n, 5} = str2double(get_value(clusters{i}.('nidm_clusterSizeInVoxels')));
             if clustersPUncorr
-                tableTemp{n, 6} = str2double(clusters{i}.('nidm_pValueUncorrected').('x_value'));
+                tableTemp{n, 6} = str2double(get_value(clusters{i}.('nidm_pValueUncorrected')));
             else
                 tableTemp{n, 6} = NaN;
             end
@@ -320,14 +331,14 @@ function NTabDat = changeNIDMtoTabDat(json)
             for j = 1:min(numOfPeaks, length(peaksTemp))
                 %Fill the values we know.
                 if peaksFWEP
-                    tableTemp{n, 7} = str2double(peaksTemp{j}.('nidm_pValueFWER').('x_value'));
+                    tableTemp{n, 7} = str2double(get_value(peaksTemp{j}.('nidm_pValueFWER')));
                 end
                 if peaksFDRP
-                    tableTemp{n, 8} = str2double(peaksTemp{j}.('nidm_qValueFDR').('x_value'));
+                    tableTemp{n, 8} = str2double(get_value(peaksTemp{j}.('nidm_qValueFDR')));
                 end
-                tableTemp{n, 11} = str2double(peaksTemp{j}.('nidm_pValueUncorrected').('x_value'));
+                tableTemp{n, 11} = str2double(get_value(peaksTemp{j}.('nidm_pValueUncorrected')));
                 if peaksStat
-                    tableTemp{n, 9} = str2double(peaksTemp{j}.('prov_value').('x_value'));
+                    tableTemp{n, 9} = str2double(get_value(peaksTemp{j}.('prov_value')));
                 else
                     %Calculate whichever statistic type is used.
                     if strcmp(statType, 'T')
@@ -340,7 +351,7 @@ function NTabDat = changeNIDMtoTabDat(json)
                         tableTemp{n, 9} = NaN;
                     end
                 end 
-                tableTemp{n, 10} = str2double(peaksTemp{j}.('nidm_equivalentZStatistic').('x_value'));
+                tableTemp{n, 10} = str2double(get_value(peaksTemp{j}.('nidm_equivalentZStatistic')));
                 locTemp = peaksTemp{j}.('prov_atLocation').('x_id');
                 locTemp = searchforID(locTemp, graph);
                 tableTemp{n, 12} = str2num(locTemp.nidm_coordinateVector);
@@ -372,9 +383,9 @@ function NTabDat = changeNIDMtoTabDat(json)
     if(~isempty(peakDefCriteria))
         units = strtok(voxelUnits, ' ');
         if isfield(peakDefCriteria{1}, 'nidm_maxNumberOfPeaksPerCluster')
-            strTemp = ['table shows ', peakDefCriteria{1}.nidm_maxNumberOfPeaksPerCluster.('x_value'), ' local maxima more than ', peakDefCriteria{1}.nidm_minDistanceBetweenPeaks.('x_value'), units, ' apart'];
+            strTemp = ['table shows ', get_value(peakDefCriteria{1}.nidm_maxNumberOfPeaksPerCluster), ' local maxima more than ', get_value(peakDefCriteria{1}.nidm_minDistanceBetweenPeaks), units, ' apart'];
         else
-            strTemp = ['table shows 3 local maxima more than ', peakDefCriteria{1}.nidm_minDistanceBetweenPeaks.('x_value'), units, ' apart'];
+            strTemp = ['table shows 3 local maxima more than ', get_value(peakDefCriteria{1}.nidm_minDistanceBetweenPeaks), units, ' apart'];
         end
     else 
         strTemp = '';

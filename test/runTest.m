@@ -13,7 +13,6 @@ function runTest()
 
     %Setup steps for the test.
     import matlab.unittest.TestSuite;
-    addpath(fullfile(fileparts(mfilename('fullpath')),'..', 'Data'));
     addpath(fullfile(fileparts(mfilename('fullpath')),'..', 'lib'));
     addpath(fullfile(fileparts(mfilename('fullpath')),'..'));
     
