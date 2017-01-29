@@ -486,12 +486,21 @@ function NTabDat = changeNIDMtoTabDat(graph, exObj)
     %===========================================
     %str field
     
+    
     if(~isempty(peakDefCriteria))
         units = strtok(voxelUnits, ' ');
+        minDist = get_value(peakDefCriteria{1}.nidm_minDistanceBetweenPeaks);
+        if(~ischar(minDist))
+            minDist = num2str(minDist);
+        end
         if isfield(peakDefCriteria{1}, 'nidm_maxNumberOfPeaksPerCluster')
-            strTemp = ['table shows ', get_value(peakDefCriteria{1}.nidm_maxNumberOfPeaksPerCluster), ' local maxima more than ', get_value(peakDefCriteria{1}.nidm_minDistanceBetweenPeaks), units, ' apart'];
+            clusNum = get_value(peakDefCriteria{1}.nidm_maxNumberOfPeaksPerCluster);
+            if(~ischar(clusNum))
+                clusNum = num2str(clusNum);
+            end
+            strTemp = ['table shows ', clusNum, ' local maxima more than ', minDist, units, ' apart'];
         else
-            strTemp = ['table shows 3 local maxima more than ', get_value(peakDefCriteria{1}.nidm_minDistanceBetweenPeaks), units, ' apart'];
+            strTemp = ['table shows 3 local maxima more than ', minDist, units, ' apart'];
         end
     else 
         strTemp = '';
