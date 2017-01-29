@@ -9,7 +9,29 @@ function createTest()
        
     %Create new test file for editing.
     FID = fopen(fullfile(fileparts(mfilename('fullpath')), 'testDataSets.m'),'wt');
-
+    
+    %Make a list of all json names stored locally.
+    files=dir([fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons','*.json')]);
+    jsonFileList={files.name};
+    jsonFileNameList = strrep(jsonFileList, '.json', '');
+    jsons={};
+    maxLength = 1;
+    
+    %Calculate the maximum excursion set length.
+    for i = 1:length(jsonFileList)  
+        %Retrieve the json.
+        jsons{i} = spm_jsonread(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons', jsonFileList{i}));
+        % Deal with sub-graphs (bundle)
+        graph = jsons{i}.x_graph;
+        if isfield(graph{2}, 'x_graph')
+            graph = graph{2}.x_graph;
+        end
+        excursionSets = searchforType('nidm_ExcursionSetMap', graph);
+        if(length(excursionSets)>maxLength)
+            maxLength=length(excursionSets);
+        end
+    end
+    
     %Add the start of the test code.
     start = sprintf('%s' , '%%==========================================================================',...
         '\n%%Unit tests for testing whether datasets run in the viewer. To run the',... 
@@ -25,32 +47,40 @@ function createTest()
         '\n \t \t function delete_html_file(testCase, data_path)',...
         '\n \t \t \t index = fullfile(data_path,', sprintf('''index.html'''), ');',...
         '\n \t \t \t if exist(index, ', sprintf('''file'''), ')',...
-        '\n \t \t \t \t delete(index);',...
+        '\n \t \t \t \t delete(index);');
+    
+    if(maxLength>1)
+        loopString = sprintf('%s' ,...
+            '\n \t \t \t else',...
+            '\n \t \t \t \t for(i = 1:', num2str(maxLength), ')',...
+            '\n \t \t \t \t \t index = fullfile(data_path,',...
+                                sprintf('%s','[','''index''', ', num2str(i), ','''.html''', ']'), ');',...
+            '\n \t \t \t \t \t if exist(index, ', sprintf('''file'''), ')',...
+            '\n \t \t \t \t \t \t delete(index);',...
+            '\n \t \t \t \t \t end',...
+            '\n \t \t \t \t end');
+        start = sprintf('%s' , start, loopString);
+    end 
+    
+    start = sprintf('%s' , start,...
         '\n \t \t \t end',...
         '\n \t \t end',...
         '\n \t end',...  
         '\n \n \t methods(Test)');  %#ok<*NOPRT>
     
     fprintf(FID, start);
-    
-    %Make a list of all json names stored locally.
-    files=dir([fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons','*.json')]);
-    jsonFileList={files.name};
-    jsonFileNameList = strrep(jsonFileList, '.json', '');
 
     %For each json, create a test.
     
     for i = 1:length(jsonFileList)      
-        %Find the json download location.
-        json = spm_jsonread(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons', jsonFileList{i}));
-        
+      
         % Deal with sub-graphs (bundle)
-        graph = json.x_graph;
+        graph = jsons{i}.x_graph;
         if isfield(graph{2}, 'x_graph')
             graph = graph{2}.x_graph;
         end
         
-        [designMatrix, dmLocation] = searchforType('nidm_DesignMatrix', graph);
+        [designMatrix, ~] = searchforType('nidm_DesignMatrix', graph);
         goAhead = true;
         jsonLocation = [fileparts(designMatrix{1}.prov_atLocation.x_value), '.zip'];
         %ex_spm_default is an exception.

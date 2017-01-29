@@ -26,14 +26,34 @@ function webID = nidm_results_display(jsonfilepath)
     end
     
     graph = jsondoc.('x_graph');
+    
     % Deal with sub-graphs (bundle)
     if isfield(graph{2}, 'x_graph')
         graph = graph{2}.x_graph;
     end
 
     filepathTemp = jsondoc.filepath;
-
-    %Display the page and obtain the pages ID.
-    webID = spm_results_export(changeNIDMtoSPM(graph,filepathTemp),changeNIDMtoxSPM(graph, filepathTemp),changeNIDMtoTabDat(graph));
+    
+    %Work out how many excursion set maps there are to display.
+    excursionSetMaps = searchforType('nidm_ExcursionSetMap',graph);
+    
+    %If there is only one excursion set display it. 
+    if length(excursionSetMaps)==1
+        %Display the page and obtain the pages ID.
+        webID = spm_results_export(changeNIDMtoSPM(graph,filepathTemp),...
+                                   changeNIDMtoxSPM(graph, filepathTemp),...
+                                   changeNIDMtoTabDat(graph));
+    else
+        %Otherwise generate the labels hashmap and generate a result for
+        %each excursion set.
+        labels = addExcursionPointers(graph);
+        webID = [];
+        for(i = 1:length(excursionSetMaps))
+            webID = [spm_results_export(changeNIDMtoSPM(graph,filepathTemp, {i, labels}),...
+                                   changeNIDMtoxSPM(graph, filepathTemp, {i, labels}),...
+                                   changeNIDMtoTabDat(graph,{i, labels}),...
+                                   i) webID];
+        end 
+    end
     
 end

@@ -1,15 +1,28 @@
 %==========================================================================
 %Generate an object with the same format as the SPM-output variable, SPM, 
 %using the information from an input NIDM-Results json pack. This takes in 
-%one argument:
+%two or three argument:
 %
-%json - the spm_jsonread form of the NIDM-Results json file.
+%graph - the nidm-results graph
+%filepathTemp - the filepath to the NIDM pack.
+%exObj - an object containing all information about multiple excursions 
+%sets.
 %
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
-function NSPM = changeNIDMtoSPM(graph, filepathTemp)
-
+function NSPM = changeNIDMtoSPM(graph, filepathTemp, exObj)
+    
+    % Checking inputs.
+    if nargin == 2
+        multipleExcursions = false;
+    end
+    if nargin == 3
+        multipleExcursions = true;
+        exNum = exObj{1};
+        exLabels = exObj{2};
+    end
+    
     NSPM = struct;
     
     %======================================================================
@@ -18,6 +31,9 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp)
     
     nidmTemp = struct;
     designMatrix = searchforType('nidm_DesignMatrix', graph);
+    if(multipleExcursions)
+        designMatrix = relevantToExcursion(designMatrix, exNum, exLabels);
+    end
     
     % Find the location of the design matrix (case depends on the version of 
     % the exporter, in the future we should look at the URI to avoid relying on 
@@ -43,7 +59,10 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp)
     contrastWeightMatrix = searchforType('obo_contrastweightmatrix', graph);
     if(isempty(contrastWeightMatrix))
         contrastWeightMatrix = searchforType('obo:STATO_0000323', graph);
-    end    
+    end   
+    if(multipleExcursions)
+        contrastWeightMatrix = relevantToExcursion(contrastWeightMatrix, exNum, exLabels);
+    end
     
     xConTemp(1).c = str2num(contrastWeightMatrix{1}.('prov_value'))';
     
@@ -53,13 +72,12 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp)
     xXtemp = struct;
     
     %Find the design matrix csv.
-    designMatrices = searchforType('nidm_DesignMatrix', graph);
-    designMatrixFilename = designMatrices{1}.prov_atLocation.x_value;
+    designMatrixFilename = designMatrix{1}.prov_atLocation.x_value;
     [~, name, ext] = fileparts(designMatrixFilename);
     xXtemp.xKXs.X = csvread(fullfile(filepathTemp, [name, ext]));
     
     %Get the regressor names in required format.
-    remain = strrep(strrep(strrep(strrep(designMatrices{1}.nidm_regressorNames, '\"', ''), '[', ''), ']', ''), ',', '');
+    remain = strrep(strrep(strrep(strrep(designMatrix{1}.nidm_regressorNames, '\"', ''), '[', ''), ']', ''), ',', '');
     counter = 1;
     % Deal with the case of empty regressor names
     if isempty(remain)

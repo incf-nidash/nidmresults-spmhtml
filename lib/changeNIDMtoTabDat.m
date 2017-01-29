@@ -1,14 +1,26 @@
 %==========================================================================
 %Generate an object with the same format as the SPM-output variable, TabDat, 
 %using the information from an input NIDM-Results json pack. This takes in 
-%one argument:
+%one or two arguments:
 %
-%json - the spm_jsonread form of the NIDM-Results json file.
+%graph - the nidm-results graph
+%exObj - an object containing all information about multiple excursions 
+%sets.
 %
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
-function NTabDat = changeNIDMtoTabDat(graph)
+function NTabDat = changeNIDMtoTabDat(graph, exObj)
+    
+    % Checking inputs.
+    if nargin == 1
+        multipleExcursions = false;
+    end
+    if nargin == 2
+        multipleExcursions = true;
+        exNum = exObj{1};
+        exLabels = exObj{2};
+    end
     
     NTabDat = struct;
     
@@ -57,6 +69,9 @@ function NTabDat = changeNIDMtoTabDat(graph)
     
     %Height thresholds
     heightThresholds = searchforType('nidm_HeightThreshold', graph);
+    if(multipleExcursions)
+        heightThresholds = relevantToExcursion(heightThresholds, exNum, exLabels);
+    end
     
     %Retrieve the indices of the threshold array which in the following
     %order [FWE, FDR, unCorr, stat] (eg if looking for a threshold of FWE
@@ -68,8 +83,11 @@ function NTabDat = changeNIDMtoTabDat(graph)
     
     %If there exists a statistic threshold record it.
     if hPositions(4) ~= 0
-        strStat = 'Height threshold: T = %0.2f, ';
-        height_1 = str2double(get_value(heightThresholds{hPositions(4)}.('prov_value')));
+        strStat = 'T = %0.2f, ';
+        height_1 = get_value(heightThresholds{hPositions(4)}.('prov_value'));
+        if(ischar(height_1))
+            height_1 = str2double(height_1);
+        end
         threshList = [threshList, height_1];
     else
         strStat = '';
@@ -78,7 +96,10 @@ function NTabDat = changeNIDMtoTabDat(graph)
     %If there exists a unCorrected P-Value threshold record it.
     if hPositions(3) ~= 0
         strPuncorr = 'p = %0.3f';
-        height_2 = str2double(get_value(heightThresholds{hPositions(3)}.('prov_value')));
+        height_2 = get_value(heightThresholds{hPositions(3)}.('prov_value'));
+        if(ischar(height_2))
+            height_2 = str2double(height_2);
+        end
         threshList = [threshList, height_2];
     else
         strPuncorr = '';
@@ -86,46 +107,77 @@ function NTabDat = changeNIDMtoTabDat(graph)
     
     %If there exists a FWE threshold record it.
     if hPositions(2) ~= 0
-        height_3 = str2double(get_value(heightThresholds{hPositions(2)}.('prov_value'))); 
+        height_3 = get_value(heightThresholds{hPositions(2)}.('prov_value')); 
+        if(ischar(height_3))
+            height_3 = str2double(height_3);
+        end
         strFWEFDR = '(%0.3f FDR)';
         threshList = [threshList, height_3];
     %Else, if there exists a FDR threshold record it.
     elseif hPositions(1) ~= 0
-        height_4 = str2double(get_value(heightThresholds{hPositions(1)}.('prov_value')));
+        height_4 = get_value(heightThresholds{hPositions(1)}.('prov_value'));
+        if(ischar(height_4))
+            height_4 = str2double(height_4);
+        end
         strFWEFDR = '(%0.3f FWE)';
         threshList = [threshList, height_4];
     else
         strFWEFDR = '';
     end
-
-    ftrTemp{1, 1} = strcat(strStat, strPuncorr, strFWEFDR);
+    if(~isempty(strStat) || ~isempty(strPuncorr) || ~isempty(strFWEFDR))
+        ftrTemp{1, 1} = strcat('Height threshold: ', strStat, strPuncorr, strFWEFDR);
+    else
+        ftrTemp{1, 1} = '';
+    end
     ftrTemp{1, 2} = threshList;
     
     %Extent Threshold
     
     extentThresholds = searchforType('nidm_ExtentThreshold', graph);
+    if(multipleExcursions)
+        extentThresholds = relevantToExcursion(extentThresholds, exNum, exLabels);
+    end
     ePositions = getThresholdPositions(extentThresholds);
     
     %Make the string for displaying extent thresholds and store the extent
     %thresholds themselves.
     if ePositions(4) ~= 0
         ftrTemp{2, 1} = 'Extent threshold: k = %0.0f voxels';  
-        ftrTemp{2, 2} = str2double(get_value(extentThresholds{ePositions(4)}.('nidm_clusterSizeInVoxels')));
+        kThresh = get_value(extentThresholds{ePositions(4)}.('nidm_clusterSizeInVoxels'));
+        if(ischar(kThresh))
+            kThresh = str2double(kThresh);
+        end
+        ftrTemp{2, 2} = kThresh;
     elseif ePositions(1) ~= 0
         ftrTemp{2, 1} = 'Extent threshold: p < %0.0f (FWE)';  
-        ftrTemp{2, 2} = str2double(get_value(extentThresholds{ePositions(1)}.('prov_value')));
+        fweThresh = get_value(extentThresholds{ePositions(1)}.('prov_value'));
+        if(ischar(fweThresh))
+            fweThresh = str2double(fweThresh);
+        end
+        ftrTemp{2, 2} = fweThresh;
     elseif ePositions(2) ~= 0
         ftrTemp{2, 1} = 'Extent threshold: p < %0.0f (FDR)';  
-        ftrTemp{2, 2} = str2double(get_value(extentThresholds{ePositions(2)}.('prov_value')));
+        fdrThresh = get_value(extentThresholds{ePositions(2)}.('prov_value'));
+        if(ischar(fdrThresh))
+            fdrThresh = str2double(fdrThresh);
+        end
+        ftrTemp{2, 2} = fdrThresh;
     elseif ePositions(3) ~= 0
         ftrTemp{2, 1} = 'Extent threshold: p < %0.0f (Uncorrected)';  
-        ftrTemp{2, 2} = str2double(get_value(extentThresholds{ePositions(3)}.('prov_value')));
+        pThresh = get_value(extentThresholds{ePositions(3)}.('prov_value'));
+        if(ischar(pThresh))
+            pThresh = str2double(pThresh);
+        end
+        ftrTemp{2, 2} = pThresh;
     else
         ftrTemp{2, 1} = '';  
         ftrTemp{2, 2} = NaN;
     end
     
     searchSpaceMaskMap = searchforType('nidm_SearchSpaceMaskMap', graph);
+    if(multipleExcursions)
+        searchSpaceMaskMap = relevantToExcursion(searchSpaceMaskMap, exNum, exLabels);
+    end
     
     %Find the searchSpaceMaskMap object linked to the coordinate space.
     searchLinkedToCoord = '';
@@ -178,6 +230,19 @@ function NTabDat = changeNIDMtoTabDat(graph)
     errorDegrees = 0;
     
     statisticMap = searchforType('nidm_StatisticMap', graph);
+    if(multipleExcursions)
+        counter = 1;
+        resultant = {};
+        %Work out which object belongs to which excursion set.
+        for(i = 1:length(statisticMap))
+            if(any(ismember(exLabels(statisticMap{i}.prov_wasGeneratedBy.x_id),exNum)))
+                resultant{counter} = statisticMap{i};
+                counter = counter+1;
+            end
+        end
+        statisticMaps = resultant;
+    end
+
     ftrTemp{rowCount,1} = 'Degrees of freedom = [%0.1f, %0.1f]';
     
     %Find degrees of freedom in statisticMap objects.
@@ -187,7 +252,11 @@ function NTabDat = changeNIDMtoTabDat(graph)
             if ~strcmp(anyStatType, 'obo:STATO_0000376')
                 effectDegrees = get_value(statisticMap{i}.('nidm_effectDegreesOfFreedom'));
                 errorDegrees = get_value(statisticMap{i}.('nidm_errorDegreesOfFreedom'));
-                ftrTemp{rowCount,2} = [str2double(effectDegrees),  str2double(errorDegrees)];
+                if(ischar(errorDegrees))
+                    errorDegrees = str2double(errorDegrees);
+                    effectDegrees = str2double(effectDegrees);
+                end
+                ftrTemp{rowCount,2} = [effectDegrees, errorDegrees];
             end
         end
     end 
@@ -211,9 +280,21 @@ function NTabDat = changeNIDMtoTabDat(graph)
     %Volume
     
     rowCount = rowCount+1;
-    volumeUnits = str2double(get_value(searchLinkedToCoord.('nidm_searchVolumeInUnits')));
-    volumeResels = str2double(get_value(searchLinkedToCoord.('nidm_searchVolumeInResels')));
-    volumeVoxels = str2double(get_value(searchLinkedToCoord.('nidm_searchVolumeInVoxels')));
+    
+    volumeUnits = get_value(searchLinkedToCoord.('nidm_searchVolumeInUnits'));
+    if(ischar(volumeUnits))
+        volumeUnits = str2double(volumeUnits);
+    end
+    
+    volumeResels = get_value(searchLinkedToCoord.('nidm_searchVolumeInResels'));
+    if(ischar(volumeResels))
+        volumeResels = str2double(volumeResels);
+    end
+    
+    volumeVoxels = get_value(searchLinkedToCoord.('nidm_searchVolumeInVoxels'));
+    if(ischar(volumeVoxels))
+        volumeVoxels = str2double(volumeVoxels);
+    end
     
     ftrTemp{rowCount, 1} = 'Volume: %0.0f = %0.0f voxels = %0.1f resels';
     ftrTemp{rowCount, 2} = [volumeUnits, volumeVoxels, volumeResels];
@@ -223,7 +304,10 @@ function NTabDat = changeNIDMtoTabDat(graph)
     rowCount = rowCount+1;
     voxelSize = str2num(searchSpace.('nidm_voxelSize'));
     voxelUnits = strrep(strrep(strrep(strrep(searchSpace.('nidm_voxelUnits'), '\"', ''), '[', ''), ']', ''), ',', '');
-    reselSize = str2double(get_value(searchLinkedToCoord.('nidm_reselSizeInVoxels')));
+    reselSize = get_value(searchLinkedToCoord.('nidm_reselSizeInVoxels'));
+    if(ischar(reselSize))
+        reselSize = str2double(reselSize);
+    end
     
     ftrTemp{rowCount, 1} = ['Voxel size: %3.1f %3.1f %3.1f ', voxelUnits, '; (resel = %0.2f voxels)'];
     ftrTemp{rowCount, 2} = [voxelSize reselSize];
@@ -246,6 +330,9 @@ function NTabDat = changeNIDMtoTabDat(graph)
     %map in the nidm json.
     if strcmp(software, 'SPM') 
         excursionSetMap = searchforType('nidm_ExcursionSetMap', graph);
+        if(multipleExcursions)
+            excursionSetMap = relevantToExcursion(excursionSetMap, exNum, exLabels);
+        end
         tableTemp{1, 1} = str2double(get_value(excursionSetMap{1}.('nidm_pValue')));
         tableTemp{1, 2} = str2double(get_value(excursionSetMap{1}.('nidm_numberOfSupraThresholdClusters')));
     end
@@ -253,7 +340,24 @@ function NTabDat = changeNIDMtoTabDat(graph)
     %Cluster and peak level:
     
     clusters = searchforType('nidm_SupraThresholdCluster', graph);
+    if(multipleExcursions)
+        counter = 1;
+        resultant = {};
+        %Work out which object belongs to which excursion set.
+        for(i = 1:length(clusters))
+            excur = searchforID(clusters{i}.prov_wasDerivedFrom.x_id, graph);
+            if(any(ismember(exLabels(excur.prov_wasGeneratedBy.x_id),exNum)))
+                resultant{counter} = clusters{i};
+                counter = counter+1;
+            end
+        end
+        clusters = resultant;
+    end
+    
     peakDefCriteria = searchforType('nidm_PeakDefinitionCriteria', graph);
+    if(multipleExcursions)
+        peakDefCriteria = relevantToExcursion(peakDefCriteria, exNum, exLabels);
+    end
     
     %Obtain what type of statistic we are dealing with:    
     statType = getStatType(graph);
@@ -275,11 +379,13 @@ function NTabDat = changeNIDMtoTabDat(graph)
 
         for i = 1:length(peaks)
             clusterID = peaks{i}.('prov_wasDerivedFrom').('x_id');
-            if isa(clusterPeakMap(clusterID), 'double')
-                clusterPeakMap(clusterID) = {peaks{i}};
-            else
-                existing = clusterPeakMap(clusterID);
-                clusterPeakMap(clusterID) = {existing{:} peaks{i}};
+            if(isKey(clusterPeakMap, clusterID))
+                if isa(clusterPeakMap(clusterID), 'double')
+                    clusterPeakMap(clusterID) = {peaks{i}};
+                else
+                    existing = clusterPeakMap(clusterID);
+                    clusterPeakMap(clusterID) = {existing{:} peaks{i}};
+                end
             end
         end
 
@@ -342,11 +448,11 @@ function NTabDat = changeNIDMtoTabDat(graph)
                 else
                     %Calculate whichever statistic type is used.
                     if strcmp(statType, 'T')
-                        tableTemp{n, 9} = icdf('T',1-tableTemp{n, 11},str2double(errorDegrees));
+                        tableTemp{n, 9} = icdf('T',1-tableTemp{n, 11},errorDegrees);
                     elseif strcmp(statType, 'X')
-                        tableTemp{n, 9} = icdf('Chi',1-tableTemp{n, 11},str2double(errorDegrees));
+                        tableTemp{n, 9} = icdf('Chi',1-tableTemp{n, 11},errorDegrees);
                     elseif strcmp(statType, 'F')
-                        tableTemp{n, 9} = icdf('F',1-tableTemp{n, 11}, str2double(effectDegrees), str2double(errorDegrees));
+                        tableTemp{n, 9} = icdf('F',1-tableTemp{n, 11},effectDegrees, errorDegrees);
                     else
                         tableTemp{n, 9} = NaN;
                     end

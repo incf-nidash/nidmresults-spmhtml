@@ -1,14 +1,27 @@
 %==========================================================================
 %Generate an object with the same format as the SPM-output variable, xSPM, 
 %using the information from an input NIDM-Results json pack. This takes in 
-%one argument:
+%two or three argument:
 %
-%json - the spm_jsonread form of the NIDM-Results json file.
+%graph - the nidm-results graph
+%jsonFile - the filepath to the NIDM pack.
+%exObj - an object containing all information about multiple excursions 
+%sets.
 %
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
-function NxSPM = changeNIDMtoxSPM(graph, jsonFile)
+function NxSPM = changeNIDMtoxSPM(graph, jsonFile, exObj)
+        
+    % Checking inputs.
+    if nargin == 2
+        multipleExcursions = false;
+    end
+    if nargin == 3
+        multipleExcursions = true;
+        exNum = exObj{1};
+        exLabels = exObj{2};
+    end
     
     NxSPM = struct;
     
@@ -17,11 +30,29 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile)
     
     %Find the contrast map holding the title.
     contrastMaps = searchforType('nidm_ContrastMap', graph);
-    for i = 1:length(contrastMaps)
-        if isfield(contrastMaps{i}, 'nidm_contrastName')
-            titleTemp = contrastMaps{i}.('nidm_contrastName');
+    
+    if(multipleExcursions)
+        counter = 1;
+        resultant = {};
+        %Work out which object belongs to which excursion set.
+        for(i = 1:length(contrastMaps))
+            if(any(ismember(exLabels(contrastMaps{i}.prov_wasGeneratedBy.x_id),exNum)))
+                resultant{counter} = contrastMaps{i};
+                counter = counter+1;
+            end
         end
-    end 
+        contrastMaps = resultant;
+    end
+    
+    if(~isempty(contrastMaps))
+        for i = 1:length(contrastMaps)
+            if isfield(contrastMaps{i}, 'nidm_contrastName')
+                titleTemp = contrastMaps{i}.('nidm_contrastName');
+            end
+        end 
+    else
+        titleTemp = '';
+    end
     
     %======================================================================
     %STAT
@@ -47,7 +78,8 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile)
         effectDegrees = str2num(effectDegrees);
         errorDegrees = str2num(errorDegrees);
     end
-    %Add the degrees of freedom as a subscript,.
+    
+    %Add the degrees of freedom as a subscript.
     effectDegrees = sprintf('%4.1f', effectDegrees);
     errorDegrees = sprintf('%4.1f', errorDegrees);
     
@@ -63,7 +95,10 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile)
     %M
     
     %Locate the excursion set maps and their indices in the graph.
-    [excursionSetMaps, excurIndices] = searchforType('nidm_ExcursionSetMap', graph);
+    [excursionSetMaps, ~] = searchforType('nidm_ExcursionSetMap', graph);
+    if(multipleExcursions)
+        excursionSetMaps = relevantToExcursion(excursionSetMaps, exNum, exLabels);
+    end
     coordSpaceId = excursionSetMaps{1}.('nidm_inCoordinateSpace').('x_id');
     coordSpace = searchforID(coordSpaceId, graph);
     
@@ -90,6 +125,9 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile)
     else
         %Find the units of the MIP.
         searchSpaceMaskMap = searchforType('nidm_SearchSpaceMaskMap', graph);
+        if(multipleExcursions)
+            searchSpaceMaskMap = relevantToExcursion(searchSpaceMaskMap, exNum, exLabels);
+        end
         searchSpace = searchforID(searchSpaceMaskMap{1}.('nidm_inCoordinateSpace').('x_id'), graph);
         voxelUnits = strrep(strrep(strrep(strrep(searchSpace.('nidm_voxelUnits'), '\"', ''), '[', ''), ']', ''), ',', '');
         

@@ -14,6 +14,13 @@
  	 	 	 index = fullfile(data_path,'index.html');
  	 	 	 if exist(index, 'file')
  	 	 	 	 delete(index);
+ 	 	 	 else
+ 	 	 	 	 for(i = 1:8)
+ 	 	 	 	 	 index = fullfile(data_path,['index', num2str(i), '.html']);
+ 	 	 	 	 	 if exist(index, 'file')
+ 	 	 	 	 	 	 delete(index);
+ 	 	 	 	 	 end
+ 	 	 	 	 end
  	 	 	 end
  	 	 end
  	 end
