@@ -229,20 +229,12 @@ function NTabDat = changeNIDMtoTabDat(graph, exObj)
     effectDegrees = 0;
     errorDegrees = 0;
     
-    statisticMap = searchforType('nidm_StatisticMap', graph);
     if(multipleExcursions)
-        counter = 1;
-        resultant = {};
-        %Work out which object belongs to which excursion set.
-        for(i = 1:length(statisticMap))
-            if(any(ismember(exLabels(statisticMap{i}.prov_wasGeneratedBy.x_id),exNum)))
-                resultant{counter} = statisticMap{i};
-                counter = counter+1;
-            end
-        end
-        statisticMaps = resultant;
-    end
-
+        [~, statisticMap] = getStatType(graph,exNum, exLabels);
+    else
+        [~, statisticMap] = getStatType(graph);
+    end 
+    
     ftrTemp{rowCount,1} = 'Degrees of freedom = [%0.1f, %0.1f]';
     
     %Find degrees of freedom in statisticMap objects.

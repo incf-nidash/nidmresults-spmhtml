@@ -21,7 +21,7 @@ function [type, statisticMaps] = getStatType(graph, exNo, exLabels)
         resultant = {};
         %Work out which object belongs to which excursion set.
         for(i = 1:length(statisticMaps))
-            if(any(ismember(exLabels(statisticMaps{i}.x_id),exNo)))
+            if(any(ismember(exLabels(statisticMaps{i}.prov_wasGeneratedBy.x_id),exNo)))
                 resultant{counter} = statisticMaps{i};
                 counter = counter+1;
             end

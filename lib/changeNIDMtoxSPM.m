@@ -26,40 +26,28 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, exObj)
     NxSPM = struct;
     
     %======================================================================
+    %STAT
+    
+    %Using getStatType, obtain the statisticMaps objects and statistic type. 
+    if(multipleExcursions)
+        [STATTemp, statisticMaps] = getStatType(graph,exNum, exLabels);
+    else
+        [STATTemp, statisticMaps] = getStatType(graph);
+    end 
+    
+    %======================================================================
     %title
     
-    %Find the contrast map holding the title.
-    contrastMaps = searchforType('nidm_ContrastMap', graph);
-    
-    if(multipleExcursions)
-        counter = 1;
-        resultant = {};
-        %Work out which object belongs to which excursion set.
-        for(i = 1:length(contrastMaps))
-            if(any(ismember(exLabels(contrastMaps{i}.prov_wasGeneratedBy.x_id),exNum)))
-                resultant{counter} = contrastMaps{i};
-                counter = counter+1;
-            end
-        end
-        contrastMaps = resultant;
-    end
-    
-    if(~isempty(contrastMaps))
-        for i = 1:length(contrastMaps)
-            if isfield(contrastMaps{i}, 'nidm_contrastName')
-                titleTemp = contrastMaps{i}.('nidm_contrastName');
+    if(~isempty(statisticMaps))
+        for i = 1:length(statisticMaps)
+            if isfield(statisticMaps{i}, 'nidm_contrastName')
+                titleTemp = statisticMaps{i}.('nidm_contrastName');
             end
         end 
     else
         titleTemp = '';
     end
     
-    %======================================================================
-    %STAT
-    
-    %Using getStatType, obtain the statisticMaps objects and statistic type. 
-    [STATTemp, statisticMaps] = getStatType(graph);
-       
     %======================================================================
     %STATStr
     

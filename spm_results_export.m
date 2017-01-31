@@ -52,7 +52,7 @@ end
 %If fHTML already exists, ask if it should be overWritten.
 
 if exist(fHTML, 'file') == 2
-    button = questdlg('The output file, index.html, already exists. Would you like this file to be overwritten?', 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');      
+    button = questdlg(['The output file, index', num2str(exNo), '.html, already exists. Would you like this file to be overwritten?'], 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');      
     switch button
         case 'Overwrite'
             overWrite = true;
@@ -192,4 +192,8 @@ rmdir(outdir, 's');
 
 %-Display webpage
 %==========================================================================
-[~, webID] = web(fHTML);
+if(multipleExcursions & exNo >1)
+    [~, webID] = web(fHTML, '-new');
+else
+    [~, webID] = web(fHTML);
+end

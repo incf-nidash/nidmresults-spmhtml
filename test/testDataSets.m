@@ -36,7 +36,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_HRF_informed_basis.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_HRF_informed_basis.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_conjunction
@@ -48,7 +48,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_conjunction.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_conjunction.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_contrast_mask
@@ -60,7 +60,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_contrast_mask.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_contrast_mask.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_default
@@ -72,7 +72,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_default.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_default.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_full_example001
@@ -84,7 +84,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_full_example001.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_full_example001.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_group_ols
@@ -96,7 +96,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_group_ols.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_group_ols.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_group_wls
@@ -108,7 +108,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_group_wls.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_group_wls.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_partial_conjunction
@@ -120,7 +120,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_partial_conjunction.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_partial_conjunction.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_temporal_derivative
@@ -132,7 +132,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_temporal_derivative.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_temporal_derivative.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_thr_clustfwep05
@@ -144,7 +144,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_thr_clustfwep05.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_thr_clustfwep05.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_thr_clustunck10
@@ -156,7 +156,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_thr_clustunck10.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_thr_clustunck10.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_thr_voxelfdrp05
@@ -168,7 +168,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_thr_voxelfdrp05.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_thr_voxelfdrp05.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_thr_voxelfwep05
@@ -180,7 +180,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_thr_voxelfwep05.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_thr_voxelfwep05.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_thr_voxelunct4
@@ -192,7 +192,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_thr_voxelunct4.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','ex_spm_thr_voxelunct4.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays fsl_con_f_130
@@ -204,7 +204,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_con_f_130.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_con_f_130.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays fsl_con_f_OLD
@@ -216,7 +216,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_con_f_OLD.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_con_f_OLD.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays fsl_contrast_mask_130
@@ -228,7 +228,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_contrast_mask_130.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_contrast_mask_130.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays fsl_default_130
@@ -240,7 +240,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_default_130.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_default_130.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays fsl_full_examples001_130
@@ -252,7 +252,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_full_examples001_130.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_full_examples001_130.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays fsl_gamma_basis_130
@@ -264,7 +264,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_gamma_basis_130.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_gamma_basis_130.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays fsl_gaussian_130
@@ -276,7 +276,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_gaussian_130.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_gaussian_130.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays fsl_group_btw_130
@@ -288,7 +288,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_group_btw_130.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_group_btw_130.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays fsl_group_ols_130
@@ -300,7 +300,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_group_ols_130.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_group_ols_130.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays fsl_group_wls_130
@@ -312,7 +312,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_group_wls_130.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_group_wls_130.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays fsl_hrf_fir_130
@@ -324,7 +324,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_hrf_fir_130.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_hrf_fir_130.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays fsl_hrf_gammadiff_130
@@ -336,7 +336,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_hrf_gammadiff_130.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_hrf_gammadiff_130.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays fsl_thr_clustfwep05_130
@@ -348,7 +348,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_thr_clustfwep05_130.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_thr_clustfwep05_130.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays fsl_thr_voxelfwep05_130
@@ -360,7 +360,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_thr_voxelfwep05_130.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_thr_voxelfwep05_130.json'), 'all');
  	 	 end
  
  	 	 %Test viewer displays pain_01
@@ -372,7 +372,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','pain_01.json'));
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','pain_01.json'), 'all');
  	 	 end
  
  	 end
