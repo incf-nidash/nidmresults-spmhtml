@@ -52,7 +52,11 @@ end
 %If fHTML already exists, ask if it should be overWritten.
 
 if exist(fHTML, 'file') == 2
-    button = questdlg(['The output file, index', num2str(exNo), '.html, already exists. Would you like this file to be overwritten?'], 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');      
+    if(multipleExcursions)
+        button = questdlg(['The output file, index', num2str(exNo), '.html, already exists. Would you like this file to be overwritten?'], 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');      
+    else
+        button = questdlg(['The output file, index.html, already exists. Would you like this file to be overwritten?'], 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');      
+    end
     switch button
         case 'Overwrite'
             overWrite = true;
