@@ -12,8 +12,11 @@
 function labels = addExcursionPointers(graph)
     
     %Create an empty list for the keys and values.
-    labelValues = {};
-    labelKeys = {};
+    values_excNum = {};
+    keys_objId = {};
+    
+    keys_type = {};
+    values_objIds = {};
     
     %Return the excursion set maps.
     excursionSetMaps = searchforType('nidm_ExcursionSetMap',graph);
@@ -26,21 +29,28 @@ function labels = addExcursionPointers(graph)
     for(i = 1:length(excursionSetMaps))
         
         %Add in the excursion set map object.
-        labelKeys{counter} = excursionSetMaps{i}.x_id;
-        labelValues{counter} = [i];
-        counter = counter+1;
+        keys_objId{counter} = excursionSetMaps{i}.x_id;
+        values_excNum{counter} = [i];
+    
+        keys_type{counter} = 'nidm_ExcursionSetMap';
+        values_objIds{counter} = [values_objIds{counter} excursionSetMaps{i}.x_id];
+        
+        counter = counter+1;        
         
         %Find the inference object connected to the excursionSetMap.
         inference = searchforID(excursionSetMaps{i}.prov_wasGeneratedBy.x_id, graph);
-        if(any(ismember(labelKeys, inference.x_id)))
-            index = cellfun(@(y) strcmp(y, inference.x_id), labelKeys, 'UniformOutput', 1);
+        if(any(ismember(keys_objId, inference.x_id)))
+            index = cellfun(@(y) strcmp(y, inference.x_id), keys_objId, 'UniformOutput', 1);
             index = find(index==1);
-            labelValues{index} = [labelValues{index} i];
+            values_excNum{index} = [values_excNum{index} i];
         else
-            labelKeys{counter} = inference.x_id;
-            labelValues{counter} = [i];
+            keys_objId{counter} = inference.x_id;
+            values_excNum{counter} = [i];
             counter = counter+1;
         end 
+        
+        keys_type{counter} = 'nidm_Inference';
+        values_objIds{counter} = [values_objIds{counter} excursionSetMaps{i}.x_id];
         
         %Obtain the objects used by inference.
         used = inference.prov_used;
@@ -52,13 +62,13 @@ function labels = addExcursionPointers(graph)
             node = searchforID(used(j).x_id,graph);
             
             %Add the nodes to the label list.
-            if(any(ismember(labelKeys, node.x_id)))
-                index = cellfun(@(y) strcmp(y, node.x_id), labelKeys, 'UniformOutput', 1);
+            if(any(ismember(keys_objId, node.x_id)))
+                index = cellfun(@(y) strcmp(y, node.x_id), keys_objId, 'UniformOutput', 1);
                 index = find(index==1);
-                labelValues{index} = [labelValues{index} i];
+                values_excNum{index} = [values_excNum{index} i];
             else
-                labelKeys{counter} = node.x_id;
-                labelValues{counter} = [i];
+                keys_objId{counter} = node.x_id;
+                values_excNum{counter} = [i];
                 counter = counter+1;
             end 
             
@@ -71,13 +81,13 @@ function labels = addExcursionPointers(graph)
         
         %Find the contrast estimate.
         conEst = searchforID(statisticMap.prov_wasGeneratedBy.x_id, graph);
-        if(any(ismember(labelKeys, conEst.x_id)))
-            index = cellfun(@(y) strcmp(y, conEst.x_id), labelKeys, 'UniformOutput', 1);
+        if(any(ismember(keys_objId, conEst.x_id)))
+            index = cellfun(@(y) strcmp(y, conEst.x_id), keys_objId, 'UniformOutput', 1);
             index = find(index==1);
-            labelValues{index} = [labelValues{index} i];
+            values_excNum{index} = [values_excNum{index} i];
         else
-            labelKeys{counter} = conEst.x_id;
-            labelValues{counter} = [i];
+            keys_objId{counter} = conEst.x_id;
+            values_excNum{counter} = [i];
             counter = counter+1;
         end 
 
@@ -89,13 +99,13 @@ function labels = addExcursionPointers(graph)
             node = searchforID(used(j).x_id,graph);
             
             %Add the nodes to the label list.
-            if(any(ismember(labelKeys, node.x_id)))
-                index = cellfun(@(y) strcmp(y, node.x_id), labelKeys, 'UniformOutput', 1);
+            if(any(ismember(keys_objId, node.x_id)))
+                index = cellfun(@(y) strcmp(y, node.x_id), keys_objId, 'UniformOutput', 1);
                 index = find(index==1);
-                labelValues{index} = [labelValues{index} i];
+                values_excNum{index} = [values_excNum{index} i];
             else
-                labelKeys{counter} = node.x_id;
-                labelValues{counter} = [i];
+                keys_objId{counter} = node.x_id;
+                values_excNum{counter} = [i];
                 counter=counter+1;
             end 
         end
@@ -111,13 +121,13 @@ function labels = addExcursionPointers(graph)
             if(strcmp(excursionSetMaps{j}.prov_wasGeneratedBy.x_id,...
                     searchSpaceMaskMaps{i}.prov_wasGeneratedBy.x_id))
                 
-                if(any(ismember(labelKeys, searchSpaceMaskMaps{i}.x_id)))
-                    index = cellfun(@(y) strcmp(y, searchSpaceMaskMaps{i}.x_id), labelKeys, 'UniformOutput', 1);
+                if(any(ismember(keys_objId, searchSpaceMaskMaps{i}.x_id)))
+                    index = cellfun(@(y) strcmp(y, searchSpaceMaskMaps{i}.x_id), keys_objId, 'UniformOutput', 1);
                     index = find(index==1);
-                    labelValues{index} = [labelValues{index} j];
+                    values_excNum{index} = [values_excNum{index} j];
                 else
-                    labelKeys{counter} = searchSpaceMaskMaps{i}.x_id;
-                    labelValues{counter} = [j];
+                    keys_objId{counter} = searchSpaceMaskMaps{i}.x_id;
+                    values_excNum{counter} = [j];
                     counter=counter+1;
                 end 
                 
@@ -127,6 +137,6 @@ function labels = addExcursionPointers(graph)
     
     %Account for keys listed multiple times.
     
-    labels = containers.Map(labelKeys, labelValues, 'UniformValues', false);
+    labels = containers.Map(keys_objId, values_excNum, 'UniformValues', false);
     
 end
