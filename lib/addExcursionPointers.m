@@ -2,7 +2,10 @@
 %This function takes in an NIDM-Results json and creates a hashmap labelling
 %objects with a pointer to their relevant excursion set. The resultant
 %hashmap takes in the id of an object from the main NIDM-Results graph and
-%outputs a number for it's corresponding ExcursionMap.
+%outputs a number for it's corresponding ExcursionMap. It does this by
+%creating a list of keys (which are ID's of nodes in the NIDM graph) and a
+%list of values (which are arrays of integers corresponding to the excursion
+%sets each node is associated to).
 %
 %graph - the graph from an NIDM-Results json.
 %
@@ -24,6 +27,8 @@ function labels = addExcursionPointers(graph)
     %For each excursion set map backtrack through recording each object and
     %the excursions set map it was connected to.
     
+    %The counter variable keeps track of how many key values have currently
+    %been added to the hashmap.
     counter = 1;
     
     for(i = 1:length(excursionSetMaps))
