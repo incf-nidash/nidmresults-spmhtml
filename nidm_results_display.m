@@ -35,17 +35,23 @@ function webID = nidm_results_display(jsonfilepath, conInstruct)
 
     filepathTemp = jsondoc.filepath;
     
+    %Obtain the type hashmap.
+    typemap = addTypePointers(graph);
+   
+    %Create the ID list.
+    ids = cellfun(@(x) get_value(x.('x_id')), graph, 'UniformOutput', false);
+    
     %Work out how many excursion set maps there are to display.
-    excursionSetMaps = searchforType('nidm_ExcursionSetMap',graph);
+    excursionSetMaps = typemap('nidm_ExcursionSetMap');
     
     %If there is only one excursion set display it. 
     if length(excursionSetMaps)==1
         %Display the page and obtain the pages ID.
-        webID = spm_results_export(changeNIDMtoSPM(graph,filepathTemp),...
-                                   changeNIDMtoxSPM(graph, filepathTemp),...
-                                   changeNIDMtoTabDat(graph));
+        webID = spm_results_export(changeNIDMtoSPM(graph,filepathTemp,typemap,ids),...
+                                   changeNIDMtoxSPM(graph,filepathTemp,typemap,ids),...
+                                   changeNIDMtoTabDat(graph,typemap,ids));
     else
-        %If there's instructs for which contrast to view use them.
+        %If there's instructions for which contrast to view use them.
         if(nargin>1)
             if(ischar(conInstruct))
                 if(strcmp(conInstruct, 'all'))
@@ -80,12 +86,13 @@ function webID = nidm_results_display(jsonfilepath, conInstruct)
         end
         %Otherwise generate the labels hashmap and generate a result for
         %each excursion set.
-        labels = addExcursionPointers(graph);
+        labels = addExcursionPointers(graph, ids, typemap);
+        
         webID = [];
         for(i = vec)
-            webID = [spm_results_export(changeNIDMtoSPM(graph,filepathTemp, {i, labels}),...
-                                   changeNIDMtoxSPM(graph, filepathTemp, {i, labels}),...
-                                   changeNIDMtoTabDat(graph,{i, labels}),...
+            webID = [spm_results_export(changeNIDMtoSPM(graph,filepathTemp, typemap, ids, {i, labels}),...
+                                   changeNIDMtoxSPM(graph, filepathTemp, typemap, ids, {i, labels}),...
+                                   changeNIDMtoTabDat(graph, typemap, ids, {i, labels}),...
                                    i) webID];
         end 
     end

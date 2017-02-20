@@ -207,18 +207,6 @@
  	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_con_f_130.json'), 'all');
  	 	 end
  
- 	 	 %Test viewer displays fsl_con_f_OLD
- 	 	 function test_fsl_con_f_OLD(testCase)
- 	 	 	 data_path = fullfile(fileparts(mfilename('fullpath')),'..','test','data','fsl_con_f_OLD');
- 	 	 	 if(~exist(data_path, 'dir'))
- 	 	 	 	 mkdir(data_path);
- 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/BNRPBNVV/fsl_con_f.nidm.zip');
- 	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
- 	 	 	 end
- 	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data', 'jsons','fsl_con_f_OLD.json'), 'all');
- 	 	 end
- 
  	 	 %Test viewer displays fsl_contrast_mask_130
  	 	 function test_fsl_contrast_mask_130(testCase)
  	 	 	 data_path = fullfile(fileparts(mfilename('fullpath')),'..','test','data','fsl_contrast_mask_130');
