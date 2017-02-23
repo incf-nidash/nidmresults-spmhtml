@@ -21,7 +21,7 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, ids, exObj)
     end
     if nargin == 5
         multipleExcursions = true;
-        exNum = exObj{1};
+        exID = exObj{1};
         exLabels = exObj{2};
     end
     
@@ -34,7 +34,7 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, ids, exObj)
     nidmTemp = struct;
     designMatrix = typemap('nidm_DesignMatrix');
     if(multipleExcursions)
-        designMatrix = relevantToExcursion(designMatrix, exNum, exLabels);
+        designMatrix = relevantToExcursion(designMatrix, exID, exLabels);
     end
     
     % Find the location of the design matrix (case depends on the version of 
@@ -63,7 +63,7 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, ids, exObj)
         contrastWeightMatrix = typemap('obo:STATO_0000323');
     end   
     if(multipleExcursions)
-        contrastWeightMatrix = relevantToExcursion(contrastWeightMatrix, exNum, exLabels);
+        contrastWeightMatrix = relevantToExcursion(contrastWeightMatrix, exID, exLabels);
     end
     
     xConTemp(1).c = str2num(contrastWeightMatrix{1}.('prov_value'))';

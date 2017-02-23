@@ -20,7 +20,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     end
     if nargin == 4
         multipleExcursions = true;
-        exNum = exObj{1};
+        exID = exObj{1};
         exLabels = exObj{2};
     end
     
@@ -72,7 +72,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     %Height thresholds
     heightThresholds = typemap('nidm_HeightThreshold');
     if(multipleExcursions)
-        heightThresholds = relevantToExcursion(heightThresholds, exNum, exLabels);
+        heightThresholds = relevantToExcursion(heightThresholds, exID, exLabels);
     end
     
     %Retrieve the indices of the threshold array which in the following
@@ -137,7 +137,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     
     extentThresholds = typemap('nidm_ExtentThreshold');
     if(multipleExcursions)
-        extentThresholds = relevantToExcursion(extentThresholds, exNum, exLabels);
+        extentThresholds = relevantToExcursion(extentThresholds, exID, exLabels);
     end
     ePositions = getThresholdPositions(extentThresholds);
     
@@ -178,7 +178,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     
     searchSpaceMaskMap = typemap('nidm_SearchSpaceMaskMap');
     if(multipleExcursions)
-        searchSpaceMaskMap = relevantToExcursion(searchSpaceMaskMap, exNum, exLabels);
+        searchSpaceMaskMap = relevantToExcursion(searchSpaceMaskMap, exID, exLabels);
     end
     
     %Find the searchSpaceMaskMap object linked to the coordinate space.
@@ -232,7 +232,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     errorDegrees = 0;
     
     if(multipleExcursions)
-        [~, statisticMap] = getStatType(typemap, exNum, exLabels);
+        [~, statisticMap] = getStatType(typemap, exID, exLabels);
     else
         [~, statisticMap] = getStatType(typemap);
     end 
@@ -325,7 +325,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     if strcmp(software, 'SPM') 
         excursionSetMap = typemap('nidm_ExcursionSetMap');
         if(multipleExcursions)
-            excursionSetMap = relevantToExcursion(excursionSetMap, exNum, exLabels);
+            excursionSetMap = relevantToExcursion(excursionSetMap, exID, exLabels);
         end
         tableTemp{1, 1} = str2double(get_value(excursionSetMap{1}.('nidm_pValue')));
         tableTemp{1, 2} = str2double(get_value(excursionSetMap{1}.('nidm_numberOfSupraThresholdClusters')));
@@ -339,7 +339,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
         %Work out which object belongs to which excursion set.
         for(i = 1:length(clusters))
             excur = searchforID(clusters{i}.prov_wasDerivedFrom.x_id, graph, ids);
-            if(any(ismember(exLabels(excur.prov_wasGeneratedBy.x_id),exNum)))
+            if(any(ismember(exLabels(excur.prov_wasGeneratedBy.x_id),exID)))
                 resultant{end+1} = clusters{i};
             end
         end
@@ -348,7 +348,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     
     peakDefCriteria = typemap('nidm_PeakDefinitionCriteria');
     if(multipleExcursions)
-        peakDefCriteria = relevantToExcursion(peakDefCriteria, exNum, exLabels);
+        peakDefCriteria = relevantToExcursion(peakDefCriteria, exID, exLabels);
     end
     
     %Obtain what type of statistic we are dealing with:    

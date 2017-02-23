@@ -21,7 +21,7 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
     end
     if nargin == 5
         multipleExcursions = true;
-        exNum = exObj{1};
+        exID = exObj{1};
         exLabels = exObj{2};
     end
     
@@ -32,7 +32,7 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
     
     %Using getStatType, obtain the statisticMaps objects and statistic type. 
     if(multipleExcursions)
-        [STATTemp, statisticMaps] = getStatType(typemap, exNum, exLabels);
+        [STATTemp, statisticMaps] = getStatType(typemap, exID, exLabels);
     else
         [STATTemp, statisticMaps] = getStatType(typemap);
     end 
@@ -87,7 +87,7 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
     %Locate the excursion set maps and their indices in the graph.
     excursionSetMaps = typemap('nidm_ExcursionSetMap');
     if(multipleExcursions)
-        excursionSetMaps = relevantToExcursion(excursionSetMaps, exNum, exLabels);
+        excursionSetMaps = relevantToExcursion(excursionSetMaps, exID, exLabels);
     end
     coordSpaceId = excursionSetMaps{1}.('nidm_inCoordinateSpace').('x_id');
     coordSpace = searchforID(coordSpaceId, graph, ids);
@@ -116,7 +116,7 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
         %Find the units of the MIP.
         searchSpaceMaskMap = typemap('nidm_SearchSpaceMaskMap');
         if(multipleExcursions)
-            searchSpaceMaskMap = relevantToExcursion(searchSpaceMaskMap, exNum, exLabels);
+            searchSpaceMaskMap = relevantToExcursion(searchSpaceMaskMap, exID, exLabels);
         end
         searchSpace = searchforID(searchSpaceMaskMap{1}.('nidm_inCoordinateSpace').('x_id'), graph, ids);
         voxelUnits = strrep(strrep(strrep(strrep(searchSpace.('nidm_voxelUnits'), '\"', ''), '[', ''), ']', ''), ',', '');

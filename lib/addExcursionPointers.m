@@ -1,11 +1,6 @@
 %==========================================================================
 %This function takes in an NIDM-Results json and creates a hashmap labelling
-%objects with a pointer to their relevant excursion set. The resultant
-%hashmap takes in the id of an object from the main NIDM-Results graph and
-%outputs a number for it's corresponding ExcursionMap. It does this by
-%creating a list of keys (which are ID's of nodes in the NIDM graph) and a
-%list of values (which are arrays of integers corresponding to the excursion
-%sets each node is associated to).
+%objects with the ID/s of their associated excursion set map/s.
 %
 %graph - the graph from an NIDM-Results json.
 %ids - a list of ids for the graph objects.
@@ -17,7 +12,7 @@
 function labels = addExcursionPointers(graph, ids, typemap)
     
     %Create an empty list for the keys and values.
-    values_excNum = {};
+    values_excID = {};
     keys_objIDs = {};
     
     %Return the excursion set maps.
@@ -30,17 +25,19 @@ function labels = addExcursionPointers(graph, ids, typemap)
         
         %Add in the excursion set map object.
         keys_objIDs{end+1} = excursionSetMaps{i}.x_id;
-        values_excNum{end+1} = [i];      
+        values_excID{end+1} = {excursionSetMaps{i}.x_id};      
         
         %Find the inference object connected to the excursionSetMap.
         inference = searchforID(excursionSetMaps{i}.prov_wasGeneratedBy.x_id, graph, ids);
         if(any(ismember(keys_objIDs, inference.x_id)))
             index = cellfun(@(y) strcmp(y, inference.x_id), keys_objIDs, 'UniformOutput', 1);
             index = find(index==1);
-            values_excNum{index} = [values_excNum{index} i];
+            tempExcIds = values_excID{index};
+            tempExcIds{end+1} = excursionSetMaps{i}.x_id; 
+            values_excID{index} = tempExcIds;
         else
             keys_objIDs{end+1} = inference.x_id;
-            values_excNum{end+1} = [i];
+            values_excID{end+1} = {excursionSetMaps{i}.x_id};
         end 
         
         %Obtain the objects used by inference.
@@ -56,10 +53,12 @@ function labels = addExcursionPointers(graph, ids, typemap)
             if(any(ismember(keys_objIDs, node.x_id)))
                 index = cellfun(@(y) strcmp(y, node.x_id), keys_objIDs, 'UniformOutput', 1);
                 index = find(index==1);
-                values_excNum{index} = [values_excNum{index} i];
+                tempExcIds = values_excID{index};
+                tempExcIds{end+1} = excursionSetMaps{i}.x_id; 
+                values_excID{index} = tempExcIds;
             else
                 keys_objIDs{end+1} = node.x_id;
-                values_excNum{end+1} = [i];
+                values_excID{end+1} = {excursionSetMaps{i}.x_id};
             end 
             
             %Compute which is the statistic map.
@@ -74,10 +73,12 @@ function labels = addExcursionPointers(graph, ids, typemap)
         if(any(ismember(keys_objIDs, conEst.x_id)))
             index = cellfun(@(y) strcmp(y, conEst.x_id), keys_objIDs, 'UniformOutput', 1);
             index = find(index==1);
-            values_excNum{index} = [values_excNum{index} i];
+            tempExcIds = values_excID{index};
+            tempExcIds{end+1} = excursionSetMaps{i}.x_id; 
+            values_excID{index} = tempExcIds;
         else
             keys_objIDs{end+1} = conEst.x_id;
-            values_excNum{end+1} = [i];
+            values_excID{end+1} = {excursionSetMaps{i}.x_id};
         end 
 
         %Obtain the objects used by inference.
@@ -91,10 +92,12 @@ function labels = addExcursionPointers(graph, ids, typemap)
             if(any(ismember(keys_objIDs, node.x_id)))
                 index = cellfun(@(y) strcmp(y, node.x_id), keys_objIDs, 'UniformOutput', 1);
                 index = find(index==1);
-                values_excNum{index} = [values_excNum{index} i];
+                tempExcIds = values_excID{index};
+                tempExcIds{end+1} = excursionSetMaps{i}.x_id; 
+                values_excID{index} = tempExcIds;
             else
                 keys_objIDs{end+1} = node.x_id;
-                values_excNum{end+1} = [i];
+                values_excID{end+1} = {excursionSetMaps{i}.x_id};
             end 
         end
         
@@ -112,18 +115,18 @@ function labels = addExcursionPointers(graph, ids, typemap)
                 if(any(ismember(keys_objIDs, searchSpaceMaskMaps{i}.x_id)))
                     index = cellfun(@(y) strcmp(y, searchSpaceMaskMaps{i}.x_id), keys_objIDs, 'UniformOutput', 1);
                     index = find(index==1);
-                    values_excNum{index} = [values_excNum{index} j];
+                    tempExcIds = values_excID{index};
+                    tempExcIds{end+1} = excursionSetMaps{j}.x_id; 
+                    values_excID{index} = tempExcIds;
                 else
                     keys_objIDs{end+1} = searchSpaceMaskMaps{i}.x_id;
-                    values_excNum{end+1} = [j];
+                    values_excID{end+1} = {excursionSetMaps{j}.x_id};
                 end 
                 
             end
         end
     end
     
-    %Account for keys listed multiple times.
-    
-    labels = containers.Map(keys_objIDs, values_excNum, 'UniformValues', false);
-    
+    labels = containers.Map(keys_objIDs, values_excID, 'UniformValues', false);
+
 end
