@@ -1,4 +1,4 @@
-function webID = spm_results_export(SPM,xSPM,TabDat)
+function webID = spm_results_export(SPM,xSPM,TabDat,exNo)
 % Export SPM results in HTML
 % FORMAT spm_results_export(SPM,xSPM,TabDat)
 %__________________________________________________________________________
@@ -15,13 +15,22 @@ end
 if nargin < 3
     TabDat = spm_list('Table',xSPM);
 end
+if nargin <= 3
+    multipleExcursions = false;
+end
+if nargin == 4
+    multipleExcursions = true;
+end
+if nargin > 4
+    error('Too many input arguments.');
+end
 
 %If spm_results export has been called on standard SPM, xSPM and TabDat 
 %variables, output into the current directory, else if we are using 
 %nidm-created SPM, xSPM and TabDat variables, output next to the NIDM json.
 
 if ~isfield(SPM, 'nidm')
-    software = '';
+    software = 'SPM';
     fHTML = pwd;
     outdir  = spm_file(fullfile(pwd, 'temp'));
 else
@@ -34,12 +43,20 @@ if exist(outdir, 'dir') ~= 7
     outdir = spm_file(outdir, 'uniquedir');
 end
 
-fHTML   = spm_file(fullfile(fHTML, 'index.html'));
+if(multipleExcursions)
+    fHTML   = spm_file(fullfile(fHTML, ['index', num2str(exNo), '.html']));
+else
+    fHTML   = spm_file(fullfile(fHTML, 'index.html'));
+end
 
 %If fHTML already exists, ask if it should be overWritten.
 
 if exist(fHTML, 'file') == 2
-    button = questdlg('The output file, index.html, already exists. Would you like this file to be overwritten?', 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');      
+    if(multipleExcursions)
+        button = questdlg(['The output file, index', num2str(exNo), '.html, already exists. Would you like this file to be overwritten?'], 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');      
+    else
+        button = questdlg(['The output file, index.html, already exists. Would you like this file to be overwritten?'], 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');      
+    end
     switch button
         case 'Overwrite'
             overWrite = true;
@@ -179,4 +196,8 @@ rmdir(outdir, 's');
 
 %-Display webpage
 %==========================================================================
-[~, webID] = web(fHTML);
+if(multipleExcursions & exNo >1)
+    [~, webID] = web(fHTML, '-new');
+else
+    [~, webID] = web(fHTML);
+end

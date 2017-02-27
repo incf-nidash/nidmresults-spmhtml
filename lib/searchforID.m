@@ -4,17 +4,13 @@
 %
 %ID - The ID to look for.
 %graph - The graph to search.
+%ids - a list of all ID's in the graph 
 %
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
-function result = searchforID(ID, graph) 
+function result = searchforID(ID, graph, ids) 
 
-    %Search the graph for the results.
-	for k = 1:length(graph)
-		if strcmp(graph{k}.('x_id'), ID) 
-			result = graph{k};
-        end
-    end
+    result = graph{find(strcmp(ids, ID))};
     
 end

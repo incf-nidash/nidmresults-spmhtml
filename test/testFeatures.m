@@ -64,7 +64,7 @@ classdef testFeatures < matlab.unittest.TestCase
         
         %Checking the viewer runs on FSL-nidm output.
         function checkViewerRunsFSL(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'fsl_default');
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'fsl_default_130');
             testCase.delete_html_file(data_path);
             nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons', 'fsl_default_130.json'));
         end
