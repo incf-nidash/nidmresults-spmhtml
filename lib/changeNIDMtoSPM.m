@@ -32,7 +32,7 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, ids, exObj)
     %matrix is derived from other fields and this field does not exist.
     
     nidmTemp = struct;
-    designMatrix = typemap('nidm_DesignMatrix');
+    designMatrix = typemap('nidm_DesignMatrix:');
     if(multipleExcursions)
         designMatrix = relevantToExcursion(designMatrix, exID, exLabels);
     end
@@ -58,7 +58,7 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, ids, exObj)
     xConTemp = struct;
     
     %Search for contrastwieght matrix objects to obtain a contrast vector.
-    contrastWeightMatrix = typemap('obo_contrastweightmatrix');
+    contrastWeightMatrix = typemap('obo_contrastweightmatrix:');
     if(isempty(contrastWeightMatrix))
         contrastWeightMatrix = typemap('obo:STATO_0000323');
     end   
@@ -66,7 +66,7 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, ids, exObj)
         contrastWeightMatrix = relevantToExcursion(contrastWeightMatrix, exID, exLabels);
     end
     
-    xConTemp(1).c = str2num(contrastWeightMatrix{1}.('prov_value'))';
+    xConTemp(1).c = str2num(contrastWeightMatrix{1}.('prov_value').('x_value'))';
     
     %======================================================================
     %xX
@@ -79,7 +79,7 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, ids, exObj)
     xXtemp.xKXs.X = csvread(fullfile(filepathTemp, [name, ext]));
     
     %Get the regressor names in required format.
-    remain = strrep(strrep(strrep(strrep(designMatrix{1}.nidm_regressorNames, '\"', ''), '[', ''), ']', ''), ',', '');
+    remain = strrep(strrep(strrep(strrep(designMatrix{1}.nidm_regressorNames_.x_value, '\"', ''), '[', ''), ']', ''), ',', '');
 
     % Deal with the case of empty regressor names
     if isempty(remain)

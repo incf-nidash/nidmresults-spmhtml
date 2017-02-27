@@ -14,7 +14,7 @@
 function [type, statisticMaps] = getStatType(typemap, exID, exLabels)
     
     %Find the statistic type information.
-    statisticMaps = typemap('nidm_StatisticMap');
+    statisticMaps = typemap('nidm_StatisticMap:');
     
     %If there are multiple contrasts, refine the search.
     if(nargin == 3)      
@@ -31,10 +31,10 @@ function [type, statisticMaps] = getStatType(typemap, exID, exLabels)
     end
     
     for i = 1:length(statisticMaps)
-        if isfield(statisticMaps{i}, 'nidm_statisticType') 
-            anyStatType = statisticMaps{i}.('nidm_statisticType').('x_id');
+        if isfield(statisticMaps{i}, 'nidm_statisticType_') 
+            anyStatType = statisticMaps{i}.('nidm_statisticType_').('x_id');
             if ~strcmp(anyStatType, 'obo:STATO_0000376')
-                statType = statisticMaps{i}.('nidm_statisticType').('x_id');
+                statType = statisticMaps{i}.('nidm_statisticType_').('x_id');
             end
         end
     end

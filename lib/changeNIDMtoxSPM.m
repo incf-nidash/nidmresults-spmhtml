@@ -42,8 +42,8 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
     
     if(~isempty(statisticMaps))
         for i = 1:length(statisticMaps)
-            if isfield(statisticMaps{i}, 'nidm_contrastName')
-                titleTemp = statisticMaps{i}.('nidm_contrastName');
+            if isfield(statisticMaps{i}, 'nidm_contrastName_')
+                titleTemp = statisticMaps{i}.('nidm_contrastName_').('x_value');
             end
         end 
     else
@@ -55,11 +55,11 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
     
     %Obtain the degrees of freedom.
     for i = 1:length(statisticMaps)
-        if isfield(statisticMaps{i}, 'nidm_errorDegreesOfFreedom')
-            anyStatType = statisticMaps{i}.('nidm_statisticType').('x_id');
+        if isfield(statisticMaps{i}, 'nidm_errorDegreesOfFreedom_')
+            anyStatType = statisticMaps{i}.('nidm_statisticType_').('x_id');
             if ~strcmp(anyStatType, 'obo:STATO_0000376')
-                effectDegrees = get_value(statisticMaps{i}.('nidm_effectDegreesOfFreedom'));
-                errorDegrees = get_value(statisticMaps{i}.('nidm_errorDegreesOfFreedom'));
+                effectDegrees = get_value(statisticMaps{i}.('nidm_effectDegreesOfFreedom_'));
+                errorDegrees = get_value(statisticMaps{i}.('nidm_errorDegreesOfFreedom_'));
             end
         end
     end 
@@ -85,22 +85,22 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
     %M
     
     %Locate the excursion set maps and their indices in the graph.
-    excursionSetMaps = typemap('nidm_ExcursionSetMap');
+    excursionSetMaps = typemap('nidm_ExcursionSetMap:');
     if(multipleExcursions)
         excursionSetMaps = relevantToExcursion(excursionSetMaps, exID, exLabels);
     end
-    coordSpaceId = excursionSetMaps{1}.('nidm_inCoordinateSpace').('x_id');
+    coordSpaceId = excursionSetMaps{1}.('nidm_inCoordinateSpace_').('x_id');
     coordSpace = searchforID(coordSpaceId, graph, ids);
     
     %Obtain the voxel to world mapping and transform it to obtain M.
-    v2wm = spm_jsonread(coordSpace.nidm_voxelToWorldMapping);
+    v2wm = spm_jsonread(coordSpace.nidm_voxelToWorldMapping_.x_value);
     transform = [1, 0, 0, -1; 0, 1, 0, -1; 0, 0, 1, -1; 0, 0, 0, 1];
     mTemp = v2wm*transform;
     
     %===============================================
     %DIM
     
-    dimTemp = str2num(coordSpace.('nidm_dimensionsInVoxels'))';
+    dimTemp = str2num(coordSpace.('nidm_dimensionsInVoxels_').('x_value'))';
     
     %======================================================================
     %nidm - NOTE: In the standard format for SPM output the MIP is 
@@ -114,15 +114,15 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
         nidmTemp.MIP = getPathDetails(mipFilepath.('prov_atLocation').('x_value'), jsonFile);
     else
         %Find the units of the MIP.
-        searchSpaceMaskMap = typemap('nidm_SearchSpaceMaskMap');
+        searchSpaceMaskMap = typemap('nidm_SearchSpaceMaskMap:');
         if(multipleExcursions)
             searchSpaceMaskMap = relevantToExcursion(searchSpaceMaskMap, exID, exLabels);
         end
-        searchSpace = searchforID(searchSpaceMaskMap{1}.('nidm_inCoordinateSpace').('x_id'), graph, ids);
-        voxelUnits = strrep(strrep(strrep(strrep(searchSpace.('nidm_voxelUnits'), '\"', ''), '[', ''), ']', ''), ',', '');
+        searchSpace = searchforID(searchSpaceMaskMap{1}.('nidm_inCoordinateSpace_').('x_id'), graph, ids);
+        voxelUnits = strrep(strrep(strrep(strrep(searchSpace.('nidm_voxelUnits_').('x_value'), '\"', ''), '[', ''), ']', ''), ',', '');
         
         %Generate the MIP.
-        filenameNII = excursionSetMaps{1}.('nfo_fileName');
+        filenameNII = excursionSetMaps{1}.('nfo_fileName').('x_value');
         generateMIP(jsonFile, filenameNII, dimTemp, voxelUnits);
         nidmTemp.MIP = spm_file(fullfile(jsonFile,'MIP.png'));
         
