@@ -14,7 +14,7 @@
 function [type, statisticMaps] = getStatType(typemap, exID, exLabels)
     
     %Find the statistic type information.
-    statisticMaps = typemap('nidm_StatisticMap:');
+    statisticMaps = typemap('nidm_StatisticMap');
     
     %If there are multiple contrasts, refine the search.
     if(nargin == 3)      
@@ -31,20 +31,20 @@ function [type, statisticMaps] = getStatType(typemap, exID, exLabels)
     end
     
     for i = 1:length(statisticMaps)
-        if isfield(statisticMaps{i}, 'nidm_statisticType_') 
-            anyStatType = statisticMaps{i}.('nidm_statisticType_').('x_id');
+        if isfield(statisticMaps{i}, 'nidm_statisticType') 
+            anyStatType = statisticMaps{i}.('nidm_statisticType').('x_id');
             if ~strcmp(anyStatType, 'obo:STATO_0000376')
-                statType = statisticMaps{i}.('nidm_statisticType_').('x_id');
+                statType = statisticMaps{i}.('nidm_statisticType').('x_id');
             end
         end
     end
     
     %Work out which type is stored.
-    if strcmp(statType, 'obo:STATO_0000176')
+    if strcmp(statType, 'obo:STATO_0000176') || strcmp(statType, 'obo_tstatistic')
        type = 'T';
     elseif strcmp(statType, 'obo:STATO_0000030')
        type = 'X';
-    elseif strcmp(statType, 'obo:STATO_0000376')
+    elseif strcmp(statType, 'obo:STATO_0000376') ||  strcmp(statType, 'obo_zstatistic')
        type = 'Z';
     elseif strcmp(statType, 'obo:STATO_0000282')
        type = 'F';

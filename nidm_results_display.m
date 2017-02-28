@@ -16,17 +16,17 @@ function webID = nidm_results_display(nidmfilepath, conInstruct)
     %If it is zipped unzip it.
     if contains(nidmfilepath, '.zip')
         [path, filename] = fileparts(nidmfilepath);
-        unzip(nidmfilepath, fullfile(path, filename));
+%         unzip(nidmfilepath, fullfile(path, filename));
         nidmfilepath = fullfile(path, filename);
     end
     
     try
         jsonfilepath = fullfile(nidmfilepath, 'nidm.jsonld');
-        %Record users choice andnidmfilepath.
+        %Record users choice and jsonfilepath.
         jsondoc=spm_jsonread(jsonfilepath);
     catch
         jsonfilepath = fullfile(nidmfilepath, 'nidm.json');
-        %Record users choice andnidmfilepath.
+        %Record users choice and jsonfilepath.
         jsondoc=spm_jsonread(jsonfilepath);
     end
 
@@ -35,24 +35,33 @@ function webID = nidm_results_display(nidmfilepath, conInstruct)
         addpath(fullfile(fileparts(mfilename('fullpath')), 'lib'));
     end
     
-    graph = jsondoc{2}.x_graph;
+    % Deal with sub-graphs (bundle)
+    if ~iscell(jsondoc)
+        graph = jsondoc.x_graph;
+        if isfield(graph{2}, 'x_graph')
+            graph = graph{2}.x_graph;
+        end
+    else
+        graph = jsondoc;
+        graph = graph{2}.x_graph;
+    end
     
     %Obtain the type hashmap.
     typemap = addTypePointers(graph);
     
-    graph2 = {};
+    graphTemp = {};
     for i = 1:length(graph)
         if isfield(graph{i}, 'x_id')
-            graph2{end+1} = graph{i};
+            graphTemp{end+1} = graph{i};
         end
     end
-    graph = graph2;
+    graph = graphTemp;
     
     %Create the ID list.
     ids = cellfun(@(x) get_value(x.('x_id')), graph, 'UniformOutput', false);
     
     %Work out how many excursion set maps there are to display.
-    excursionSetMaps = typemap('nidm_ExcursionSetMap:');
+    excursionSetMaps = typemap('nidm_ExcursionSetMap');
     
     %If there is only one excursion set display it. 
     if length(excursionSetMaps)==1
@@ -101,7 +110,7 @@ function webID = nidm_results_display(nidmfilepath, conInstruct)
         webID = [];
         for(i = vec)
             exID = excursionSetMaps{i}.x_id;
-            webID = [spm_results_export(changeNIDMtoSPM(graph,filepath, typemap, ids, {exID, labels}),...
+            webID = [spm_results_export(changeNIDMtoSPM(graph,nidmfilepath, typemap, ids, {exID, labels}),...
                                    changeNIDMtoxSPM(graph,nidmfilepath, typemap, ids, {exID, labels}),...
                                    changeNIDMtoTabDat(graph, typemap, ids, {exID, labels}),...
                                    i) webID];
