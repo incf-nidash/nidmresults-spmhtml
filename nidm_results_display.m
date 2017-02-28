@@ -20,10 +20,15 @@ function webID = nidm_results_display(nidmfilepath, conInstruct)
         nidmfilepath = fullfile(path, filename);
     end
     
-    jsonfilepath = fullfile(nidmfilepath, 'nidm.jsonld');
-    
-    %Record users choice andnidmfilepath.
-    jsondoc=spm_jsonread(jsonfilepath);
+    try
+        jsonfilepath = fullfile(nidmfilepath, 'nidm.jsonld');
+        %Record users choice andnidmfilepath.
+        jsondoc=spm_jsonread(jsonfilepath);
+    catch
+        jsonfilepath = fullfile(nidmfilepath, 'nidm.json');
+        %Record users choice andnidmfilepath.
+        jsondoc=spm_jsonread(jsonfilepath);
+    end
 
     %Add path to required methods
     if exist('changeNIDMtoSPM') ~= 2
