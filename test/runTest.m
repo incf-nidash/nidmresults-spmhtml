@@ -1,7 +1,7 @@
 %==========================================================================
 %This function runs the testFeatures tests, which test specific features of
-%the viewer, and the testDataSets tests, which test all datasets available in the
-%file.
+%the viewer, and the testDataSets tests, which test all locally available
+%datasets.
 %
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
@@ -15,9 +15,6 @@ function runTest()
     import matlab.unittest.TestSuite;
     addpath(fullfile(fileparts(mfilename('fullpath')),'..', 'lib'));
     addpath(fullfile(fileparts(mfilename('fullpath')),'..'));
-    
-    %Create the testDataSets tests.
-    createTest();
     
     %Run all tests.
     tests = [matlab.unittest.TestSuite.fromFile(which('testDataSets')),...

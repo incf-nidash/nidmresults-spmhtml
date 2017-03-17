@@ -23,6 +23,7 @@ function webID = nidm_results_display(nidmfilepath, conInstruct)
     try
         jsonfilepath = fullfile(nidmfilepath, 'nidm.jsonld');
         %Record users choice and jsonfilepath.
+        bugFix(jsonfilepath);
         jsondoc=spm_jsonread(jsonfilepath);
     catch
         jsonfilepath = fullfile(nidmfilepath, 'nidm.json');
@@ -117,4 +118,28 @@ function webID = nidm_results_display(nidmfilepath, conInstruct)
         end 
     end
     
+end
+
+
+%--------------------------------------------------------------------------
+%This function is temporary and only here due to a bug in the current SPM
+%export leading to additional ':' characters appearing in the jsonld. The
+%function and all references to it should be removed during the next spm
+%update.
+%--------------------------------------------------------------------------
+function bugFix(jsonPath)
+    %Open the file and read in the text.
+    fileID = fopen(jsonPath, 'r+');
+    text = fscanf(fileID, '%c', inf);
+    
+    %Remove the colons.
+    text = strrep(text, ':"', '"');
+    text = strrep(text, '\n', '\\n');
+    text = strrep(text, '\"', '\\"');
+    fclose(fileID);
+    
+    %Print out.
+    fileID = fopen(jsonPath, 'wt');
+    fprintf(fileID, text);
+    fclose(fileID);
 end
