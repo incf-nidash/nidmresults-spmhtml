@@ -48,6 +48,8 @@ function webID = nidm_results_display(nidmfilepath, conInstruct, outdir)
         error('Error: JSON serialization not present in NIDM-Results pack.') 
     end
     
+    context = load_json_context(jsondoc);
+
     %Add path to required methods
     if exist('changeNIDMtoSPM', 'file') ~= 2
         addpath(fullfile(fileparts(mfilename('fullpath')), 'lib'));
@@ -95,9 +97,9 @@ function webID = nidm_results_display(nidmfilepath, conInstruct, outdir)
     %If there is only one excursion set display it. 
     if length(excursionSetMaps)==1
         %Display the page and obtain the pages ID.
-        webID = spm_results_export(changeNIDMtoSPM(graph,nidmfilepath,typemap,ids),...
-                                   changeNIDMtoxSPM(graph,nidmfilepath,typemap,ids),...
-                                   changeNIDMtoTabDat(graph,typemap,ids), -1, outdir);
+        webID = spm_results_export(changeNIDMtoSPM(graph,nidmfilepath,typemap,context,ids),...
+                                   changeNIDMtoxSPM(graph,nidmfilepath,typemap,context,ids),...
+                                   changeNIDMtoTabDat(graph,typemap,context,ids), -1, outdir);
     else
         %Otherwise generate the labels hashmap and generate a result for
         %each excursion set.
@@ -149,12 +151,12 @@ function webID = nidm_results_display(nidmfilepath, conInstruct, outdir)
         for i = vec 
             spm_progress_bar('Init',3,['Displaying contrast ', num2str(i)],'Current stage');
             exID = excursionSetMaps{i}.x_id;
-            
+           
             spm_progress_bar('Set',1);
             %Generate xSPM and TabDat for this contrast.
-            xSPM = changeNIDMtoxSPM(graph,nidmfilepath, typemap, ids, {exID, labels});
+            xSPM = changeNIDMtoxSPM(graph,nidmfilepath, typemap, context, ids, {exID, labels});
             spm_progress_bar('Set',2)
-            TabDat = changeNIDMtoTabDat(graph, typemap, ids, {exID, labels});
+            TabDat = changeNIDMtoTabDat(graph, typemap, context, ids, {exID, labels});
             spm_progress_bar('Set',3)
             
             %Open display, using any SPM variables we've calculated
@@ -163,7 +165,7 @@ function webID = nidm_results_display(nidmfilepath, conInstruct, outdir)
             if exist('SPMs', 'var')
                 webID = [spm_results_export(SPMs{i}, xSPM, TabDat, i, outdir) webID];
             else
-                webID = [spm_results_export(changeNIDMtoSPM(graph,nidmfilepath, typemap, ids, {exID, labels}),...
+                webID = [spm_results_export(changeNIDMtoSPM(graph,nidmfilepath, typemap, context, ids, {exID, labels}),...
                         xSPM, TabDat, i, outdir) webID];
             end
         end

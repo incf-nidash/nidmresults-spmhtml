@@ -12,13 +12,13 @@
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
-function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
+function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
     
     % Checking inputs.
-    if nargin < 4
+    if nargin < 5
         multipleExcursions = false;
     end
-    if nargin == 4
+    if nargin == 5
         multipleExcursions = true;
         exID = exObj{1};
         exLabels = exObj{2};
@@ -240,9 +240,9 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     errorDegrees = 0;
     
     if(multipleExcursions)
-        [~, statisticMap] = getStatType(typemap, exID, exLabels);
+        [~, statisticMap] = getStatType(typemap, context, exID, exLabels);
     else
-        [~, statisticMap] = getStatType(typemap);
+        [~, statisticMap] = getStatType(typemap, context);
     end 
     
     ftrTemp{rowCount,1} = 'Degrees of freedom = [%0.1f, %0.1f]';
@@ -373,7 +373,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     end
     
     %Obtain what type of statistic we are dealing with:    
-    statType = getStatType(typemap);
+    statType = getStatType(typemap, context);
     
     if~isempty(clusters)
         

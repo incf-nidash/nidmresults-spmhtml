@@ -13,13 +13,13 @@
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
-function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
+function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, context, ids, exObj)
     
     % Checking inputs.
-    if nargin < 5
+    if nargin < 6
         multipleExcursions = false;
     end
-    if nargin == 5
+    if nargin == 6
         multipleExcursions = true;
         exID = exObj{1};
         exLabels = exObj{2};
@@ -32,9 +32,9 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
     
     %Using getStatType, obtain the statisticMaps objects and statistic type. 
     if(multipleExcursions)
-        [STATTemp, statisticMaps] = getStatType(typemap, exID, exLabels);
+        [STATTemp, statisticMaps] = getStatType(typemap, context, exID, exLabels);
     else
-        [STATTemp, statisticMaps] = getStatType(typemap);
+        [STATTemp, statisticMaps] = getStatType(typemap, context);
     end 
     
     %======================================================================
