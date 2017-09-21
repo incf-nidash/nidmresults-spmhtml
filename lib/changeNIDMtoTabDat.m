@@ -53,11 +53,11 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
         % The two options here are assuming analysis software and export
         % software are the same (ideally we should instead explicitely
         % check for the analysis software)
-        elseif any(ismember(soft_type, 'nidm_spm_results'))
+        elseif any(ismember(soft_type, context('nidm_spm_results')))
             software = 'SPM';
             version = ['version ' agentObjects{i}.nidm_softwareVersion.x_value '.'];
             parametric = true;
-        elseif any(ismember(soft_type, 'nidm_nidmfsl'))
+        elseif any(ismember(soft_type, context('nidm_nidmfsl')))
             software = 'FSL';
             version = ['version ' agentObjects{i}.fsl_featVersion ', nidm version:' agentObjects{i}.nidm_softwareVersion '.'];
             parametric = true;
@@ -78,7 +78,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
     ftrTemp = cell(1);
     
     %Height thresholds
-    heightThresholds = typemap('nidm_HeightThreshold');
+    heightThresholds = typemap(context('nidm_HeightThreshold'));
     if(multipleExcursions)
         heightThresholds = relevantToExcursion(heightThresholds, exID, exLabels);
     end
@@ -143,7 +143,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
     
     %Extent Threshold
     
-    extentThresholds = typemap('nidm_ExtentThreshold');
+    extentThresholds = typemap(context('nidm_ExtentThreshold'));
     if(multipleExcursions)
         extentThresholds = relevantToExcursion(extentThresholds, exID, exLabels);
     end
@@ -153,7 +153,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
     %thresholds themselves.
     if ePositions(4) ~= 0
         ftrTemp{2, 1} = 'Extent threshold: k = %0.2f voxels';  
-        kThresh = get_value(extentThresholds{ePositions(4)}.('nidm_clusterSizeInVoxels'));
+        kThresh = get_value(extentThresholds{ePositions(4)}.(context('nidm_clusterSizeInVoxels')));
         if(ischar(kThresh))
             kThresh = str2double(kThresh);
         end
@@ -184,7 +184,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
         ftrTemp{2, 2} = NaN;
     end
     
-    searchSpaceMaskMap = typemap('nidm_SearchSpaceMaskMap');
+    searchSpaceMaskMap = typemap(context('nidm_SearchSpaceMaskMap'));
     if(multipleExcursions)
         searchSpaceMaskMap = relevantToExcursion(searchSpaceMaskMap, exID, exLabels);
     end
@@ -192,7 +192,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
     %Find the searchSpaceMaskMap object linked to the coordinate space.
     searchLinkedToCoord = '';
     for i=1:length(searchSpaceMaskMap)
-        if isfield(searchSpaceMaskMap{i}, 'nidm_inCoordinateSpace')
+        if isfield(searchSpaceMaskMap{i}, context('nidm_inCoordinateSpace'))
             searchLinkedToCoord = searchSpaceMaskMap{i};
         end
     end
@@ -201,28 +201,28 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
         
         %Expected voxels per cluster (k)
         ftrTemp{3, 1} = 'Expected voxels per cluster <k> = %0.3f';
-        ftrTemp{3, 2} = str2double(get_value(searchLinkedToCoord.('nidm_expectedNumberOfVoxelsPerCluster')));
+        ftrTemp{3, 2} = str2double(get_value(searchLinkedToCoord.(context('nidm_expectedNumberOfVoxelsPerCluster'))));
     
         %Expected number of clusters (c)
         ftrTemp{4, 1} = 'Expected number of clusters <c> = %0.2f';
-        ftrTemp{4, 2} = str2double(get_value(searchLinkedToCoord.('nidm_expectedNumberOfClusters')));
+        ftrTemp{4, 2} = str2double(get_value(searchLinkedToCoord.(context('nidm_expectedNumberOfClusters'))));
     
         %FWEp, FDRp
-        FWEp = str2double(get_value(searchLinkedToCoord.('nidm_heightCriticalThresholdFWE05')));
-        FDRp = str2double(get_value(searchLinkedToCoord.('nidm_heightCriticalThresholdFDR05')));
+        FWEp = str2double(get_value(searchLinkedToCoord.(context('nidm_heightCriticalThresholdFWE05'))));
+        FDRp = str2double(get_value(searchLinkedToCoord.(context('nidm_heightCriticalThresholdFDR05'))));
         stringTemp = 'FWEp: %0.3f, FDRp: %0.3f';
         arrayTemp = [FWEp, FDRp];
         
         %If its there, include FWEc
-        if(isfield(searchLinkedToCoord, 'spm_smallestSignificantClusterSizeInVoxelsFWE05'))
-            FWEc = str2double(get_value(searchLinkedToCoord.('spm_smallestSignificantClusterSizeInVoxelsFWE05')));
+        if(isfield(searchLinkedToCoord, context('spm_smallestSignificantClusterSizeInVoxelsFWE05')))
+            FWEc = str2double(get_value(searchLinkedToCoord.(context('spm_smallestSignificantClusterSizeInVoxelsFWE05'))));
             stringTemp = [stringTemp, ', FWEc: %0.4f'];
             arrayTemp = [arrayTemp, FWEc];
         end
         
         %If its there, include FDRc
-        if(isfield(searchLinkedToCoord, 'spm_smallestSignificantClusterSizeInVoxelsFDR05'))
-            FDRc = str2double(get_value(searchLinkedToCoord.('spm_smallestSignificantClusterSizeInVoxelsFDR05')));
+        if(isfield(searchLinkedToCoord, context('spm_smallestSignificantClusterSizeInVoxelsFDR05')))
+            FDRc = str2double(get_value(searchLinkedToCoord.(context('spm_smallestSignificantClusterSizeInVoxelsFDR05'))));
             stringTemp = [stringTemp, ', FDRc: %0.0f'];
             arrayTemp = [arrayTemp, FDRc];
         end
@@ -249,11 +249,11 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
     
     %Find degrees of freedom in statisticMap objects.
     for i = 1:length(statisticMap)
-        if isfield(statisticMap{i}, 'nidm_effectDegreesOfFreedom')
+        if isfield(statisticMap{i}, context('nidm_effectDegreesOfFreedom'))
             anyStatType = statisticMap{i}.('nidm_statisticType').('x_id');
             if ~strcmp(anyStatType, 'obo:STATO_0000376')
-                effectDegrees = get_value(statisticMap{i}.('nidm_effectDegreesOfFreedom'));
-                errorDegrees = get_value(statisticMap{i}.('nidm_errorDegreesOfFreedom'));
+                effectDegrees = get_value(statisticMap{i}.(context('nidm_effectDegreesOfFreedom')));
+                errorDegrees = get_value(statisticMap{i}.(context('nidm_errorDegreesOfFreedom')));
                 if(ischar(errorDegrees))
                     errorDegrees = str2double(errorDegrees);
                     effectDegrees = str2double(effectDegrees);
@@ -275,8 +275,8 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
 
     if parametric
         %Store the FWHM in units and voxels
-        unitsFWHM = str2num(get_value(searchLinkedToCoord.('nidm_noiseFWHMInUnits')));
-        voxelsFWHM = str2num(get_value(searchLinkedToCoord.('nidm_noiseFWHMInVoxels')));
+        unitsFWHM = str2num(get_value(searchLinkedToCoord.(context('nidm_noiseFWHMInUnits'))));
+        voxelsFWHM = str2num(get_value(searchLinkedToCoord.(context('nidm_noiseFWHMInVoxels'))));
         
         ftrTemp{rowCount,2} = [unitsFWHM, voxelsFWHM];
     else
@@ -287,13 +287,13 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
     
     rowCount = rowCount+1;
     
-    volumeUnits = get_value(searchLinkedToCoord.('nidm_searchVolumeInUnits'));
+    volumeUnits = get_value(searchLinkedToCoord.(context('nidm_searchVolumeInUnits')));
     if(ischar(volumeUnits))
         volumeUnits = str2double(volumeUnits);
     end
     
     if parametric
-        volumeResels = get_value(searchLinkedToCoord.('nidm_searchVolumeInResels'));
+        volumeResels = get_value(searchLinkedToCoord.(context('nidm_searchVolumeInResels')));
         if(ischar(volumeResels))
             volumeResels = str2double(volumeResels);
         end
@@ -301,7 +301,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
         volumeResels = NaN;
     end
     
-    volumeVoxels = get_value(searchLinkedToCoord.('nidm_searchVolumeInVoxels'));
+    volumeVoxels = get_value(searchLinkedToCoord.(context('nidm_searchVolumeInVoxels')));
     if(ischar(volumeVoxels))
         volumeVoxels = str2double(volumeVoxels);
     end
@@ -312,11 +312,10 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
     %Voxel dimensions and resel size
     
     rowCount = rowCount+1;
-    voxelSize = str2num(get_value(searchSpace.('nidm_voxelSize')));
-
-    voxelUnits = strrep(strrep(strrep(strrep(strrep(get_value(searchSpace.('nidm_voxelUnits')), '\"', ''), '[', ''), ']', ''), ',', ''), '"', '');
+    voxelSize = str2num(get_value(searchSpace.(context('nidm_voxelSize'))));
+    voxelUnits = strrep(strrep(strrep(strrep(strrep(get_value(searchSpace.(context('nidm_voxelUnits'))), '\"', ''), '[', ''), ']', ''), ',', ''), '"', '');
     if parametric
-        reselSize = get_value(searchLinkedToCoord.('nidm_reselSizeInVoxels'));
+        reselSize = get_value(searchLinkedToCoord.(context('nidm_reselSizeInVoxels')));
         if(ischar(reselSize))
             reselSize = str2double(reselSize);
         end
@@ -344,17 +343,17 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
     %In SPM however the set level statistics are found in the excursion set
     %map in the nidm json.
     if strcmp(software, 'SPM') 
-        excursionSetMap = typemap('nidm_ExcursionSetMap');
+        excursionSetMap = typemap(context('nidm_ExcursionSetMap'));
         if(multipleExcursions)
             excursionSetMap = relevantToExcursion(excursionSetMap, exID, exLabels);
         end
-        tableTemp{1, 1} = str2double(get_value(excursionSetMap{1}.('nidm_pValue')));
-        tableTemp{1, 2} = str2double(get_value(excursionSetMap{1}.('nidm_numberOfSupraThresholdClusters')));
+        tableTemp{1, 1} = str2double(get_value(excursionSetMap{1}.(context('nidm_pValue'))));
+        tableTemp{1, 2} = str2double(get_value(excursionSetMap{1}.(context('nidm_numberOfSupraThresholdClusters'))));
     end
     
     %Cluster and peak level:
     
-    clusters = typemap('nidm_SupraThresholdCluster');
+    clusters = typemap(context('nidm_SupraThresholdCluster'));
     if(multipleExcursions)
         resultant = {};
         %Work out which object belongs to which excursion set.
@@ -367,7 +366,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
         clusters = resultant;
     end
     
-    peakDefCriteria = typemap('nidm_PeakDefinitionCriteria');
+    peakDefCriteria = typemap(context('nidm_PeakDefinitionCriteria'));
     if(multipleExcursions)
         peakDefCriteria = relevantToExcursion(peakDefCriteria, exID, exLabels);
     end
@@ -378,7 +377,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
     if~isempty(clusters)
         
         %Sorting the clusters by descending size.
-        clusSort=cellfun(@(x) get_value(x.('nidm_clusterSizeInVoxels')), clusters, 'UniformOutput', false);
+        clusSort=cellfun(@(x) get_value(x.(context('nidm_clusterSizeInVoxels'))), clusters, 'UniformOutput', false);
         clustSort=str2num(char(clusSort{:}));
         [~, idx]=sort(clustSort, 'descend');
         clusters = clusters(idx);
@@ -388,7 +387,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
         valueSet = NaN(1, length(keySet));
 
         clusterPeakMap = containers.Map(keySet, valueSet, 'UniformValues', false);
-        peaks = typemap('nidm_Peak');
+        peaks = typemap(context('nidm_Peak'));
         
         if ~isKey(typemap, 'prov:Derivation')
             for i = 1:length(peaks)
@@ -430,7 +429,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
         for i = 1:length(keySet)
             clusterID = keySet{i};
             clustmaptemp=clusterPeakMap(clusterID);
-            clusSet=cellfun(@(x) get_value(x.('nidm_equivalentZStatistic')), clustmaptemp, 'UniformOutput', false);
+            clusSet=cellfun(@(x) get_value(x.(context('nidm_equivalentZStatistic'))), clustmaptemp, 'UniformOutput', false);
             orderedClusSet=str2num(char(clusSet{:}));
             [~, idx]=sort(orderedClusSet, 'descend');
             clusterPeakMap(clusterID) = clustmaptemp(idx);
@@ -440,16 +439,16 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
         n = 1;
         
         %Check whether clusters have values stored.
-        clustersFDRP = isfield(clusters{1}, 'nidm_qValueFDR');
-        clustersPUncorr = isfield(clusters{1}, 'nidm_pValueUncorrected');
+        clustersFDRP = isfield(clusters{1}, context('nidm_qValueFDR'));
+        clustersPUncorr = isfield(clusters{1}, context('nidm_pValueUncorrected'));
         
         %Check whether peaks have values stored.
-        peaksFWEP = isfield(peaks{1}, 'nidm_pValueFWER');
-        peaksFDRP = isfield(peaks{1}, 'nidm_qValueFDR');
+        peaksFWEP = isfield(peaks{1}, context('nidm_pValueFWER'));
+        peaksFDRP = isfield(peaks{1}, context('nidm_qValueFDR'));
         peaksStat = isfield(peaks{1}, 'prov_value');
         
         %Get number of peaks to display
-        if isfield(peakDefCriteria{1}, 'nidm_maxNumberOfPeaksPerCluster')
+        if isfield(peakDefCriteria{1}, context('nidm_maxNumberOfPeaksPerCluster'))
             numOfPeaks = get_value(peakDefCriteria{1}.nidm_maxNumberOfPeaksPerCluster);
         else
             numOfPeaks = 3;
@@ -457,19 +456,19 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
         
         for i = 1:length(keySet)
             %Fill in the values we know.
-            if isfield(clusters{i}, 'nidm_pValueFWER')
-                tableTemp{n, 3} = str2double(get_value(clusters{i}.('nidm_pValueFWER')));
+            if isfield(clusters{i}, context('nidm_pValueFWER'))
+                tableTemp{n, 3} = str2double(get_value(clusters{i}.(context('nidm_pValueFWER'))));
             else
                 tableTemp{n, 3} = NaN;
             end
             if clustersFDRP
-                tableTemp{n, 4} = str2double(get_value(clusters{i}.('nidm_qValueFDR')));
+                tableTemp{n, 4} = str2double(get_value(clusters{i}.(context('nidm_qValueFDR'))));
             else
                 tableTemp{n, 4} = NaN;
             end
-            tableTemp{n, 5} = str2double(get_value(clusters{i}.('nidm_clusterSizeInVoxels')));
+            tableTemp{n, 5} = str2double(get_value(clusters{i}.(context('nidm_clusterSizeInVoxels'))));
             if clustersPUncorr
-                tableTemp{n, 6} = str2double(get_value(clusters{i}.('nidm_pValueUncorrected')));
+                tableTemp{n, 6} = str2double(get_value(clusters{i}.(context('nidm_pValueUncorrected'))));
             else
                 tableTemp{n, 6} = NaN;
             end
@@ -478,14 +477,14 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
             for j = 1:min(numOfPeaks, length(peaksTemp))
                 %Fill the values we know.
                 if peaksFWEP
-                    tableTemp{n, 7} = str2double(get_value(peaksTemp{j}.('nidm_pValueFWER')));
+                    tableTemp{n, 7} = str2double(get_value(peaksTemp{j}.(context('nidm_pValueFWER'))));
                 end
                 if peaksFDRP
-                    tableTemp{n, 8} = str2double(get_value(peaksTemp{j}.('nidm_qValueFDR')));
+                    tableTemp{n, 8} = str2double(get_value(peaksTemp{j}.(context('nidm_qValueFDR'))));
                 end
-                tableTemp{n, 11} = str2double(get_value(peaksTemp{j}.('nidm_pValueUncorrected')));
+                tableTemp{n, 11} = str2double(get_value(peaksTemp{j}.(context('nidm_pValueUncorrected'))));
                 if peaksStat
-                    tableTemp{n, 9} = str2double(get_value(peaksTemp{j}.('prov_value')));
+                    tableTemp{n, 9} = str2double(get_value(peaksTemp{j}.(context('prov_value'))));
                 else
                     %Calculate whichever statistic type is used.
                     if strcmp(statType, 'T')
@@ -498,7 +497,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
                         tableTemp{n, 9} = NaN;
                     end
                 end 
-                tableTemp{n, 10} = str2double(get_value(peaksTemp{j}.('nidm_equivalentZStatistic')));
+                tableTemp{n, 10} = str2double(get_value(peaksTemp{j}.(context('nidm_equivalentZStatistic'))));
                 locTemp = peaksTemp{j}.('prov_atLocation').('x_id');
                 locTemp = searchforID(locTemp, graph, ids);
                 tableTemp{n, 12} = str2num(get_value(locTemp.nidm_coordinateVector));
@@ -534,7 +533,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
         if(~ischar(minDist))
             minDist = num2str(minDist);
         end
-        if isfield(peakDefCriteria{1}, 'nidm_maxNumberOfPeaksPerCluster')
+        if isfield(peakDefCriteria{1}, context('nidm_maxNumberOfPeaksPerCluster'))
             clusNum = get_value(peakDefCriteria{1}.nidm_maxNumberOfPeaksPerCluster);
             if(~ischar(clusNum))
                 clusNum = num2str(clusNum);

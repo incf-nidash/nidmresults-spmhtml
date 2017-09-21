@@ -92,7 +92,7 @@ function webID = nidm_results_display(nidmfilepath, conInstruct, outdir)
     spm_progress_bar('Clear');
     
     %Work out how many excursion set maps there are to display.
-    excursionSetMaps = typemap('nidm_ExcursionSetMap');
+    excursionSetMaps = typemap(context('nidm_ExcursionSetMap'));
     
     %If there is only one excursion set display it. 
     if length(excursionSetMaps)==1
@@ -101,6 +101,41 @@ function webID = nidm_results_display(nidmfilepath, conInstruct, outdir)
                                    changeNIDMtoxSPM(graph,nidmfilepath,typemap,context,ids),...
                                    changeNIDMtoTabDat(graph,typemap,context,ids), -1, outdir);
     else
+
+        %If there's instructions for which contrast to view use them.
+        if(nargin>1)
+            if(ischar(conInstruct))
+                if(strcmp(conInstruct, 'all'))
+                    vec = 1:length(excursionSetMaps);
+                end
+            else
+                vec = conInstruct;
+            end
+        %Otherwise ask the user.
+        else
+            %Find the title of each excursion set.
+            titles = {};
+            for(i = 1:length(excursionSetMaps))
+                inference = searchforID(excursionSetMaps{i}.prov_wasGeneratedBy.x_id, graph);
+                used = inference.prov_used;
+                for(j = 1:length(used))
+                    node = searchforID(used(j).x_id,graph);
+                    if(isfield(node, context('nidm_effectDegreesOfFreedom')))
+                        statisticMap = node;
+                        titles{i} = statisticMap.nidm_contrastName;
+                    end
+                end
+            end
+            
+            %Ask the user which excursion sets they would like to view.
+            [vec,selectedAny] = listdlg('PromptString','Select the excursions sets you would like to view:',...
+                    'SelectionMode','multiple',...
+                    'ListString',titles);
+            if(~selectedAny)
+                vec = 1:length(excursionSetMaps);
+            end 
+        end
+
         %Otherwise generate the labels hashmap and generate a result for
         %each excursion set.
         labels = addExcursionPointers(graph, ids, typemap);

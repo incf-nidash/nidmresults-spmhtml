@@ -1,4 +1,9 @@
 function context = load_json_context(json)
+    hkey_dict = human_key_dict();
+    not_found = hkey_dict.values;
+    
+    hnms_dict = human_namespace_dict();
+
     context = containers.Map();
     
     if isstruct(json)
@@ -14,15 +19,29 @@ function context = load_json_context(json)
                 if isstruct(json{i}.x_context{j})
                     fields = fieldnames(json{i}.x_context{j});
                     for m = 1:numel(fields)
-                        context(human_key(json{i}.x_context{j}.(fields{m}))) = fields{m};
+                        [hkey, hkey_dict] = human_key(json{i}.x_context{j}.(fields{m}), hkey_dict, hnms_dict);
+                        context(hkey) = fields{m};
                     end
                 end
             end
         end
     end 
+
+    % When not prefix was found replace URI by qname using predefined prefixes    
+    keys = hkey_dict.keys;
+    values = hkey_dict.values;
+    for i = 1:length(hkey_dict)       
+        nm_keys = hnms_dict.keys;
+        nm_values = hnms_dict.values;
+        for j = 1:length(hnms_dict)
+            keys{i} = strrep(keys{i}, nm_keys{j},nm_values{j});
+        end
+        
+        context(values{i}) = keys{i};
+    end
 end
 
-function hkey = human_key(key)
+function hkey_dict = human_key_dict()
     hkey_dict = containers.Map();
     hkey_dict('http://purl.obolibrary.org/obo/BFO_0000179') = 'obo_BFOOWLSpecificationLabel';
     hkey_dict('http://purl.obolibrary.org/obo/BFO_0000180') = 'obo_BFOCLIFSpecificationLabel';
@@ -282,27 +301,36 @@ function hkey = human_key(key)
     hkey_dict('http://uri.neuinfo.org/nif/nifstd/ixl_0050003') = 'nlx_ElectroencephalographyMachine';
     hkey_dict('http://uri.neuinfo.org/nif/nifstd/ixl_0050004') = 'nlx_AnatomicalMRIProtocol';
     hkey_dict('http://uri.neuinfo.org/nif/nifstd/nlx_inv_20090249') = 'nlx_DiffusionWeightedImagingProtocol';
-    hkey_dict('http://purl.org/nidash/nidm#') = 'nidm';
-    hkey_dict('http://iri.nidash.org/') = 'niiri';
-    hkey_dict('http://purl.org/nidash/spm#') = 'spm';
-    hkey_dict('http://purl.org/nidash/fsl#') = 'fsl';
-    hkey_dict('http://purl.org/nidash/afni#') = 'afni';
-    hkey_dict('http://neurolex.org/wiki/') = 'nlx';
-    hkey_dict('http://id.loc.gov/vocabulary/preservation/cryptographicHashFunctions#') = 'crypto';
-    hkey_dict('http://id.loc.gov/vocabulary/preservation/cryptographicHashFunctions/') = 'crypto';
-    hkey_dict('http://purl.org/dc/terms/') = 'dcterms';
-    hkey_dict('http://purl.org/dc/dcmitype/') = 'dctype';
-    hkey_dict('http://purl.org/dc/elements/1.1/') = 'dc';
-    hkey_dict('http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#') = 'nfo';
-    hkey_dict('http://purl.obolibrary.org/obo/') = 'obo';
-    hkey_dict('http://www.w3.org/2000/01/rdf-schema#') = 'rdfs';
-    hkey_dict('http://uri.neuinfo.org/nif/nifstd/') = 'nif';
-    hkey_dict('http://www.w3.org/ns/prov#') = 'prov';
-    hkey_dict('http://scicrunch.org/resolver/') = 'scr';
-    hkey_dict('http://www.w3.org/2001/XMLSchema-instance') = 'xsd';
-    
+end
+
+function hnms_dict = human_namespace_dict()
+    hnms_dict = containers.Map();
+    hnms_dict('http://purl.org/nidash/nidm#') = 'nidm:';
+    hnms_dict('http://iri.nidash.org/') = 'niiri:';
+    hnms_dict('http://purl.org/nidash/spm#') = 'spm:';
+    hnms_dict('http://purl.org/nidash/fsl#') = 'fsl:';
+    hnms_dict('http://purl.org/nidash/afni#') = 'afni:';
+    hnms_dict('http://neurolex.org/wiki/') = 'nlx:';
+    hnms_dict('http://id.loc.gov/vocabulary/preservation/cryptographicHashFunctions#') = 'crypto:';
+    hnms_dict('http://id.loc.gov/vocabulary/preservation/cryptographicHashFunctions/') = 'crypto:';
+    hnms_dict('http://purl.org/dc/terms/') = 'dcterms:';
+    hnms_dict('http://purl.org/dc/dcmitype/') = 'dctype:';
+    hnms_dict('http://purl.org/dc/elements/1.1/') = 'dc:';
+    hnms_dict('http://www.semanticdesktop.org/ontologies/2007/03/22/nfo#') = 'nfo:';
+    hnms_dict('http://purl.obolibrary.org/obo/') = 'obo:';
+    hnms_dict('http://www.w3.org/2000/01/rdf-schema#') = 'rdfs:';
+    hnms_dict('http://uri.neuinfo.org/nif/nifstd/') = 'nif:';
+    hnms_dict('http://www.w3.org/ns/prov#') = 'prov:';
+    hnms_dict('http://scicrunch.org/resolver/') = 'scr:';
+    hnms_dict('http://www.w3.org/2001/XMLSchema-instance') = 'xsd:';
+end
+
+function [hkey, hkey_dict] = human_key(key, hkey_dict, hnms_dict)   
     if isKey(hkey_dict, key)
         hkey = hkey_dict(key);
+        remove(hkey_dict, key);
+    elseif isKey(hnms_dict, key)
+        hkey = hnms_dict(key);
     else
         warning(['No human key found for ' key])
         hkey = key;

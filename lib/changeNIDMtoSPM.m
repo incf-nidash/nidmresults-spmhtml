@@ -32,7 +32,7 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, context, ids, exOb
     %matrix is derived from other fields and this field does not exist.
     
     nidmTemp = struct;
-    designMatrix = typemap('nidm_DesignMatrix');
+    designMatrix = typemap(context('nidm_DesignMatrix'));
     if(multipleExcursions)
         designMatrix = relevantToExcursion(designMatrix, exID, exLabels);
     end
