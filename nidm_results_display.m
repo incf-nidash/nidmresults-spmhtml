@@ -30,7 +30,12 @@ function webID = nidm_results_display(nidmfilepath, conInstruct)
         %Record users choice and jsonfilepath.
         jsondoc=spm_jsonread(jsonfilepath);
     end
-
+    
+    %Error if there is no json available.
+    if(exist(jsonfilepath, 'file')==0) 
+        error('Error: JSON serialization not present in NIDM-Results pack.') 
+    end
+    
     %Add path to required methods
     if exist('changeNIDMtoSPM') ~= 2
         addpath(fullfile(fileparts(mfilename('fullpath')), 'lib'));
