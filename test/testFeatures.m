@@ -24,7 +24,7 @@ classdef testFeatures < matlab.unittest.TestCase
             data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm');
             if(~exist(data_path, 'dir'))
                 mkdir(data_path)
-                websave(fullfile(data_path, 'tmp.zip'), 'http://neurovault.org/collections/1692/ex_spm_default.nidm.zip');
+                websave(fullfile(data_path, 'tmp.zip'), 'http://neurovault.org/collections/2210/ex_spm_default.nidm.zip');
                 unzip(fullfile(data_path, 'tmp.zip'), fullfile(data_path, '.'));
             end
             testCase.delete_html_file(data_path);
