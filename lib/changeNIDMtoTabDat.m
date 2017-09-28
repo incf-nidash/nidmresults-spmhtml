@@ -43,16 +43,20 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
         if any(ismember(soft_type, 'http://scicrunch.org/resolver/SCR_002823'))...
                 || any(ismember(soft_type, 'src_FSL')) || any(ismember(soft_type, 'scr_FSL'))
             software = 'FSL';
+            version = ['version ' agentObjects{i}.fsl_featVersion ', nidm version:' agentObjects{i}.nidm_softwareVersion '.'];
         elseif any(ismember(soft_type, 'http://scicrunch.org/resolver/SCR_007037'))...
                 || any(ismember(soft_type, 'src_SPM')) || any(ismember(soft_type, 'src_SPM'))
             software = 'SPM';
+            version = ['version ' agentObjects{i}.nidm_softwareVersion.x_value '.'];
         % The two options here are assuming analysis software and export
         % software are the same (ideally we should instead explicitely
         % check for the analysis software)
         elseif any(ismember(soft_type, 'nidm_spm_results'))
             software = 'SPM';
+            version = ['version ' agentObjects{i}.nidm_softwareVersion.x_value '.'];
         elseif any(ismember(soft_type, 'nidm_nidmfsl'))
             software = 'FSL';
+            version = ['version ' agentObjects{i}.fsl_featVersion ', nidm version:' agentObjects{i}.nidm_softwareVersion '.'];
         else
             disp(soft_type);
             error('nidm:UnrecognisedSoftware', 'Unrecognised software')
@@ -61,6 +65,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     
     nidmTemp = struct;
     nidmTemp.software = software;
+    nidmTemp.version = version;
     
     %======================================================================
     %ftr field

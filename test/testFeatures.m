@@ -62,7 +62,15 @@ classdef testFeatures < matlab.unittest.TestCase
         
         %Checking the viewer runs on SPM-nidm output with no MIP.
         function checkViewerRunsSPMwoMIP(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'testJsons', 'ex_spm_default_wo_MIP');
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP');
+            %Copy contents of ex_spm_default NIDM pack.
+            copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm', '*'),...
+                fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP'));
+            %Delete the pre-existing jsonld.
+            delete(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP', 'nidm.jsonld'));
+            %Copy the jsonld without the MIP into the NIDM pack.
+            copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'testJsons', 'nidm.json'), fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP'));
+            %Run the test.
             testCase.delete_html_file(data_path);
             nidm_results_display(data_path);
         end
