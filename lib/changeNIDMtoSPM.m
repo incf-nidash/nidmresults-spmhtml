@@ -45,10 +45,10 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, ids, exObj)
     elseif isfield(designMatrix{1}, 'dc_Description')
         locationID = searchforID(designMatrix{1}.('dc_Description').('x_id'), graph, ids);
     end
-    nidmTemp.DesMat = getPathDetails(locationID.('prov_atLocation').('x_value'), filepathTemp);
+    nidmTemp.DesMat = getPathDetails(get_value(locationID.('prov_atLocation')), filepathTemp);
     
     %Read the csv file and obtain it's dimensions.
-    csvFilePath = getPathDetails(designMatrix{1}.('prov_atLocation').('x_value'), filepathTemp);
+    csvFilePath = getPathDetails(get_value(designMatrix{1}.('prov_atLocation')), filepathTemp);
     csvFile = csvread(csvFilePath);
     nidmTemp.dim = size(csvFile);
     
@@ -66,7 +66,7 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, ids, exObj)
         contrastWeightMatrix = relevantToExcursion(contrastWeightMatrix, exID, exLabels);
     end
     
-    xConTemp(1).c = str2num(contrastWeightMatrix{1}.('prov_value'))';
+    xConTemp(1).c = str2num(get_value(contrastWeightMatrix{1}.('prov_value')))';
     
     %======================================================================
     %xX
@@ -74,12 +74,12 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, ids, exObj)
     xXtemp = struct;
     
     %Find the design matrix csv.
-    designMatrixFilename = designMatrix{1}.prov_atLocation.x_value;
+    designMatrixFilename = get_value(designMatrix{1}.prov_atLocation);
     [~, name, ext] = fileparts(designMatrixFilename);
     xXtemp.xKXs.X = csvread(fullfile(filepathTemp, [name, ext]));
     
     %Get the regressor names in required format.
-    remain = strrep(strrep(strrep(strrep(designMatrix{1}.nidm_regressorNames, '\"', ''), '[', ''), ']', ''), ',', '');
+    remain = strrep(strrep(strrep(strrep(get_value(designMatrix{1}.nidm_regressorNames), '\"', ''), '[', ''), ']', ''), ',', '');
 
     % Deal with the case of empty regressor names
     if isempty(remain)

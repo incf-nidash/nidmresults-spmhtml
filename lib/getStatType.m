@@ -40,11 +40,11 @@ function [type, statisticMaps] = getStatType(typemap, exID, exLabels)
     end
     
     %Work out which type is stored.
-    if strcmp(statType, 'obo:STATO_0000176')
+    if strcmp(statType, 'obo:STATO_0000176') || strcmp(statType, 'obo_tstatistic')
        type = 'T';
     elseif strcmp(statType, 'obo:STATO_0000030')
        type = 'X';
-    elseif strcmp(statType, 'obo:STATO_0000376')
+    elseif strcmp(statType, 'obo:STATO_0000376') ||  strcmp(statType, 'obo_zstatistic')
        type = 'Z';
     elseif strcmp(statType, 'obo:STATO_0000282')
        type = 'F';

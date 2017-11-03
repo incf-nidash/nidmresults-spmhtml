@@ -106,7 +106,7 @@
   <!-- END resftr -->
 </table>
 
-<hr/><address>Generated on {DATE} by <strong><a href="http://www.fil.ion.ucl.ac.uk/spm/">{SPM}</a></strong> &copy; 1991, 1994-{YEAR} Wellcome Trust Centre for NeuroImaging</address>
+<hr/><address> {NIDMVERSION} Generated on {DATE} by <strong><a href="http://www.fil.ion.ucl.ac.uk/spm/">{SPM}</a></strong> &copy; 1991, 1994-{YEAR} Wellcome Trust Centre for NeuroImaging</address>
 </div>
 
 </html>

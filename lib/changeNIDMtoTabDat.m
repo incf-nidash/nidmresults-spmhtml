@@ -41,20 +41,22 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     for i = 1:length(agentObjects)
         soft_type = agentObjects{i}.('x_type');
         if any(ismember(soft_type, 'http://scicrunch.org/resolver/SCR_002823'))...
-                || any(ismember(soft_type, 'scr_FSL')) ...
-                || any(ismember(soft_type, 'src_FSL'))
+                || any(ismember(soft_type, 'src_FSL')) || any(ismember(soft_type, 'scr_FSL'))
             software = 'FSL';
+            version = ['version ' agentObjects{i}.fsl_featVersion ', nidm version:' agentObjects{i}.nidm_softwareVersion '.'];
         elseif any(ismember(soft_type, 'http://scicrunch.org/resolver/SCR_007037'))...
-                || any(ismember(soft_type, 'scr_SPM')) ...
-                || any(ismember(soft_type, 'src_SPM'))
+                || any(ismember(soft_type, 'src_SPM')) || any(ismember(soft_type, 'src_SPM'))
             software = 'SPM';
+            version = ['version ' agentObjects{i}.nidm_softwareVersion.x_value '.'];
         % The two options here are assuming analysis software and export
         % software are the same (ideally we should instead explicitely
         % check for the analysis software)
-        elseif any(ismember(soft_type, 'nidm_spm_results_nidm'))
+        elseif any(ismember(soft_type, 'nidm_spm_results'))
             software = 'SPM';
+            version = ['version ' agentObjects{i}.nidm_softwareVersion.x_value '.'];
         elseif any(ismember(soft_type, 'nidm_nidmfsl'))
             software = 'FSL';
+            version = ['version ' agentObjects{i}.fsl_featVersion ', nidm version:' agentObjects{i}.nidm_softwareVersion '.'];
         else
             disp(soft_type);
             error('nidm:UnrecognisedSoftware', 'Unrecognised software')
@@ -63,6 +65,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     
     nidmTemp = struct;
     nidmTemp.software = software;
+    nidmTemp.version = version;
     
     %======================================================================
     %ftr field
@@ -261,13 +264,13 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     
     %Retrieve the units of the coordinate space.
     searchSpace = searchforID(searchLinkedToCoord.nidm_inCoordinateSpace.('x_id'), graph, ids);
-    FWHMUnits = strrep(strrep(strrep(strrep(searchSpace.('nidm_voxelUnits'), '\"', ''), '[', ''), ']', ''), ',', '');
+    FWHMUnits = strrep(strrep(strrep(strrep(get_value(searchSpace.('nidm_voxelUnits')), '\"', ''), '[', ''), ']', ''), ',', '');
     
     ftrTemp{rowCount, 1} = ['FWHM = %3.1f %3.1f %3.1f ', FWHMUnits '; %3.1f %3.1f %3.1f {voxels}'];
     
     %Store the FWHM in units and voxels
-    unitsFWHM = str2num(searchLinkedToCoord.('nidm_noiseFWHMInUnits'));
-    voxelsFWHM = str2num(searchLinkedToCoord.('nidm_noiseFWHMInVoxels'));
+    unitsFWHM = str2num(get_value(searchLinkedToCoord.('nidm_noiseFWHMInUnits')));
+    voxelsFWHM = str2num(get_value(searchLinkedToCoord.('nidm_noiseFWHMInVoxels')));
     
     ftrTemp{rowCount,2} = [unitsFWHM, voxelsFWHM];
     
@@ -296,8 +299,8 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     %Voxel dimensions and resel size
     
     rowCount = rowCount+1;
-    voxelSize = str2num(searchSpace.('nidm_voxelSize'));
-    voxelUnits = strrep(strrep(strrep(strrep(searchSpace.('nidm_voxelUnits'), '\"', ''), '[', ''), ']', ''), ',', '');
+    voxelSize = str2num(get_value(searchSpace.('nidm_voxelSize')));
+    voxelUnits = strrep(strrep(strrep(strrep(get_value(searchSpace.('nidm_voxelUnits')), '\"', ''), '[', ''), ']', ''), ',', '');
     reselSize = get_value(searchLinkedToCoord.('nidm_reselSizeInVoxels'));
     if(ischar(reselSize))
         reselSize = str2double(reselSize);
@@ -368,15 +371,39 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
 
         clusterPeakMap = containers.Map(keySet, valueSet, 'UniformValues', false);
         peaks = typemap('nidm_Peak');
-
-        for i = 1:length(peaks)
-            clusterID = peaks{i}.('prov_wasDerivedFrom').('x_id');
-            if(isKey(clusterPeakMap, clusterID))
-                if isa(clusterPeakMap(clusterID), 'double')
-                    clusterPeakMap(clusterID) = {peaks{i}};
-                else
-                    existing = clusterPeakMap(clusterID);
-                    clusterPeakMap(clusterID) = {existing{:} peaks{i}};
+        
+        if ~isKey(typemap, 'prov:Derivation')
+            for i = 1:length(peaks)
+                clusterID = peaks{i}.('prov_wasDerivedFrom').('x_id');
+                if(isKey(clusterPeakMap, clusterID))
+                    if isa(clusterPeakMap(clusterID), 'double')
+                        clusterPeakMap(clusterID) = {peaks{i}};
+                    else
+                        existing = clusterPeakMap(clusterID);
+                        clusterPeakMap(clusterID) = {existing{:} peaks{i}};
+                    end
+                end
+            end
+        else
+            peakIds = cellfun(@(x) get_value(x.('x_id')), peaks, 'UniformOutput', false);
+            allDerivations = typemap('prov:Derivation');
+            
+            %Look through all the derivation objects checking which are
+            %peaks.
+            for i = 1:length(allDerivations)
+                originID = allDerivations{i}.entity;
+                derivedID = allDerivations{i}.entity_derived;
+                derivedObj = searchforID(derivedID, peaks, peakIds);
+                
+                %If we have a peak add this derivation to the cluster peak 
+                %hashmap.
+                if ~isempty(derivedObj)
+                    if isa(clusterPeakMap(originID), 'double')
+                        clusterPeakMap(originID) = {derivedObj};
+                    else
+                        existing = clusterPeakMap(originID);
+                        clusterPeakMap(originID) = {existing{:} derivedObj};
+                    end
                 end
             end
         end
@@ -452,7 +479,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
                 tableTemp{n, 10} = str2double(get_value(peaksTemp{j}.('nidm_equivalentZStatistic')));
                 locTemp = peaksTemp{j}.('prov_atLocation').('x_id');
                 locTemp = searchforID(locTemp, graph, ids);
-                tableTemp{n, 12} = str2num(locTemp.nidm_coordinateVector);
+                tableTemp{n, 12} = str2num(get_value(locTemp.nidm_coordinateVector));
                 n = n+1;
              end
         end

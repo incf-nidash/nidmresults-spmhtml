@@ -31,10 +31,12 @@ end
 
 if ~isfield(SPM, 'nidm')
     software = 'SPM';
+    nidmVersion = '';
     fHTML = pwd;
     outdir  = spm_file(fullfile(pwd, 'temp'));
 else
     software = TabDat.nidm.software;
+    nidmVersion = ['Display of NIDM-Results pack generated using ' software ' ' TabDat.nidm.version];
     fHTML = SPM.nidm.filepath;
     outdir  = spm_file(fullfile(SPM.nidm.filepath,'temp'));
 end
@@ -158,6 +160,7 @@ for i=1:3
 end
 tpl = tpl.var('RES_STR',TabDat.str);
 tpl = tpl.var('SOFTWARE',software);
+tpl = tpl.var('NIDMVERSION', nidmVersion);
 tpl = tpl.var('STAT_STR',strrep(strrep(xSPM.STATstr,'_{','<sub>'),'}','</sub>'));
 tpl = tpl.var('CON_STAT',xSPM.STAT);
 tpl = tpl.var('resrows','');

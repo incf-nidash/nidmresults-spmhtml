@@ -43,7 +43,7 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
     if(~isempty(statisticMaps))
         for i = 1:length(statisticMaps)
             if isfield(statisticMaps{i}, 'nidm_contrastName')
-                titleTemp = statisticMaps{i}.('nidm_contrastName');
+                titleTemp = get_value(statisticMaps{i}.('nidm_contrastName'));
             end
         end 
     else
@@ -93,14 +93,14 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
     coordSpace = searchforID(coordSpaceId, graph, ids);
     
     %Obtain the voxel to world mapping and transform it to obtain M.
-    v2wm = spm_jsonread(coordSpace.nidm_voxelToWorldMapping);
+    v2wm = spm_jsonread(get_value(coordSpace.nidm_voxelToWorldMapping));
     transform = [1, 0, 0, -1; 0, 1, 0, -1; 0, 0, 1, -1; 0, 0, 0, 1];
     mTemp = v2wm*transform;
     
     %===============================================
     %DIM
     
-    dimTemp = str2num(coordSpace.('nidm_dimensionsInVoxels'))';
+    dimTemp = str2num(get_value(coordSpace.('nidm_dimensionsInVoxels')))';
     
     %======================================================================
     %nidm - NOTE: In the standard format for SPM output the MIP is 
@@ -111,7 +111,7 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
     %If there's already an MIP, save it's location, else generate one.
     if isfield(excursionSetMaps{1}, 'nidm_hasMaximumIntensityProjection')
         mipFilepath = searchforID(excursionSetMaps{1}.nidm_hasMaximumIntensityProjection.('x_id'), graph, ids);
-        nidmTemp.MIP = getPathDetails(mipFilepath.('prov_atLocation').('x_value'), jsonFile);
+        nidmTemp.MIP = getPathDetails(get_value(mipFilepath.('prov_atLocation')), jsonFile);
     else
         %Find the units of the MIP.
         searchSpaceMaskMap = typemap('nidm_SearchSpaceMaskMap');
@@ -119,10 +119,10 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
             searchSpaceMaskMap = relevantToExcursion(searchSpaceMaskMap, exID, exLabels);
         end
         searchSpace = searchforID(searchSpaceMaskMap{1}.('nidm_inCoordinateSpace').('x_id'), graph, ids);
-        voxelUnits = strrep(strrep(strrep(strrep(searchSpace.('nidm_voxelUnits'), '\"', ''), '[', ''), ']', ''), ',', '');
+        voxelUnits = strrep(strrep(strrep(strrep(get_value(searchSpace.('nidm_voxelUnits')), '\"', ''), '[', ''), ']', ''), ',', '');
         
         %Generate the MIP.
-        filenameNII = excursionSetMaps{1}.('nfo_fileName');
+        filenameNII = get_value(excursionSetMaps{1}.('nfo_fileName'));
         generateMIP(jsonFile, filenameNII, dimTemp, voxelUnits);
         nidmTemp.MIP = spm_file(fullfile(jsonFile,'MIP.png'));
         

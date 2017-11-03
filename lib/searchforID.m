@@ -10,7 +10,11 @@
 %==========================================================================
 
 function result = searchforID(ID, graph, ids) 
-
-    result = graph{find(strcmp(ids, ID))};
+    
+    try
+        result = graph{find(strcmp(ids, ID))};
+    catch
+        result = '';
+    end
     
 end

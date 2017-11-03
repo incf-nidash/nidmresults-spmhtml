@@ -1,43 +1,68 @@
 %==========================================================================
 %This function displays an NIDM_Results pack in a html format. It takes in
-%one argument:
+%two arguments:
 %
-%jsonfilepath - the filepath to the NIDM-Results json file.
+%filepath - thenidmfilepath to the NIDM-Results pack.
 %conInstruct - instructions for which contrast to display.
 %
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
-function webID = nidm_results_display(jsonfilepath, conInstruct)
+function webID = nidm_results_display(nidmfilepath, conInstruct)
     
     %Check input
     narginchk(1, 2);
-
-    %Record users choice and filepath.
-    jsondoc=spm_jsonread(jsonfilepath);
-    [pathstr, str] = fileparts(jsonfilepath);
     
-    %We expect the files for the nidm pack to be stored in a folder, of the
-    %same name, located next to the jsons folder.
-    jsondoc.filepath = fullfile(pathstr, '..', str);
-
+    %If it is zipped unzip it.
+    if contains(nidmfilepath, '.zip')
+        [path, filename] = fileparts(nidmfilepath);
+        unzip(nidmfilepath, fullfile(path, filename));
+        nidmfilepath = fullfile(path, filename);
+    end
+    
+    try
+        jsonfilepath = fullfile(nidmfilepath, 'nidm.jsonld');
+        %Record users choice and jsonfilepath.
+        bugFix(jsonfilepath);
+        jsondoc=spm_jsonread(jsonfilepath);
+    catch
+        jsonfilepath = fullfile(nidmfilepath, 'nidm.json');
+        %Record users choice and jsonfilepath.
+        jsondoc=spm_jsonread(jsonfilepath);
+    end
+    
+    %Error if there is no json available.
+    if(exist(jsonfilepath, 'file')==0) 
+        error('Error: JSON serialization not present in NIDM-Results pack.') 
+    end
+    
     %Add path to required methods
     if exist('changeNIDMtoSPM') ~= 2
         addpath(fullfile(fileparts(mfilename('fullpath')), 'lib'));
     end
     
-    graph = jsondoc.('x_graph');
-    
     % Deal with sub-graphs (bundle)
-    if isfield(graph{2}, 'x_graph')
+    if ~iscell(jsondoc)
+        graph = jsondoc.x_graph;
+        if isfield(graph{2}, 'x_graph')
+            graph = graph{2}.x_graph;
+        end
+    else
+        graph = jsondoc;
         graph = graph{2}.x_graph;
     end
-
-    filepathTemp = jsondoc.filepath;
     
     %Obtain the type hashmap.
     typemap = addTypePointers(graph);
-   
+    
+    graphTemp = {};
+    for i = 1:length(graph)
+        if isfield(graph{i}, 'x_id')
+            graphTemp{end+1} = graph{i};
+        end
+    end
+    graph = graphTemp;
+    
     %Create the ID list.
     ids = cellfun(@(x) get_value(x.('x_id')), graph, 'UniformOutput', false);
     
@@ -47,8 +72,8 @@ function webID = nidm_results_display(jsonfilepath, conInstruct)
     %If there is only one excursion set display it. 
     if length(excursionSetMaps)==1
         %Display the page and obtain the pages ID.
-        webID = spm_results_export(changeNIDMtoSPM(graph,filepathTemp,typemap,ids),...
-                                   changeNIDMtoxSPM(graph,filepathTemp,typemap,ids),...
+        webID = spm_results_export(changeNIDMtoSPM(graph,nidmfilepath,typemap,ids),...
+                                   changeNIDMtoxSPM(graph,nidmfilepath,typemap,ids),...
                                    changeNIDMtoTabDat(graph,typemap,ids));
     else
         %If there's instructions for which contrast to view use them.
@@ -91,11 +116,35 @@ function webID = nidm_results_display(jsonfilepath, conInstruct)
         webID = [];
         for(i = vec)
             exID = excursionSetMaps{i}.x_id;
-            webID = [spm_results_export(changeNIDMtoSPM(graph,filepathTemp, typemap, ids, {exID, labels}),...
-                                   changeNIDMtoxSPM(graph, filepathTemp, typemap, ids, {exID, labels}),...
+            webID = [spm_results_export(changeNIDMtoSPM(graph,nidmfilepath, typemap, ids, {exID, labels}),...
+                                   changeNIDMtoxSPM(graph,nidmfilepath, typemap, ids, {exID, labels}),...
                                    changeNIDMtoTabDat(graph, typemap, ids, {exID, labels}),...
                                    i) webID];
         end 
     end
     
+end
+
+
+%--------------------------------------------------------------------------
+%This function is temporary and only here due to a bug in the current SPM
+%export leading to additional ':' characters appearing in the jsonld. The
+%function and all references to it should be removed during the next spm
+%update.
+%--------------------------------------------------------------------------
+function bugFix(jsonPath)
+    %Open the file and read in the text.
+    fileID = fopen(jsonPath, 'r+');
+    text = fscanf(fileID, '%c', inf);
+    
+    %Remove the colons.
+    text = strrep(text, ':"', '"');
+    text = strrep(text, '\n', '\\n');
+    text = strrep(text, '\"', '\\"');
+    fclose(fileID);
+    
+    %Print out.
+    fileID = fopen(jsonPath, 'wt');
+    fprintf(fileID, text);
+    fclose(fileID);
 end

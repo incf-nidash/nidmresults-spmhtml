@@ -21,31 +21,22 @@ classdef testFeatures < matlab.unittest.TestCase
         
         %Checking the viewer runs on SPM-nidm input.
         function checkViewerRunsSPM(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default');
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm');
             if(~exist(data_path, 'dir'))
                 mkdir(data_path)
-                websave(fullfile(data_path, 'tmp.zip'), 'http://neurovault.org/collections/1692/ex_spm_default.nidm.zip');
+                websave(fullfile(data_path, 'tmp.zip'), 'http://neurovault.org/collections/2210/ex_spm_default.nidm.zip');
                 unzip(fullfile(data_path, 'tmp.zip'), fullfile(data_path, '.'));
-                
-                %Save the download link in the json.
-                json = spm_jsonread(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons', 'ex_spm_default.json'));
-                [designMatrix, dmLocation] = searchforType('nidm_DesignMatrix', json.x_graph);  
-                designMatrix{1}.prov_atLocation.x_value = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default', 'DesignMatrix.csv');
-                graph = json.x_graph;
-                graph{dmLocation{1}} = designMatrix{1};
-                json.x_graph = graph;
-                spm_jsonwrite(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons', 'ex_spm_default.json'),json);
             end
             testCase.delete_html_file(data_path);
-            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons', 'ex_spm_default.json'));
+            nidm_results_display(data_path);
         end
         
         %Checking the experiment title is somewhere in the output HTML
         %file.
         function checkForTitle(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default');
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm');
             testCase.delete_html_file(data_path);
-            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons', 'ex_spm_default.json'));
+            nidm_results_display(data_path);
             text = fileread(fullfile(data_path, 'index.html'));
             verifySubstring(testCase, text, 'tone counting vs baseline');
         end
@@ -64,16 +55,24 @@ classdef testFeatures < matlab.unittest.TestCase
         
         %Checking the viewer runs on FSL-nidm output.
         function checkViewerRunsFSL(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'fsl_default_130');
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'fsl_default_130.nidm');
             testCase.delete_html_file(data_path);
-            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'jsons', 'fsl_default_130.json'));
+            nidm_results_display(data_path);
         end
         
         %Checking the viewer runs on SPM-nidm output with no MIP.
         function checkViewerRunsSPMwoMIP(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default');
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP');
+            %Copy contents of ex_spm_default NIDM pack.
+            copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm', '*'),...
+                fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP'));
+            %Delete the pre-existing jsonld.
+            delete(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP', 'nidm.jsonld'));
+            %Copy the jsonld without the MIP into the NIDM pack.
+            copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'testJsons', 'nidm.json'), fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP'));
+            %Run the test.
             testCase.delete_html_file(data_path);
-            nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'testJsons', 'ex_spm_default.json'));
+            nidm_results_display(data_path);
         end
         
 %         %Checking the nidm json is not damaged by the viewer.
