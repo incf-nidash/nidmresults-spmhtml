@@ -1,4 +1,4 @@
-function webID = spm_results_export(SPM,xSPM,TabDat)
+function webID = spm_results_export(SPM,xSPM,TabDat,exNo)
 % Export SPM results in HTML
 % FORMAT spm_results_export(SPM,xSPM,TabDat)
 %__________________________________________________________________________
@@ -15,17 +15,28 @@ end
 if nargin < 3
     TabDat = spm_list('Table',xSPM);
 end
+if nargin <= 3
+    multipleExcursions = false;
+end
+if nargin == 4
+    multipleExcursions = true;
+end
+if nargin > 4
+    error('Too many input arguments.');
+end
 
 %If spm_results export has been called on standard SPM, xSPM and TabDat 
 %variables, output into the current directory, else if we are using 
 %nidm-created SPM, xSPM and TabDat variables, output next to the NIDM json.
 
 if ~isfield(SPM, 'nidm')
-    software = '';
+    software = 'SPM';
+    nidmVersion = '';
     fHTML = pwd;
     outdir  = spm_file(fullfile(pwd, 'temp'));
 else
     software = TabDat.nidm.software;
+    nidmVersion = ['Display of NIDM-Results pack generated using ' software ' ' TabDat.nidm.version];
     fHTML = SPM.nidm.filepath;
     outdir  = spm_file(fullfile(SPM.nidm.filepath,'temp'));
 end
@@ -34,12 +45,20 @@ if exist(outdir, 'dir') ~= 7
     outdir = spm_file(outdir, 'uniquedir');
 end
 
-fHTML   = spm_file(fullfile(fHTML, 'index.html'));
+if(multipleExcursions)
+    fHTML   = spm_file(fullfile(fHTML, ['index', num2str(exNo), '.html']));
+else
+    fHTML   = spm_file(fullfile(fHTML, 'index.html'));
+end
 
 %If fHTML already exists, ask if it should be overWritten.
 
 if exist(fHTML, 'file') == 2
-    button = questdlg('The output file, index.html, already exists. Would you like this file to be overwritten?', 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');      
+    if(multipleExcursions)
+        button = questdlg(['The output file, index', num2str(exNo), '.html, already exists. Would you like this file to be overwritten?'], 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');      
+    else
+        button = questdlg(['The output file, index.html, already exists. Would you like this file to be overwritten?'], 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');      
+    end
     switch button
         case 'Overwrite'
             overWrite = true;
@@ -66,7 +85,7 @@ if ~isfield(SPM, 'nidm') || strcmp(software, 'FSL')
     DesMtx  = (SPM.xX.nKX + 1)*32;
 end
 
-%-Save images as PNG files
+%-Create images for embedding, if they don't already exist.
 %--------------------------------------------------------------------------
 if ~isfield(xSPM, 'nidm')
     mipPath = spm_file(fullfile(outdir,'MIP.png'));
@@ -91,7 +110,14 @@ con = (con/max(abs(con(:)))+1)*32;
 con = kron(con,ones(ml,10));
 imwrite(con,gray(64),contrastPath,'png');
 
-cursorString = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAALCAIAAADN+VtyAAAABnRSTlMAAAAAAABupgeRAAAAB3RJTUUH4AoLERQaiQnJ6gAAADFJREFUGJVjYMAG/jMwMGIKQQAjLlFGXAoZ/yPpQNbOgsVE/Dpw20HAVZhy2MF/BgYAbK0KCmhBjJQAAAAASUVORK5CYII=';
+%Check if the coordinates of the first peak are in the table. If not there
+%are no peaks and we should set the cursor to be blank. Otherwise it is an
+%arrow.
+if(~isnan(TabDat.dat{1,12}))
+    cursorString = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAALCAIAAADN+VtyAAAABnRSTlMAAAAAAABupgeRAAAAB3RJTUUH4AoLERQaiQnJ6gAAADFJREFUGJVjYMAG/jMwMGIKQQAjLlFGXAoZ/yPpQNbOgsVE/Dpw20HAVZhy2MF/BgYAbK0KCmhBjJQAAAAASUVORK5CYII=';
+else
+    cursorString = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAALCAIAAADN+VtyAAAABnRSTlMAAAAAAABupgeRAAAAB3RJTUUH4AsSDCYaYPacHQAAAA1JREFUGJVjYBgFaAAAARMAAXYknF0AAAAASUVORK5CYII=';
+end
 
 %-Save results as HTML file
 %==========================================================================
@@ -133,6 +159,8 @@ for i=1:3
     tpl = tpl.parse('cursors','cursor',1);
 end
 tpl = tpl.var('RES_STR',TabDat.str);
+tpl = tpl.var('SOFTWARE',software);
+tpl = tpl.var('NIDMVERSION', nidmVersion);
 tpl = tpl.var('STAT_STR',strrep(strrep(xSPM.STATstr,'_{','<sub>'),'}','</sub>'));
 tpl = tpl.var('CON_STAT',xSPM.STAT);
 tpl = tpl.var('resrows','');
@@ -146,10 +174,20 @@ for i=1:size(TabDat.dat,1)
     tpl = tpl.parse('resrows','resrow',1);
 end
 tpl = tpl.var('resftrs','');
-for i=1:size(TabDat.ftr,1)
-    tpl = tpl.var('RES_FTR',sprintf(TabDat.ftr{i,1},TabDat.ftr{i,2}));
+
+%Information is split into two columns for presentation purposes.
+half_footer_size = floor((size(TabDat.ftr,1))/2);
+for i=1:half_footer_size
+    tpl = tpl.var('RES_FTR_1', sprintf(TabDat.ftr{i,1},TabDat.ftr{i,2}));
+    tpl = tpl.var('RES_FTR_2', sprintf(TabDat.ftr{i+half_footer_size,1},TabDat.ftr{i+half_footer_size,2}));
     tpl = tpl.parse('resftrs','resftr',1);
 end
+if (size(TabDat.ftr,1) > 2*half_footer_size)
+    tpl = tpl.var('RES_FTR_1', sprintf(TabDat.ftr{size(TabDat.ftr,1),1},TabDat.ftr{size(TabDat.ftr,1),2}));
+    tpl = tpl.var('RES_FTR_2', '');
+    tpl = tpl.parse('resftrs','resftr',1);
+end
+
 tpl = tpl.parse('OUT','TPL_RES');
 fid = fopen(fHTML,'wt');
 fprintf(fid,'%c',get(tpl,'OUT'));
@@ -161,4 +199,8 @@ rmdir(outdir, 's');
 
 %-Display webpage
 %==========================================================================
-[~, webID] = web(fHTML);
+if(multipleExcursions & exNo >1)
+    [~, webID] = web(fHTML, '-new');
+else
+    [~, webID] = web(fHTML);
+end

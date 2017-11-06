@@ -15,6 +15,17 @@
       image-rendering: crisp-edges;
       -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
     }
+    .body {
+      margin-bottom: 50px;
+    }
+    .footer {
+        background: white;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        font-size: 0.9em;
+    }    
   </style>
   <script type="text/javascript">
     function moveto(x,y,z) {
@@ -28,7 +39,8 @@
     }
   </script>
 </head>
-<body>
+
+<div class="body">
 
 <!--<h1 style="text-align:center;">{CON_TITLE}</h1>-->
 
@@ -42,7 +54,7 @@
       <!-- BEGIN cursor -->
       <img id="{CS_ID}" src="{IMG_CURSOR}" class="crisp" width="8" height="11" style="position:absolute;top:{CS_Y}px;left:{s}px"/>
       <!-- END cursor -->
-      <div style="position:absolute;top:225px;left:240px;font-size:x-large;font-weight:bold;">SPM&#123{STAT_STR}&#125</div>
+      <div style="position:absolute;top:225px;left:240px;font-size:x-large;font-weight:bold;">{SOFTWARE}&#123{STAT_STR}&#125</div>
     </div></td>
     <td>
       <table>
@@ -83,13 +95,18 @@
   <!-- END resrow -->
 </table>
 
+</div>
+
+<div class="footer">
+<hr/>
 <p><em>{RES_STR}</em></p>
 <table>
   <!-- BEGIN resftr -->
-  <tr><td>{RES_FTR}</td></tr>
+  <tr><td>{RES_FTR_1}</td><td>{RES_FTR_2}</td></tr>
   <!-- END resftr -->
 </table>
 
-<hr/><address>Generated on {DATE} by <strong><a href="http://www.fil.ion.ucl.ac.uk/spm/">{SPM}</a></strong> &copy; 1991, 1994-{YEAR} Wellcome Trust Centre for NeuroImaging</address>
-</body>
+<hr/><address> {NIDMVERSION} Generated on {DATE} by <strong><a href="http://www.fil.ion.ucl.ac.uk/spm/">{SPM}</a></strong> &copy; 1991, 1994-{YEAR} Wellcome Trust Centre for NeuroImaging</address>
+</div>
+
 </html>

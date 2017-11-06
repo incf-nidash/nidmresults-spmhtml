@@ -1,6 +1,20 @@
-function result = searchforID(ID, graph) 
-	for k = 1:length(graph)
-		if strcmp(graph{k}.('x_id'), ID) 
-			result = graph{k};
-        end
+%==========================================================================
+%Search the graph stored inside an NIDM-Results json for an object with a
+%given ID. This function takes in two inputs:
+%
+%ID - The ID to look for.
+%graph - The graph to search.
+%ids - a list of all ID's in the graph 
+%
+%Authors: Thomas Maullin, Camille Maumet.
+%==========================================================================
+
+function result = searchforID(ID, graph, ids) 
+    
+    try
+        result = graph{find(strcmp(ids, ID))};
+    catch
+        result = '';
     end
+    
+end
