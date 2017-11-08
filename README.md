@@ -4,13 +4,22 @@ Read and display NIDM-Results packs in the SPM environment.
 
 ##### Usage
 
-To view NIDM results using the NIDM results viewer run the following:
- ```
- nidm_results_display(<full path to nidm json file you wish to view>)
- ```
-(where `<full path to nidm json file you wish to view>` is replaced with the full path to the nidm json file you wish to view)
+To view NIDM results using the NIDM results viewer run the following
 
-This should create output like the below.
+1. Open SPM fMRI from the Matlab command line.
+1. Click on Batch.
+<img src="Doc/examplemenu1.png" width="300">  
+ **Fig. 1.** The SPM menu.
+1. Click on SPM -> Tools -> NIDM-Results Display
+<img src="Doc/examplemenu2.png" width="300">  
+ **Fig. 1.** The SPM option in the batch window.
+1. Enter the NIDM-Results file you wish to view and where you wish the output html to be stored.
+<img src="Doc/example_batch.png" width="300">  
+ **Fig. 1.** The NIDM-Results batch window.
+1. If there are multiple excursion sets stored in the NIDM-Results file the contrast window will open. Select the contrasts you wish to view and click done.
+<img src="Doc/example_conMan.png" width="300">  
+ **Fig. 1.** The contrast manager window.
+1. This should create output like the below.
 
 <img src="Doc/example1.png" width="300">            |  <img src="Doc/example2.png" width="300">
 :-------------------------:|:-------------------------:
@@ -22,22 +31,17 @@ This should create output like the below.
 
 ##### Installation
 
-To run the NIDM-Results viewer do the following:
-
-1. Add the filepath to the nidmresults-spmhtml directory in Matlab;
-
- ```
- addpath(<full path to nidmresults-spmhtml>)
- ```
 1. Add the filepath to SPM in Matlab;
 
  ```
  addpath(<full path to SPM>)
  ```
- 
-##### Testing
+1. Clone this repository into the SPM toolboxes folder (into the below folder).
+ ```
+ <full path to SPM>/toolbox
+ ``` 
 
-Assuming the paths to the viewer have been added (see above), to run the tests do the following:
+##### Testing
 
 1. Add the filepath to the 'tests' folder;
 

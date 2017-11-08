@@ -36,7 +36,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_HRF_informed_basis.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_HRF_informed_basis.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_conjunction.nidm
@@ -48,7 +48,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_conjunction.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_conjunction.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_contrast_mask.nidm
@@ -60,7 +60,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_contrast_mask.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_contrast_mask.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_default.nidm
@@ -72,7 +72,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_default.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_default.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_full_example001.nidm
@@ -84,7 +84,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_full_example001.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_full_example001.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_group_ols.nidm
@@ -96,7 +96,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_group_ols.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_group_ols.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_group_wls.nidm
@@ -108,7 +108,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_group_wls.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_group_wls.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_partial_conjunction.nidm
@@ -120,7 +120,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_partial_conjunction.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_partial_conjunction.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_temporal_derivative.nidm
@@ -132,7 +132,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_temporal_derivative.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_temporal_derivative.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_thr_clustfwep05.nidm
@@ -144,7 +144,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_thr_clustfwep05.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_thr_clustfwep05.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_thr_clustunck10.nidm
@@ -156,7 +156,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_thr_clustunck10.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_thr_clustunck10.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_thr_voxelfdrp05.nidm
@@ -168,7 +168,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_thr_voxelfdrp05.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_thr_voxelfdrp05.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_thr_voxelfwep05.nidm
@@ -180,7 +180,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_thr_voxelfwep05.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_thr_voxelfwep05.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays ex_spm_thr_voxelunct4.nidm
@@ -192,7 +192,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_thr_voxelunct4.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','ex_spm_thr_voxelunct4.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays fsl_con_f_130.nidm
@@ -204,7 +204,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_con_f_130.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_con_f_130.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays fsl_contrast_mask_130.nidm
@@ -216,7 +216,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_contrast_mask_130.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_contrast_mask_130.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays fsl_default_130.nidm
@@ -228,7 +228,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_default_130.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_default_130.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays fsl_full_examples001_130.nidm
@@ -240,7 +240,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_full_examples001_130.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_full_examples001_130.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays fsl_gamma_basis_130.nidm
@@ -252,7 +252,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_gamma_basis_130.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_gamma_basis_130.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays fsl_gaussian_130.nidm
@@ -264,7 +264,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_gaussian_130.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_gaussian_130.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays fsl_group_btw_130.nidm
@@ -276,7 +276,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_group_btw_130.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_group_btw_130.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays fsl_group_ols_130.nidm
@@ -288,7 +288,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_group_ols_130.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_group_ols_130.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays fsl_group_wls_130.nidm
@@ -300,7 +300,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_group_wls_130.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_group_wls_130.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays fsl_hrf_fir_130.nidm
@@ -312,7 +312,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_hrf_fir_130.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_hrf_fir_130.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays fsl_hrf_gammadiff_130.nidm
@@ -324,7 +324,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_hrf_gammadiff_130.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_hrf_gammadiff_130.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays fsl_thr_clustfwep05_130.nidm
@@ -336,7 +336,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_thr_clustfwep05_130.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_thr_clustfwep05_130.nidm'), 'All');
  	 	 end
  
  	 	 %Test viewer displays fsl_thr_voxelfwep05_130.nidm
@@ -348,7 +348,7 @@
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
- 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_thr_voxelfwep05_130.nidm'), 'all');
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..', 'test','data','fsl_thr_voxelfwep05_130.nidm'), 'All');
  	 	 end
  
  	 end
