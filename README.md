@@ -6,32 +6,32 @@ Read and display NIDM-Results packs in the SPM environment.
 
 To view NIDM results using the NIDM results viewer run the following
 
-1. Open SPM fMRI from the Matlab command line.
+1. Open `SPM fMRI` from the Matlab command line.
 1. Click on Batch.
 
 <img src="Doc/examplemenu1.png" width="200">  |
 :-------------------------:
  **Fig. 1.** The SPM menu. |
-1. Click on SPM -> Tools -> NIDM-Results Display
+3. Click on SPM -> Tools -> NIDM-Results Display
 
 <img src="Doc/examplemenu2.png" width="200">  |
 :-------------------------:
- **Fig. 1.** The SPM option in the batch window. |
-1. Enter the NIDM-Results file you wish to view and where you wish the output html to be stored.
+ **Fig. 2.** The SPM option in the batch window. |
+4. Enter the NIDM-Results file you wish to view and where you wish the output html to be stored.
 
 <img src="Doc/example_batch.png" width="200"> |  
 :-------------------------:|
- **Fig. 1.** The NIDM-Results batch window. |
-1. If there are multiple excursion sets stored in the NIDM-Results file the contrast window will open. Select the contrasts you wish to view and click done.
+ **Fig. 3.** The NIDM-Results batch window. |
+5. If there are multiple excursion sets stored in the NIDM-Results file the contrast window will open. Select the contrasts you wish to view and click done.
 
 <img src="Doc/example_conMan.png" width="200"> |
 :-------------------------:|
- **Fig. 1.** The contrast manager window. |
-1. This should create output like the below.
+ **Fig. 4.** The contrast manager window. |
+6. This should create output like the below.
 
 <img src="Doc/example1.png" width="300">            |  <img src="Doc/example2.png" width="300">
 :-------------------------:|:-------------------------:
- **Fig. 1.** Table data and images  |  **Fig. 2.** Summary statistics
+ **Fig. 5.** Table data and images  |  **Fig. 6.** Summary statistics
 
 ##### Requirements
 
