@@ -9,8 +9,9 @@ To view NIDM results using the NIDM results viewer run the following
 1. Open SPM fMRI from the Matlab command line.
 1. Click on Batch.
 
-<img src="Doc/examplemenu1.png" width="80">  
- **Fig. 1.** The SPM menu.
+<img src="Doc/examplemenu1.png" width="200">  |
+:-------------------------:
+ **Fig. 1.** The SPM menu. |
 
 1. Click on SPM -> Tools -> NIDM-Results Display
 
