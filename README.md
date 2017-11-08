@@ -44,7 +44,7 @@ To view NIDM results using the NIDM results viewer run the following
  ```
  addpath(<full path to SPM>)
  ```
-1. Clone this repository into the SPM toolboxes folder (into the below folder).
+2. Clone this repository into the SPM toolboxes folder (into the below folder).
  ```
  <full path to SPM>/toolbox
  ``` 
@@ -56,7 +56,7 @@ To view NIDM results using the NIDM results viewer run the following
  ```
 addpath(fullfile(fileparts(which('nidm_results_display')), 'test'))
  ```
-1. Run runTest;
+2. Run runTest;
 
  ```
  runTest();
