@@ -27,7 +27,7 @@ To view NIDM results using the NIDM results viewer run the following
 
 1. If there are multiple excursion sets stored in the NIDM-Results file the contrast window will open. Select the contrasts you wish to view and click done.
 
-<img src="Doc/example_conMan.png" width="80"> |
+<img src="Doc/example_conMan.png" width="200"> |
 :-------------------------:|
  **Fig. 1.** The contrast manager window. |
 
