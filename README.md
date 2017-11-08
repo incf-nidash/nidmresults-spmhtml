@@ -46,7 +46,7 @@ To view NIDM results using the NIDM results viewer run the following
  ```
 2. Clone this repository into the SPM toolboxes folder (into the below folder).
  ```
- <full path to SPM>/toolbox
+ <full path to SPM>/toolbox/
  ``` 
 
 ##### Testing
