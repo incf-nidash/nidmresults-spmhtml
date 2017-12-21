@@ -119,7 +119,7 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
             searchSpaceMaskMap = relevantToExcursion(searchSpaceMaskMap, exID, exLabels);
         end
         searchSpace = searchforID(searchSpaceMaskMap{1}.('nidm_inCoordinateSpace').('x_id'), graph, ids);
-        voxelUnits = strrep(strrep(strrep(strrep(get_value(searchSpace.('nidm_voxelUnits')), '\"', ''), '[', ''), ']', ''), ',', '');
+        voxelUnits = strrep(strrep(strrep(strrep(strrep(get_value(searchSpace.('nidm_voxelUnits')), '\"', ''), '[', ''), ']', ''), ',', ''), '"', '');
         
         %Generate the MIP.
         filenameNII = get_value(excursionSetMaps{1}.('nfo_fileName'));

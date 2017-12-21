@@ -264,7 +264,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     
     %Retrieve the units of the coordinate space.
     searchSpace = searchforID(searchLinkedToCoord.nidm_inCoordinateSpace.('x_id'), graph, ids);
-    FWHMUnits = strrep(strrep(strrep(strrep(get_value(searchSpace.('nidm_voxelUnits')), '\"', ''), '[', ''), ']', ''), ',', '');
+    FWHMUnits = strrep(strrep(strrep(strrep(strrep(get_value(searchSpace.('nidm_voxelUnits')), '\"', ''), '[', ''), ']', ''), ',', ''), '"', '');
     
     ftrTemp{rowCount, 1} = ['FWHM = %3.1f %3.1f %3.1f ', FWHMUnits '; %3.1f %3.1f %3.1f {voxels}'];
     
@@ -300,7 +300,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     
     rowCount = rowCount+1;
     voxelSize = str2num(get_value(searchSpace.('nidm_voxelSize')));
-    voxelUnits = strrep(strrep(strrep(strrep(get_value(searchSpace.('nidm_voxelUnits')), '\"', ''), '[', ''), ']', ''), ',', '');
+    voxelUnits = strrep(strrep(strrep(strrep(strrep(get_value(searchSpace.('nidm_voxelUnits')), '\"', ''), '[', ''), ']', ''), ',', ''), '"', '');
     reselSize = get_value(searchLinkedToCoord.('nidm_reselSizeInVoxels'));
     if(ischar(reselSize))
         reselSize = str2double(reselSize);
