@@ -13,6 +13,6 @@ function value = get_value(value)
     end
     %Deal with Inf formatting
     if strcmp(value, 'INF')
-        value = 'Inf'
+        value = 'Inf';
     end
 end
