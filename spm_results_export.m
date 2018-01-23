@@ -1,4 +1,4 @@
-function webID = spm_results_export(SPM,xSPM,TabDat,exNo)
+function webID = spm_results_export(SPM,xSPM,TabDat,exNo, fHTML)
 % Export SPM results in HTML
 % FORMAT spm_results_export(SPM,xSPM,TabDat)
 %__________________________________________________________________________
@@ -6,22 +6,40 @@ function webID = spm_results_export(SPM,xSPM,TabDat,exNo)
 
 % Guillaume Flandin
 % $Id: spm_results_export.m 5615 2013-08-15 14:37:24Z spm $
-
-%__________________________________________________________________________
-% Checking inputs.
+%
+%==========================================================================
+%Inputs:
+%
+% - SPM - an SPM created 'SPM' structure.
+% - xSPM - an SPM created 'xSPM' structure.
+% - TabDat - an SPM created 'TabDat' structure (optional if not using NIDM 
+%            results data.
+% - exNo - The index of the current excursion set if this is NIDM-Results
+%          data with more than one excursion set. This is -1 if there is 
+%          only one excursion set present and this is NIDM-Results data. 
+%          Non-existant if SPM data.
+% - fHTML - An output directory if this is an NIDM-Results display.
 if nargin < 2
     error('Not enough input arguments.');
 end
 if nargin < 3
     TabDat = spm_list('Table',xSPM);
 end
-if nargin <= 3
+%If we are using NIDM-Results there will be a variable named exNo
+%indicating how many excursion sets we have already displayed.
+if exist('exNo', 'var')
+    if exNo == -1
+        multipleExcursions = false;
+    end
+    if exNo ~= -1
+        multipleExcursions = true;
+    end
+%Otherwise we are looking at SPM input and there is only on excursion set
+%to consider.
+else
     multipleExcursions = false;
 end
-if nargin == 4
-    multipleExcursions = true;
-end
-if nargin > 4
+if nargin > 5
     error('Too many input arguments.');
 end
 
@@ -32,16 +50,35 @@ end
 if ~isfield(SPM, 'nidm')
     software = 'SPM';
     nidmVersion = '';
-    fHTML = pwd;
-    outdir  = spm_file(fullfile(pwd, 'temp'));
+    %If we are using NIDM-Results there will be a variable named fHTML for
+    %the output directory.
+    if exist('fHTML', 'var')
+        %If no output directory is specified, specify one.
+        if strcmp(fHTML, '')
+            fHTML = pwd;
+        end
+    else
+        fHTML = pwd;
+    end
 else
     software = TabDat.nidm.software;
     nidmVersion = ['Display of NIDM-Results pack generated using ' software ' ' TabDat.nidm.version];
-    fHTML = SPM.nidm.filepath;
-    outdir  = spm_file(fullfile(SPM.nidm.filepath,'temp'));
+    %If we are using NIDM-Results there will be a variable named fHTML for
+    %the output directory.
+    if exist('fHTML', 'var')
+        %If no output directory is specified, specify one.
+        if strcmp(fHTML, '')
+            fHTML = SPM.nidm.filepath;
+        end 
+    else 
+        fHTML = SPM.nidm.filepath;
+    end
 end
+
+%Final file directory.
+outdir  = spm_file(fullfile(fHTML,'temp'));
  
-if exist(outdir, 'dir') ~= 7
+if exist('outdir', 'dir') ~= 7
     outdir = spm_file(outdir, 'uniquedir');
 end
 
@@ -199,7 +236,7 @@ rmdir(outdir, 's');
 
 %-Display webpage
 %==========================================================================
-if(multipleExcursions & exNo >1)
+if(multipleExcursions && exNo >1)
     [~, webID] = web(fHTML, '-new');
 else
     [~, webID] = web(fHTML);

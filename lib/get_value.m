@@ -7,7 +7,12 @@
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 function value = get_value(value)
+    %Deal with structure issue.
     if isstruct(value)
         value = value.('x_value');
+    end
+    %Deal with Inf formatting
+    if strcmp(value, 'INF')
+        value = 'Inf';
     end
 end

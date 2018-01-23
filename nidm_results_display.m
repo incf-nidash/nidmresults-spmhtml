@@ -1,17 +1,25 @@
 %==========================================================================
 %This function displays an NIDM_Results pack in a html format. It takes in
-%two arguments:
+%three arguments:
 %
 %filepath - thenidmfilepath to the NIDM-Results pack.
-%conInstruct - instructions for which contrast to display.
+%conInstruct - instructions for which contrasts to display from inside the
+%              NIDM-Results(either a vector of indexes (e.g. [1, 2, 4]), 
+%              'All' to display all contrasts or 'Man' for manual entry).
+%outdir - an output directory for the NIDM-Results pack (optional).
 %
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
-function webID = nidm_results_display(nidmfilepath, conInstruct)
-    
+function webID = nidm_results_display(nidmfilepath, conInstruct, outdir)
+        
+    spm_progress_bar('Init',10,'Unpacking NIDM-Results','Current stage');
+     
     %Check input
-    narginchk(1, 2);
+    narginchk(1, 3);
+    if ~exist('outdir', 'var')
+        outdir = '';
+    end
     
     %If it is zipped unzip it.
     if contains(nidmfilepath, '.zip')
@@ -19,6 +27,8 @@ function webID = nidm_results_display(nidmfilepath, conInstruct)
         unzip(nidmfilepath, fullfile(path, filename));
         nidmfilepath = fullfile(path, filename);
     end
+       
+    spm_progress_bar('Set',1);
     
     try
         jsonfilepath = fullfile(nidmfilepath, 'nidm.jsonld');
@@ -31,29 +41,37 @@ function webID = nidm_results_display(nidmfilepath, conInstruct)
         jsondoc=spm_jsonread(jsonfilepath);
     end
     
+    spm_progress_bar('Set',3);
+    
     %Error if there is no json available.
     if(exist(jsonfilepath, 'file')==0) 
         error('Error: JSON serialization not present in NIDM-Results pack.') 
     end
     
     %Add path to required methods
-    if exist('changeNIDMtoSPM') ~= 2
+    if exist('changeNIDMtoSPM', 'file') ~= 2
         addpath(fullfile(fileparts(mfilename('fullpath')), 'lib'));
     end
     
     % Deal with sub-graphs (bundle)
     if ~iscell(jsondoc)
         graph = jsondoc.x_graph;
+        spm_progress_bar('Set',4);
         if isfield(graph{2}, 'x_graph')
             graph = graph{2}.x_graph;
         end
     else
         graph = jsondoc;
+        spm_progress_bar('Set',4);
         graph = graph{2}.x_graph;
     end
     
+    spm_progress_bar('Set',5);
+    
     %Obtain the type hashmap.
     typemap = addTypePointers(graph);
+    
+    spm_progress_bar('Set',7);
     
     graphTemp = {};
     for i = 1:length(graph)
@@ -63,8 +81,13 @@ function webID = nidm_results_display(nidmfilepath, conInstruct)
     end
     graph = graphTemp;
     
+    spm_progress_bar('Set',8);
+    
     %Create the ID list.
     ids = cellfun(@(x) get_value(x.('x_id')), graph, 'UniformOutput', false);
+    
+    spm_progress_bar('Set',10);
+    spm_progress_bar('Clear');
     
     %Work out how many excursion set maps there are to display.
     excursionSetMaps = typemap('nidm_ExcursionSetMap');
@@ -74,54 +97,79 @@ function webID = nidm_results_display(nidmfilepath, conInstruct)
         %Display the page and obtain the pages ID.
         webID = spm_results_export(changeNIDMtoSPM(graph,nidmfilepath,typemap,ids),...
                                    changeNIDMtoxSPM(graph,nidmfilepath,typemap,ids),...
-                                   changeNIDMtoTabDat(graph,typemap,ids));
+                                   changeNIDMtoTabDat(graph,typemap,ids), -1, outdir);
     else
-        %If there's instructions for which contrast to view use them.
-        if(nargin>1)
-            if(ischar(conInstruct))
-                if(strcmp(conInstruct, 'all'))
-                    vec = 1:length(excursionSetMaps);
-                end
-            else
-                vec = conInstruct;
-            end
-        %Otherwise ask the user.
-        else
-            %Find the title of each excursion set.
-            titles = {};
-            for(i = 1:length(excursionSetMaps))
-                inference = searchforID(excursionSetMaps{i}.prov_wasGeneratedBy.x_id, graph);
-                used = inference.prov_used;
-                for(j = 1:length(used))
-                    node = searchforID(used(j).x_id,graph);
-                    if(isfield(node, 'nidm_effectDegreesOfFreedom'))
-                        statisticMap = node;
-                        titles{i} = statisticMap.nidm_contrastName;
-                    end
-                end
-            end
-            
-            %Ask the user which excursion sets they would like to view.
-            [vec,selectedAny] = listdlg('PromptString','Select the excursions sets you would like to view:',...
-                    'SelectionMode','multiple',...
-                    'ListString',titles);
-            if(~selectedAny)
-                vec = 1:length(excursionSetMaps);
-            end 
-        end
         %Otherwise generate the labels hashmap and generate a result for
         %each excursion set.
         labels = addExcursionPointers(graph, ids, typemap);
         
-        webID = [];
-        for(i = vec)
+        if strcmp(conInstruct, 'Man')
+            
+            %If there are no instructions for which contrasts to open we
+            %ask the user.
+            spm_progress_bar('Init',(length(excursionSetMaps) + 1),'Opening Contrast Window','Current stage');
+            
+            %First we unpack the SPM objects to work out which contrasts
+            %the user should choose between.
+            for i = 1:length(excursionSetMaps)
+                
+                %Retrieve SPM object corresponding to excursion set i.
+                exID = excursionSetMaps{i}.x_id;
+                SPM = changeNIDMtoSPM(graph,nidmfilepath, typemap, ids, {exID, labels});
+                
+                %Store all SPM objects as we will use them again when
+                %displaying.
+                SPMs{i} = SPM;
+                
+                %These variables are needed to run the contrast selection
+                %window.
+                xCon(i).name = SPM.xCon.name;   
+                xCon(i).STAT = SPM.xCon.STAT; 
+                xCon(i).c = SPM.xCon.c;
+                spm_progress_bar('Set',i);
+            end 
+        
+            %Open the contrast selection window and ask the user which 
+            %contrasts they'd like to see.
+            SPM.xCon = xCon;
+            spm_progress_bar('Set',(length(excursionSetMaps)+1));
+            spm_progress_bar('Clear');
+            vec = spm_conman(SPM,'T&F',Inf,'    Select contrasts...',' for conjunction',0);
+
+        elseif strcmp(conInstruct, 'All')
+            %Display all contrasts.
+            vec = 1:length(excursionSetMaps);
+        elseif isnumeric(conInstruct) && max(conInstruct) <= length(excursionSetMaps) && min(conInstruct) > 0
+            vec = conInstruct;
+        else
+            error('Unknown value entered for conInstruct');
+        end
+        
+        %Display said contrasts.
+        for i = vec 
+            spm_progress_bar('Init',3,['Displaying contrast ', num2str(i)],'Current stage');
             exID = excursionSetMaps{i}.x_id;
-            webID = [spm_results_export(changeNIDMtoSPM(graph,nidmfilepath, typemap, ids, {exID, labels}),...
-                                   changeNIDMtoxSPM(graph,nidmfilepath, typemap, ids, {exID, labels}),...
-                                   changeNIDMtoTabDat(graph, typemap, ids, {exID, labels}),...
-                                   i) webID];
-        end 
+            
+            spm_progress_bar('Set',1);
+            %Generate xSPM and TabDat for this contrast.
+            xSPM = changeNIDMtoxSPM(graph,nidmfilepath, typemap, ids, {exID, labels});
+            spm_progress_bar('Set',2)
+            TabDat = changeNIDMtoTabDat(graph, typemap, ids, {exID, labels});
+            spm_progress_bar('Set',3)
+            
+            %Open display, using any SPM variables we've calculated
+            %already.
+            webID = [];
+            if exist('SPMs', 'var')
+                webID = [spm_results_export(SPMs{i}, xSPM, TabDat, i, outdir) webID];
+            else
+                webID = [spm_results_export(changeNIDMtoSPM(graph,nidmfilepath, typemap, ids, {exID, labels}),...
+                        xSPM, TabDat, i, outdir) webID];
+            end
+        end
     end
+    
+    spm_progress_bar('Clear');
     
 end
 

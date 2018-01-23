@@ -12,7 +12,7 @@ function [Ms, Md] = getMsMd(units, M, DIM)
     mipmat = char(spm_get_defaults('stats.results.mipmat'));
     load(mipmat, 'scale');
     
-    if isequal(units,{'mm' 'mm' 'mm'})
+    if isequal(units,{'mm' 'mm' 'mm'}) || isequal(units,{'"mm"' '"mm"' '"mm"'})
         Md      = eye(4);
         Ms      = diag([scale(1:3) 1]);
     elseif isequal(units,{'mm' 'mm' ''})

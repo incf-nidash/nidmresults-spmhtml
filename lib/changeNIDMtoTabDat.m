@@ -147,28 +147,28 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     %Make the string for displaying extent thresholds and store the extent
     %thresholds themselves.
     if ePositions(4) ~= 0
-        ftrTemp{2, 1} = 'Extent threshold: k = %0.0f voxels';  
+        ftrTemp{2, 1} = 'Extent threshold: k = %0.2f voxels';  
         kThresh = get_value(extentThresholds{ePositions(4)}.('nidm_clusterSizeInVoxels'));
         if(ischar(kThresh))
             kThresh = str2double(kThresh);
         end
         ftrTemp{2, 2} = kThresh;
     elseif ePositions(1) ~= 0
-        ftrTemp{2, 1} = 'Extent threshold: p < %0.0f (FWE)';  
+        ftrTemp{2, 1} = 'Extent threshold: p < %0.2f (FWE)';  
         fweThresh = get_value(extentThresholds{ePositions(1)}.('prov_value'));
         if(ischar(fweThresh))
             fweThresh = str2double(fweThresh);
         end
         ftrTemp{2, 2} = fweThresh;
     elseif ePositions(2) ~= 0
-        ftrTemp{2, 1} = 'Extent threshold: p < %0.0f (FDR)';  
+        ftrTemp{2, 1} = 'Extent threshold: p < %0.2f (FDR)';  
         fdrThresh = get_value(extentThresholds{ePositions(2)}.('prov_value'));
         if(ischar(fdrThresh))
             fdrThresh = str2double(fdrThresh);
         end
         ftrTemp{2, 2} = fdrThresh;
     elseif ePositions(3) ~= 0
-        ftrTemp{2, 1} = 'Extent threshold: p < %0.0f (Uncorrected)';  
+        ftrTemp{2, 1} = 'Extent threshold: p < %0.2f (Uncorrected)';  
         pThresh = get_value(extentThresholds{ePositions(3)}.('prov_value'));
         if(ischar(pThresh))
             pThresh = str2double(pThresh);
@@ -211,7 +211,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
         %If its there, include FWEc
         if(isfield(searchLinkedToCoord, 'spm_smallestSignificantClusterSizeInVoxelsFWE05'))
             FWEc = str2double(get_value(searchLinkedToCoord.('spm_smallestSignificantClusterSizeInVoxelsFWE05')));
-            stringTemp = [stringTemp, ', FWEc: %0.0f'];
+            stringTemp = [stringTemp, ', FWEc: %0.4f'];
             arrayTemp = [arrayTemp, FWEc];
         end
         
@@ -264,7 +264,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     
     %Retrieve the units of the coordinate space.
     searchSpace = searchforID(searchLinkedToCoord.nidm_inCoordinateSpace.('x_id'), graph, ids);
-    FWHMUnits = strrep(strrep(strrep(strrep(get_value(searchSpace.('nidm_voxelUnits')), '\"', ''), '[', ''), ']', ''), ',', '');
+    FWHMUnits = strrep(strrep(strrep(strrep(strrep(get_value(searchSpace.('nidm_voxelUnits')), '\"', ''), '[', ''), ']', ''), ',', ''), '"', '');
     
     ftrTemp{rowCount, 1} = ['FWHM = %3.1f %3.1f %3.1f ', FWHMUnits '; %3.1f %3.1f %3.1f {voxels}'];
     
@@ -300,7 +300,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     
     rowCount = rowCount+1;
     voxelSize = str2num(get_value(searchSpace.('nidm_voxelSize')));
-    voxelUnits = strrep(strrep(strrep(strrep(get_value(searchSpace.('nidm_voxelUnits')), '\"', ''), '[', ''), ']', ''), ',', '');
+    voxelUnits = strrep(strrep(strrep(strrep(strrep(get_value(searchSpace.('nidm_voxelUnits')), '\"', ''), '[', ''), ']', ''), ',', ''), '"', '');
     reselSize = get_value(searchLinkedToCoord.('nidm_reselSizeInVoxels'));
     if(ischar(reselSize))
         reselSize = str2double(reselSize);
@@ -528,7 +528,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, ids, exObj)
     %======================================================================
     %fmt
     
-    fmtTemp = {'%-0.3f' '%g' '%0.3f' '%0.3f' '%0.0f' '%0.3f' '%0.3f' '%0.3f' '%6.2f' '%5.2f' '%0.3f' '%3.0f %3.0f %3.0f '};
+    fmtTemp = {'%-0.3f' '%g' '%1.2e' '%0.3f' '%0.0f' '%0.3f' '%0.3f' '%0.3f' '%6.2f' '%5.2f' '%0.3f' '%3.0f %3.0f %3.0f '};
     
     %======================================================================
     

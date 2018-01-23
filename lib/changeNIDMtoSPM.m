@@ -66,6 +66,24 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, ids, exObj)
         contrastWeightMatrix = relevantToExcursion(contrastWeightMatrix, exID, exLabels);
     end
     
+    %Get the StatType and statisticMaps
+    if(multipleExcursions)
+        [xConTemp.STAT, statisticMaps] = getStatType(typemap, exID, exLabels);
+    else
+        [xConTemp.STAT, statisticMaps] = getStatType(typemap);
+    end 
+    
+    %Retrieve contrast name.
+    if(~isempty(statisticMaps))
+        for i = 1:length(statisticMaps)
+            if isfield(statisticMaps{i}, 'nidm_contrastName')
+                xConTemp.name = get_value(statisticMaps{i}.('nidm_contrastName'));
+            end
+        end 
+    else
+        xConTemp.name = '';
+    end
+    
     xConTemp(1).c = str2num(get_value(contrastWeightMatrix{1}.('prov_value')))';
     
     %======================================================================
@@ -77,6 +95,19 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, ids, exObj)
     designMatrixFilename = get_value(designMatrix{1}.prov_atLocation);
     [~, name, ext] = fileparts(designMatrixFilename);
     xXtemp.xKXs.X = csvread(fullfile(filepathTemp, [name, ext]));
+    
+    %Record the SVD data.
+    [xXtemp.xKXs.u, ds, xXtemp.xKXs.v] = svd(xXtemp.xKXs.X, 0);
+    xXtemp.xKXs.ds = diag(ds);
+    xXtemp.xKXs.tol = max(size(xXtemp.xKXs.X))*max(abs(xXtemp.xKXs.ds))*eps;
+    xXtemp.xKXs.rk = rank(xXtemp.xKXs.X);
+    
+    %These variables are not required to be recorded in SPM but can cause 
+    %errors if not set.
+    xXtemp.xKXs.oP = [];
+    xXtemp.xKXs.oPp = [];
+    xXtemp.xKXs.ups = [];
+    xXtemp.xKXs.sus = [];
     
     %Get the regressor names in required format.
     remain = strrep(strrep(strrep(strrep(get_value(designMatrix{1}.nidm_regressorNames), '\"', ''), '[', ''), ']', ''), ',', '');
