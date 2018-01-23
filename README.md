@@ -17,12 +17,12 @@ To view NIDM results using the NIDM results viewer run the following
 <img src="Doc/examplemenu2.png" width="200">  |
 :-------------------------:
  **Fig. 2.** The SPM option in the batch window. |
-4. Enter the NIDM-Results file you wish to view and where you wish the output html to be stored.
+4. Enter the NIDM-Results file you wish to view and where you wish the output html to be stored. You can specify which contrasts to view here or the 'select' option can be chosen to open the contrast window.
 
 <img src="Doc/example_batch.png" width="200"> |  
 :-------------------------:|
  **Fig. 3.** The NIDM-Results batch window. |
-5. If there are multiple excursion sets stored in the NIDM-Results file the contrast window will open. Select the contrasts you wish to view and click done.
+5. If the 'select' option was chosen and there are multiple contrasts stored inside the NIDM-Results pack, the contrast window will open. Select the contrasts you wish to view and click done. 
 
 <img src="Doc/example_conMan.png" width="200"> |
 :-------------------------:|
