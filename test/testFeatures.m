@@ -69,7 +69,8 @@ classdef testFeatures < matlab.unittest.TestCase
             %Delete the pre-existing jsonld.
             delete(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP', 'nidm.jsonld'));
             %Copy the jsonld without the MIP into the NIDM pack.
-            copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'testJsons', 'nidm.json'), fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP'));
+            copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'testJsons', 'nidm.jsonld'),...
+                     fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP'));
             %Run the test.
             testCase.delete_html_file(data_path);
             nidm_results_display(data_path);
