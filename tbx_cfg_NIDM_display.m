@@ -18,7 +18,7 @@ function nidmdisplay = tbx_cfg_NIDM_display()
        'Specify numerically which excursion sets you wish to view.',... 
        'If unsure of the numerical values corresponding to excursion sets, choose "Select".'};
     exSet_num.strtype = 'e';
-    exSet_num.tag      = 'exNums_num';
+    exSet_num.tag      = 'exNums';
     exSet_num.num     = [Inf 1];
     
     %Display all excursion sets.

@@ -139,7 +139,7 @@ function webID = nidm_results_display(nidmfilepath, conInstruct, outdir)
         elseif strcmp(conInstruct, 'All')
             %Display all contrasts.
             vec = 1:length(excursionSetMaps);
-        elseif isnumeric(conInstruct)
+        elseif isnumeric(conInstruct) && max(conInstruct) <= length(excursionSetMaps) && min(conInstruct) > 0
             vec = conInstruct;
         else
             error('Unknown value entered for conInstruct');
