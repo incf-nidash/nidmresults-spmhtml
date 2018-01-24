@@ -1,3 +1,16 @@
+%==========================================================================
+% Read the @context in JSON-LD to link human labels to the corresponding 
+% URIs. To avoid using URIs directly in the code, we also use human labels.
+% The mapping that is done here is therefore:
+% human-labels-from-code -> URI -> human-label-from-JSON
+% Returned 'context' is a dictionnary mapping human labels used in the SPM
+% viewer code (human-labels-from-code) with human labels found in the JSON
+% context (human-label-from-JSON)
+% This will ensure that if different labels are used in different documents
+% the viewer will still be able to read them (based on the URIs - unique).
+%
+% Authors: Thomas Maullin, Camille Maumet.
+%==========================================================================
 function context = load_json_context(json)
     hkey_dict = human_key_dict();
     not_found = hkey_dict.values;
