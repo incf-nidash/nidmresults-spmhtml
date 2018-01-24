@@ -65,9 +65,9 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, context, ids, exOb
     
     %Get the StatType and statisticMaps
     if(multipleExcursions)
-        [xConTemp.STAT, statisticMaps] = getStatType(typemap, exID, exLabels);
+        [xConTemp.STAT, statisticMaps] = getStatType(typemap, context, exID, exLabels);
     else
-        [xConTemp.STAT, statisticMaps] = getStatType(typemap);
+        [xConTemp.STAT, statisticMaps] = getStatType(typemap, context);
     end 
     
     %Retrieve contrast name.

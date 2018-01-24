@@ -484,7 +484,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
                 end
                 tableTemp{n, 11} = str2double(get_value(peaksTemp{j}.(context('nidm_pValueUncorrected'))));
                 if peaksStat
-                    tableTemp{n, 9} = str2double(get_value(peaksTemp{j}.(context('prov_value'))));
+                    tableTemp{n, 9} = str2double(get_value(peaksTemp{j}.('prov_value')));
                 else
                     %Calculate whichever statistic type is used.
                     if strcmp(statType, 'T')
