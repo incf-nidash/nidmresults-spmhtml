@@ -19,15 +19,18 @@ function context = load_json_context(json)
                 if isstruct(json{i}.x_context{j})
                     fields = fieldnames(json{i}.x_context{j});
                     for m = 1:numel(fields)
-                        [hkey, hkey_dict] = human_key(json{i}.x_context{j}.(fields{m}), hkey_dict, hnms_dict);
-                        context(hkey) = fields{m};
+                        if ~ismember(fields{m}, context.values)
+                            [hkey, hkey_dict] = human_key(json{i}.x_context{j}.(fields{m}), hkey_dict, hnms_dict);
+                            context(hkey) = fields{m};
+                        end
                     end
                 end
             end
         end
     end 
 
-    % When not prefix was found replace URI by qname using predefined prefixes    
+    % When not prefix was found replace URI by qname using predefined 
+%   % prefixes    
     keys = hkey_dict.keys;
     values = hkey_dict.values;
     for i = 1:length(hkey_dict)       
