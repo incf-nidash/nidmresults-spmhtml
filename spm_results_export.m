@@ -199,8 +199,27 @@ tpl = tpl.var('RES_STR',TabDat.str);
 tpl = tpl.var('SOFTWARE',software);
 tpl = tpl.var('NIDMVERSION', nidmVersion);
 tpl = tpl.var('STAT_STR',strrep(strrep(xSPM.STATstr,'_{','<sub>'),'}','</sub>'));
-tpl = tpl.var('CON_STAT',xSPM.STAT);
 tpl = tpl.var('resrows','');
+
+%Work out which columns are present in the table.
+emptVec = [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+nonEmptCols = find(emptVec==1);
+
+%These are the column headers.
+columnHeaders = {'<em>p</em>', 'c', '<em>p</em><sub>FWE-corr</sub>',...
+                 '<em>p</em><sub>FDR-corr</sub>', 'k<sub>E</sub>',...
+                 '<em>p</em><sub>unc</sub>', '<em>p</em><sub>FWE-corr</sub>',...
+                 '<em>p</em><sub>FDR-corr</sub>', xSPM.STAT, 'Z<sub>E</sub>', ...
+                 '<em>p</em><sub>unc</sub>'};
+
+%==================================================================================
+td_size = size(TabDat.dat);
+TabDat.dat = reshape({TabDat.dat{:, nonEmptCols}}, td_size(1), length(nonEmptCols));
+%==================================================================================
+
+%Remove the formatting for columns we don't need.
+TabDat.fmt = {TabDat.fmt{nonEmptCols}};
+
 for i=1:size(TabDat.dat,1)
     tpl = tpl.var('RES_COL1','1');
     for j=1:size(TabDat.dat,2)-1
