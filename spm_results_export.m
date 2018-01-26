@@ -202,8 +202,20 @@ tpl = tpl.var('STAT_STR',strrep(strrep(xSPM.STATstr,'_{','<sub>'),'}','</sub>'))
 tpl = tpl.var('resrows','');
 
 %Work out which columns are present in the table.
-emptVec = [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+emptVec = [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1];
 nonEmptCols = find(emptVec==1);
+
+%Work out how wide each subsection of the table is.
+colspan1 = sum(emptVec(1:2));
+colspan2 = sum(emptVec(3:6));
+colspan3 = sum(emptVec(7:11));
+tablewidth = sum(emptVec);
+
+%Output the column spans.
+tpl = tpl.var('COLSPAN1',sprintf('%d',colspan1));
+tpl = tpl.var('COLSPAN2',sprintf('%d',colspan2));
+tpl = tpl.var('COLSPAN3',sprintf('%d',colspan3));
+tpl = tpl.var('TABWID',sprintf('%d',tablewidth));
 
 %These are the column headers.
 columnHeaders = {'<em>p</em>', 'c', '<em>p</em><sub>FWE-corr</sub>',...
@@ -211,8 +223,26 @@ columnHeaders = {'<em>p</em>', 'c', '<em>p</em><sub>FWE-corr</sub>',...
                  '<em>p</em><sub>unc</sub>', '<em>p</em><sub>FWE-corr</sub>',...
                  '<em>p</em><sub>FDR-corr</sub>', xSPM.STAT, 'Z<sub>E</sub>', ...
                  '<em>p</em><sub>unc</sub>'};
+             
+%We remove the empty columns (the 12th colum is treated seperately).
+columnHeaders = {columnHeaders{nonEmptCols(nonEmptCols<12)}};
+
+%This is a string of column headers for the table.
+cHStr = strcat('<td align="center" style="padding-left:5px;padding-right:5px;">',...
+               columnHeaders, '</td>');
+cHStr = [cHStr{:}];
+
+%String to work out how many columns we display.
+rowStr = '';
+for i=1:(tablewidth-1)
+    rowStr = strcat(rowStr, sprintf(['<td align="center">{RES_COL', '%d', '}</td>'],i));
+end
+
+tpl = tpl.var('ROWSTR', rowStr);
+tpl = tpl.var('CHSTR',cHStr);
 
 %==================================================================================
+%%%%Eventually wont be needed
 td_size = size(TabDat.dat);
 TabDat.dat = reshape({TabDat.dat{:, nonEmptCols}}, td_size(1), length(nonEmptCols));
 %==================================================================================
@@ -225,7 +255,7 @@ for i=1:size(TabDat.dat,1)
     for j=1:size(TabDat.dat,2)-1
         tpl = tpl.var(sprintf('RES_COL%d',j),sprintf(TabDat.fmt{j},TabDat.dat{i,j}));
     end
-    tpl = tpl.var('RES_COL12',strrep(sprintf(TabDat.fmt{end},TabDat.dat{i,end}),' ','&nbsp;'));
+    tpl = tpl.var('RES_COL12',strrep(sprintf(TabDat.fmt{end},TabDat.dat{i,end}),' ','&nbsp;'));%%%%%% change 12 to biggest
     tpl = tpl.var('RES_XYZ',sprintf('%d,%d,%d',TabDat.dat{i,end}));
     tpl = tpl.parse('resrows','resrow',1);
 end
