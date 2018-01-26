@@ -8,8 +8,8 @@
 
 function runTest()
     
-    %Clear previous classes.
-    clear all;
+    %Clear previous classes (and keep debugging breakpoints)
+    clear classes;
 
     %Setup steps for the test.
     import matlab.unittest.TestSuite;

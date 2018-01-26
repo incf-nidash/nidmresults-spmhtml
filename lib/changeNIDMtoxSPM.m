@@ -13,13 +13,13 @@
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
-function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
+function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, context, ids, exObj)
     
     % Checking inputs.
-    if nargin < 5
+    if nargin < 6
         multipleExcursions = false;
     end
-    if nargin == 5
+    if nargin == 6
         multipleExcursions = true;
         exID = exObj{1};
         exLabels = exObj{2};
@@ -32,9 +32,9 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
     
     %Using getStatType, obtain the statisticMaps objects and statistic type. 
     if(multipleExcursions)
-        [STATTemp, statisticMaps] = getStatType(typemap, exID, exLabels);
+        [STATTemp, statisticMaps] = getStatType(typemap, context, exID, exLabels);
     else
-        [STATTemp, statisticMaps] = getStatType(typemap);
+        [STATTemp, statisticMaps] = getStatType(typemap, context);
     end 
     
     %======================================================================
@@ -42,8 +42,8 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
     
     if(~isempty(statisticMaps))
         for i = 1:length(statisticMaps)
-            if isfield(statisticMaps{i}, 'nidm_contrastName')
-                titleTemp = get_value(statisticMaps{i}.('nidm_contrastName'));
+            if isfield(statisticMaps{i}, context(context('nidm_contrastName')))
+                titleTemp = get_value(statisticMaps{i}.(context('nidm_contrastName')));
             end
         end 
     else
@@ -55,11 +55,11 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
     
     %Obtain the degrees of freedom.
     for i = 1:length(statisticMaps)
-        if isfield(statisticMaps{i}, 'nidm_errorDegreesOfFreedom')
-            anyStatType = statisticMaps{i}.('nidm_statisticType').('x_id');
+        if isfield(statisticMaps{i}, context('nidm_errorDegreesOfFreedom'))
+            anyStatType = statisticMaps{i}.(context('nidm_statisticType')).('x_id');
             if ~strcmp(anyStatType, 'obo:STATO_0000376')
-                effectDegrees = get_value(statisticMaps{i}.('nidm_effectDegreesOfFreedom'));
-                errorDegrees = get_value(statisticMaps{i}.('nidm_errorDegreesOfFreedom'));
+                effectDegrees = get_value(statisticMaps{i}.(context('nidm_effectDegreesOfFreedom')));
+                errorDegrees = get_value(statisticMaps{i}.(context('nidm_errorDegreesOfFreedom')));
             end
         end
     end 
@@ -85,11 +85,11 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
     %M
     
     %Locate the excursion set maps and their indices in the graph.
-    excursionSetMaps = typemap('nidm_ExcursionSetMap');
+    excursionSetMaps = typemap(context('nidm_ExcursionSetMap'));
     if(multipleExcursions)
         excursionSetMaps = relevantToExcursion(excursionSetMaps, exID, exLabels);
     end
-    coordSpaceId = excursionSetMaps{1}.('nidm_inCoordinateSpace').('x_id');
+    coordSpaceId = excursionSetMaps{1}.(context('nidm_inCoordinateSpace')).('x_id');
     coordSpace = searchforID(coordSpaceId, graph, ids);
     
     %Obtain the voxel to world mapping and transform it to obtain M.
@@ -100,7 +100,7 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
     %===============================================
     %DIM
     
-    dimTemp = str2num(get_value(coordSpace.('nidm_dimensionsInVoxels')))';
+    dimTemp = str2num(get_value(coordSpace.(context('nidm_dimensionsInVoxels'))))';
     
     %======================================================================
     %nidm - NOTE: In the standard format for SPM output the MIP is 
@@ -109,17 +109,17 @@ function NxSPM = changeNIDMtoxSPM(graph, jsonFile, typemap, ids, exObj)
     nidmTemp = struct;
     
     %If there's already an MIP, save it's location, else generate one.
-    if isfield(excursionSetMaps{1}, 'nidm_hasMaximumIntensityProjection')
+    if isfield(excursionSetMaps{1}, context('nidm_hasMaximumIntensityProjection'))
         mipFilepath = searchforID(excursionSetMaps{1}.nidm_hasMaximumIntensityProjection.('x_id'), graph, ids);
         nidmTemp.MIP = getPathDetails(get_value(mipFilepath.('prov_atLocation')), jsonFile);
     else
         %Find the units of the MIP.
-        searchSpaceMaskMap = typemap('nidm_SearchSpaceMaskMap');
+        searchSpaceMaskMap = typemap(context('nidm_SearchSpaceMaskMap'));
         if(multipleExcursions)
             searchSpaceMaskMap = relevantToExcursion(searchSpaceMaskMap, exID, exLabels);
         end
-        searchSpace = searchforID(searchSpaceMaskMap{1}.('nidm_inCoordinateSpace').('x_id'), graph, ids);
-        voxelUnits = strrep(strrep(strrep(strrep(strrep(get_value(searchSpace.('nidm_voxelUnits')), '\"', ''), '[', ''), ']', ''), ',', ''), '"', '');
+        searchSpace = searchforID(searchSpaceMaskMap{1}.(context('nidm_inCoordinateSpace')).('x_id'), graph, ids);
+        voxelUnits = strrep(strrep(strrep(strrep(strrep(get_value(searchSpace.(context('nidm_voxelUnits'))), '\"', ''), '[', ''), ']', ''), ',', ''), '"', '');
         
         %Generate the MIP.
         filenameNII = get_value(excursionSetMaps{1}.('nfo_fileName'));

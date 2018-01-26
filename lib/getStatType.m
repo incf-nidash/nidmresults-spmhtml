@@ -11,13 +11,13 @@
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
-function [type, statisticMaps] = getStatType(typemap, exID, exLabels)
+function [type, statisticMaps] = getStatType(typemap, context, exID, exLabels)
     
     %Find the statistic type information.
-    statisticMaps = typemap('nidm_StatisticMap');
+    statisticMaps = typemap(context('nidm_StatisticMap'));
     
     %If there are multiple contrasts, refine the search.
-    if(nargin == 3)      
+    if(nargin == 4)      
         counter = 1;
         resultant = {};
         %Work out which object belongs to which excursion set.

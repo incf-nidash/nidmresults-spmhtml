@@ -13,13 +13,13 @@
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
-function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, ids, exObj)
+function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, context, ids, exObj)
 
     % Checking inputs.
-    if nargin < 5
+    if nargin < 6
         multipleExcursions = false;
     end
-    if nargin == 5
+    if nargin == 6
         multipleExcursions = true;
         exID = exObj{1};
         exLabels = exObj{2};
@@ -32,7 +32,7 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, ids, exObj)
     %matrix is derived from other fields and this field does not exist.
     
     nidmTemp = struct;
-    designMatrix = typemap('nidm_DesignMatrix');
+    designMatrix = typemap(context('nidm_DesignMatrix'));
     if(multipleExcursions)
         designMatrix = relevantToExcursion(designMatrix, exID, exLabels);
     end
@@ -58,19 +58,16 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, ids, exObj)
     xConTemp = struct;
     
     %Search for contrastwieght matrix objects to obtain a contrast vector.
-    contrastWeightMatrix = typemap('obo_contrastweightmatrix');
-    if(isempty(contrastWeightMatrix))
-        contrastWeightMatrix = typemap('obo:STATO_0000323');
-    end   
+    contrastWeightMatrix = typemap(context('obo_ContrastWeightMatrix'));
     if(multipleExcursions)
         contrastWeightMatrix = relevantToExcursion(contrastWeightMatrix, exID, exLabels);
     end
     
     %Get the StatType and statisticMaps
     if(multipleExcursions)
-        [xConTemp.STAT, statisticMaps] = getStatType(typemap, exID, exLabels);
+        [xConTemp.STAT, statisticMaps] = getStatType(typemap, context, exID, exLabels);
     else
-        [xConTemp.STAT, statisticMaps] = getStatType(typemap);
+        [xConTemp.STAT, statisticMaps] = getStatType(typemap, context);
     end 
     
     %Retrieve contrast name.
