@@ -12,9 +12,7 @@
 % Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 function context = load_json_context(json)
-    hkey_dict = human_key_dict();
-    not_found = hkey_dict.values;
-    
+    hkey_dict = human_key_dict();   
     hnms_dict = human_namespace_dict();
 
     context = containers.Map();
@@ -23,7 +21,9 @@ function context = load_json_context(json)
         json = {json};
     end
     
+    % For each JSON subgraph found in the JSON-LD document
     for i = 1:numel(json)
+        % Read the 'context'
         if isfield(json{i}, 'x_context')
             if isstruct(json{i}.x_context)
                 json{i}.x_context = {json{i}.x_context};

@@ -298,6 +298,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
             volumeResels = str2double(volumeResels);
         end
     else
+        % Non-parametric FWE does not use RFT
         volumeResels = NaN;
     end
     
