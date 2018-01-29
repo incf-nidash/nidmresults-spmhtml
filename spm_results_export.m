@@ -202,87 +202,102 @@ tpl = tpl.var('STAT_STR',strrep(strrep(xSPM.STATstr,'_{','<sub>'),'}','</sub>'))
 tpl = tpl.var('resrows','');
 
 %Work out which columns are present in the table.
-emptVec = [1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1];
+if ~isfield(xSPM, 'nidm')
+    emptVec = ones(1, 12);
+else
+    emptVec = TabDat.nidm.emptVec;
+end
 nonEmptCols = find(emptVec==1);
 
-%Work out how wide each subsection of the table is.
-colspan1 = sum(emptVec(1:2));
-colspan2 = sum(emptVec(3:6));
-colspan3 = sum(emptVec(7:11));
-tablewidth = sum(emptVec);
+%If the table isn't empty (i.e. records at least one peak coordinate).
+if emptVec(12) ~= 0
+    %Work out how wide each subsection of the table is.
+    colspan1 = sum(emptVec(1:2));
+    colspan2 = sum(emptVec(3:6));
+    colspan3 = sum(emptVec(7:11));
+    tablewidth = sum(emptVec);
 
-%Output the table width.
-tpl = tpl.var('TABWID',sprintf('%d',tablewidth));
+    %Output the table width.
+    tpl = tpl.var('TABWID',sprintf('%d',tablewidth));
 
-%These are the headers of the sections of the table.
-sectHeaders = '';
-if colspan1 ~= 0
-    sectHeaders = strcat(sectHeaders, '<td colspan="', ...
-                  sprintf('%d', colspan1), ...
-                  '" align="center" style="border-bottom: 2px ', ...
-                  ' solid #F00;">set-level</td>');
-end
-if colspan2 ~= 0
-    sectHeaders = strcat(sectHeaders, '<td colspan="',...
-                  sprintf('%d', colspan2), ...
-                  '" align="center" style="border-bottom: 2px ',...
-                  ' solid #F00;">cluster-level</td>');
-end
-if colspan3 ~= 0
-    sectHeaders = strcat(sectHeaders, '<td colspan="',... 
-                  sprintf('%d', colspan3),...
-                  '" align="center" style="border-bottom: 2px ', ...
-                  ' solid #F00;">peak-level</td>');
-end
-
-disp(sectHeaders)
-
-%Output the section headers.
-tpl = tpl.var('SECTHEAD',sectHeaders);
-
-%These are the column headers.
-columnHeaders = {'<em>p</em>', 'c', '<em>p</em><sub>FWE-corr</sub>',...
-                 '<em>p</em><sub>FDR-corr</sub>', 'k<sub>E</sub>',...
-                 '<em>p</em><sub>unc</sub>', '<em>p</em><sub>FWE-corr</sub>',...
-                 '<em>p</em><sub>FDR-corr</sub>', xSPM.STAT, 'Z<sub>E</sub>', ...
-                 '<em>p</em><sub>unc</sub>'};
-             
-%We remove the empty columns (the 12th colum is treated seperately).
-columnHeaders = {columnHeaders{nonEmptCols(nonEmptCols<12)}};
-
-%This is a string of column headers for the table.
-cHStr = strcat('<td align="center" style="padding-left:5px;padding-right:5px;">',...
-               columnHeaders, '</td>');
-cHStr = [cHStr{:}];
-
-%String to work out how many columns we display.
-rowStr = '';
-for i=1:(tablewidth-1)
-    rowStr = strcat(rowStr, sprintf(['<td align="center">{RES_COL', '%d', '}</td>'],i));
-end
-
-tpl = tpl.var('ROWSTR', rowStr);
-tpl = tpl.var('CHSTR',cHStr);
-
-%==================================================================================
-%%%%Eventually wont be needed
-td_size = size(TabDat.dat);
-TabDat.dat = reshape({TabDat.dat{:, nonEmptCols}}, td_size(1), length(nonEmptCols));
-%==================================================================================
-
-%Remove the formatting for columns we don't need.
-TabDat.fmt = {TabDat.fmt{nonEmptCols}};
-
-for i=1:size(TabDat.dat,1)
-    tpl = tpl.var('RES_COL1','1');
-    for j=1:size(TabDat.dat,2)-1
-        tpl = tpl.var(sprintf('RES_COL%d',j),sprintf(TabDat.fmt{j},TabDat.dat{i,j}));
+    %These are the headers of the sections of the table.
+    sectHeaders = '';
+    if colspan1 ~= 0
+        sectHeaders = strcat(sectHeaders, '<td colspan="', ...
+                      sprintf('%d', colspan1), ...
+                      '" align="center" style="border-bottom: 2px ', ...
+                      ' solid #F00;">set-level</td>');
     end
-    tpl = tpl.var('RES_COL12',strrep(sprintf(TabDat.fmt{end},TabDat.dat{i,end}),' ','&nbsp;'));%%%%%% change 12 to biggest
-    tpl = tpl.var('RES_XYZ',sprintf('%d,%d,%d',TabDat.dat{i,end}));
-    tpl = tpl.parse('resrows','resrow',1);
+    if colspan2 ~= 0
+        sectHeaders = strcat(sectHeaders, '<td colspan="',...
+                      sprintf('%d', colspan2), ...
+                      '" align="center" style="border-bottom: 2px ',...
+                      ' solid #F00;">cluster-level</td>');
+    end
+    if colspan3 ~= 0
+        sectHeaders = strcat(sectHeaders, '<td colspan="',... 
+                      sprintf('%d', colspan3),...
+                      '" align="center" style="border-bottom: 2px ', ...
+                      ' solid #F00;">peak-level</td>');
+    end
+    
+    %Add the xyz coordinates.
+    sectHeaders = strcat(sectHeaders,...
+                        '<td rowspan="2" align="center" style="padding-left:5px;padding-right:5px;">mm mm mm</td>');
+
+    %Output the section headers.
+    tpl = tpl.var('SECTHEAD',sectHeaders);
+
+    %These are the column headers.
+    columnHeaders = {'<em>p</em>', 'c', '<em>p</em><sub>FWE-corr</sub>',...
+                     '<em>p</em><sub>FDR-corr</sub>', 'k<sub>E</sub>',...
+                     '<em>p</em><sub>unc</sub>', '<em>p</em><sub>FWE-corr</sub>',...
+                     '<em>p</em><sub>FDR-corr</sub>', xSPM.STAT, 'Z<sub>E</sub>', ...
+                     '<em>p</em><sub>unc</sub>'};
+
+    %We remove the empty columns (the 12th colum is treated seperately).
+    columnHeaders = {columnHeaders{nonEmptCols(nonEmptCols<12)}};
+
+    %This is a string of column headers for the table.
+    cHStr = strcat('<td align="center" style="padding-left:5px;padding-right:5px;">',...
+                   columnHeaders, '</td>');
+    cHStr = [cHStr{:}];
+
+    %String to work out how many columns we display.
+    rowStr = '';
+    for i=1:(tablewidth-1)
+        rowStr = strcat(rowStr, sprintf(['<td align="center">{RES_COL', '%d', '}</td>'],i));
+    end
+
+    tpl = tpl.var('ROWSTR', rowStr);
+    tpl = tpl.var('CHSTR',cHStr);
+
+    %We only need certain columns.
+    td_size = size(TabDat.dat);
+    TabDat.dat = reshape({TabDat.dat{:, nonEmptCols}}, td_size(1), length(nonEmptCols));
+
+    %Remove the formatting for columns we don't need.
+    TabDat.fmt = {TabDat.fmt{nonEmptCols}};
+
+    for i=1:size(TabDat.dat,1)
+        tpl = tpl.var('RES_COL1','1');
+        for j=1:size(TabDat.dat,2)-1
+            tpl = tpl.var(sprintf('RES_COL%d',j),sprintf(TabDat.fmt{j},TabDat.dat{i,j}));
+        end
+        tpl = tpl.var('RES_COLEND',strrep(sprintf(TabDat.fmt{end},TabDat.dat{i,end}),' ','&nbsp;'));
+        tpl = tpl.var('RES_XYZ',sprintf('%d,%d,%d',TabDat.dat{i,end}));
+        tpl = tpl.parse('resrows','resrow',1);
+    end
+    tpl = tpl.var('resftrs','');
+else
+    %Otherwise make the table empty.
+    tpl = tpl.var('ROWSTR', '');
+    tpl = tpl.var('CHSTR','');
+    tpl = tpl.var('RES_COL1','');
+    tpl = tpl.var('RES_COLEND','');
+    tpl = tpl.var('RES_XYZ','');
 end
-tpl = tpl.var('resftrs','');
+    
 
 %Information is split into two columns for presentation purposes.
 half_footer_size = floor((size(TabDat.ftr,1))/2);

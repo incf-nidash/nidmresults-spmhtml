@@ -75,8 +75,7 @@
     <td colspan="{TABWID}" style="border-bottom: 5px solid #F00;"><strong>Statistics: <em>{RES_TITLE}</em></strong></td>
   </tr>
   <tr>
-   {SECTHEAD} 
-   <td rowspan="2" align="center" style="padding-left:5px;padding-right:5px;">mm mm mm</td>
+   {SECTHEAD}
   </tr>
   <tr>
     {CHSTR}  
@@ -87,7 +86,7 @@
   <!-- BEGIN resrow -->
   <tr>
     {ROWSTR}
-    <td align="center"><div onmouseover="moveto({RES_XYZ});this.style.fontWeight='bold';" onmouseout="this.style.fontWeight='normal';">{RES_COL12}</div></td></tr>
+    <td align="center"><div onmouseover="moveto({RES_XYZ});this.style.fontWeight='bold';" onmouseout="this.style.fontWeight='normal';">{RES_COLEND}</div></td></tr>
   </tr>
   <!-- END resrow -->
 </table>
