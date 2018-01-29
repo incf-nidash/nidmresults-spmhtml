@@ -75,10 +75,8 @@
     <td colspan="{TABWID}" style="border-bottom: 5px solid #F00;"><strong>Statistics: <em>{RES_TITLE}</em></strong></td>
   </tr>
   <tr>
-    <td colspan="{COLSPAN1}" align="center" style="border-bottom: 2px solid #F00;">set-level</td>
-    <td colspan="{COLSPAN2}" align="center" style="border-bottom: 2px solid #F00;">cluster-level</td>
-    <td colspan="{COLSPAN3}" align="center" style="border-bottom: 2px solid #F00;">peak-level</td>
-    <td rowspan="2" align="center" style="padding-left:5px;padding-right:5px;">mm mm mm</td>
+   {SECTHEAD} 
+   <td rowspan="2" align="center" style="padding-left:5px;padding-right:5px;">mm mm mm</td>
   </tr>
   <tr>
     {CHSTR}  

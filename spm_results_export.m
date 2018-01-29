@@ -202,7 +202,7 @@ tpl = tpl.var('STAT_STR',strrep(strrep(xSPM.STATstr,'_{','<sub>'),'}','</sub>'))
 tpl = tpl.var('resrows','');
 
 %Work out which columns are present in the table.
-emptVec = [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1];
+emptVec = [1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1];
 nonEmptCols = find(emptVec==1);
 
 %Work out how wide each subsection of the table is.
@@ -211,11 +211,34 @@ colspan2 = sum(emptVec(3:6));
 colspan3 = sum(emptVec(7:11));
 tablewidth = sum(emptVec);
 
-%Output the column spans.
-tpl = tpl.var('COLSPAN1',sprintf('%d',colspan1));
-tpl = tpl.var('COLSPAN2',sprintf('%d',colspan2));
-tpl = tpl.var('COLSPAN3',sprintf('%d',colspan3));
+%Output the table width.
 tpl = tpl.var('TABWID',sprintf('%d',tablewidth));
+
+%These are the headers of the sections of the table.
+sectHeaders = '';
+if colspan1 ~= 0
+    sectHeaders = strcat(sectHeaders, '<td colspan="', ...
+                  sprintf('%d', colspan1), ...
+                  '" align="center" style="border-bottom: 2px ', ...
+                  ' solid #F00;">set-level</td>');
+end
+if colspan2 ~= 0
+    sectHeaders = strcat(sectHeaders, '<td colspan="',...
+                  sprintf('%d', colspan2), ...
+                  '" align="center" style="border-bottom: 2px ',...
+                  ' solid #F00;">cluster-level</td>');
+end
+if colspan3 ~= 0
+    sectHeaders = strcat(sectHeaders, '<td colspan="',... 
+                  sprintf('%d', colspan3),...
+                  '" align="center" style="border-bottom: 2px ', ...
+                  ' solid #F00;">peak-level</td>');
+end
+
+disp(sectHeaders)
+
+%Output the section headers.
+tpl = tpl.var('SECTHEAD',sectHeaders);
 
 %These are the column headers.
 columnHeaders = {'<em>p</em>', 'c', '<em>p</em><sub>FWE-corr</sub>',...
