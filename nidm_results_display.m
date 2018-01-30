@@ -13,6 +13,16 @@
 
 function webID = nidm_results_display(nidmfilepath, conInstruct, outdir)
         
+    %Check if we are running from the commandline. If no information about
+    %cmdline is stored we are running code without running SPM (i.e. for 
+    %tests). We display only if we are not in commandline mode.
+    try
+        defaults = spm('Defaults');
+        display = ~defaults.cmdline;
+    catch
+        display = 1;
+    end 
+ 
     spm_progress_bar('Init',10,'Unpacking NIDM-Results','Current stage');
      
     %Check input
