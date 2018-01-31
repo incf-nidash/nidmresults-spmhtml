@@ -17,7 +17,7 @@ function webID = nidm_results_display(nidmfilepath, conInstruct, outdir)
     %cmdline is stored we are running code without running SPM (i.e. for 
     %tests). We display only if we are not in commandline mode.
     try
-        defaults = spm('Defaults');
+        defaults = spm('Defaults', 'FMRI');
         display = ~defaults.cmdline;
     catch
         display = 1;
@@ -107,7 +107,8 @@ function webID = nidm_results_display(nidmfilepath, conInstruct, outdir)
         %Display the page and obtain the pages ID.
         webID = spm_results_export(changeNIDMtoSPM(graph,nidmfilepath,typemap,ids),...
                                    changeNIDMtoxSPM(graph,nidmfilepath,typemap,ids),...
-                                   changeNIDMtoTabDat(graph,typemap,ids), -1, outdir);
+                                   changeNIDMtoTabDat(graph,typemap,ids), -1, outdir,...
+                                   display);
     else
         %Otherwise generate the labels hashmap and generate a result for
         %each excursion set.
@@ -171,10 +172,10 @@ function webID = nidm_results_display(nidmfilepath, conInstruct, outdir)
             %already.
             webID = [];
             if exist('SPMs', 'var')
-                webID = [spm_results_export(SPMs{i}, xSPM, TabDat, i, outdir) webID];
+                webID = [spm_results_export(SPMs{i}, xSPM, TabDat, i, outdir, display) webID];
             else
                 webID = [spm_results_export(changeNIDMtoSPM(graph,nidmfilepath, typemap, ids, {exID, labels}),...
-                        xSPM, TabDat, i, outdir) webID];
+                        xSPM, TabDat, i, outdir, display) webID];
             end
         end
     end

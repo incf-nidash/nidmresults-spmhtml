@@ -1,4 +1,4 @@
-function webID = spm_results_export(SPM,xSPM,TabDat,exNo, fHTML)
+function webID = spm_results_export(SPM,xSPM,TabDat,exNo, fHTML, display)
 % Export SPM results in HTML
 % FORMAT spm_results_export(SPM,xSPM,TabDat)
 %__________________________________________________________________________
@@ -19,10 +19,10 @@ function webID = spm_results_export(SPM,xSPM,TabDat,exNo, fHTML)
 %          only one excursion set present and this is NIDM-Results data. 
 %          Non-existant if SPM data.
 % - fHTML - An output directory if this is an NIDM-Results display.
-if nargin < 2
+if nargin < 3
     error('Not enough input arguments.');
 end
-if nargin < 3
+if nargin < 4
     TabDat = spm_list('Table',xSPM);
 end
 %If we are using NIDM-Results there will be a variable named exNo
@@ -39,7 +39,7 @@ if exist('exNo', 'var')
 else
     multipleExcursions = false;
 end
-if nargin > 5
+if nargin > 6
     error('Too many input arguments.');
 end
 
@@ -49,6 +49,8 @@ end
 
 if ~isfield(SPM, 'nidm')
     software = 'SPM';
+    defaults = spm('Defaults', 'FMRI');
+    display = ~defaults.cmdline;
     nidmVersion = '';
     %If we are using NIDM-Results there will be a variable named fHTML for
     %the output directory.
@@ -236,8 +238,10 @@ rmdir(outdir, 's');
 
 %-Display webpage
 %==========================================================================
-if(multipleExcursions && exNo >1)
-    [~, webID] = web(fHTML, '-new');
-else
-    [~, webID] = web(fHTML);
+if display
+    if(multipleExcursions && exNo >1)
+        [~, webID] = web(fHTML, '-new');
+    else
+        [~, webID] = web(fHTML);
+    end
 end
