@@ -1,4 +1,4 @@
-function webID = spm_results_export(SPM,xSPM,TabDat,exNo, fHTML, display)
+function webID = spm_results_export(SPM,xSPM,TabDat,exNo, fHTML)
 % Export SPM results in HTML
 % FORMAT spm_results_export(SPM,xSPM,TabDat)
 %__________________________________________________________________________
@@ -19,10 +19,10 @@ function webID = spm_results_export(SPM,xSPM,TabDat,exNo, fHTML, display)
 %          only one excursion set present and this is NIDM-Results data. 
 %          Non-existant if SPM data.
 % - fHTML - An output directory if this is an NIDM-Results display.
-if nargin < 3
+if nargin < 2
     error('Not enough input arguments.');
 end
-if nargin < 4
+if nargin < 3
     TabDat = spm_list('Table',xSPM);
 end
 %If we are using NIDM-Results there will be a variable named exNo
@@ -39,7 +39,7 @@ if exist('exNo', 'var')
 else
     multipleExcursions = false;
 end
-if nargin > 6
+if nargin > 5
     error('Too many input arguments.');
 end
 
@@ -49,8 +49,6 @@ end
 
 if ~isfield(SPM, 'nidm')
     software = 'SPM';
-    defaults = spm('Defaults', 'FMRI');
-    display = ~defaults.cmdline;
     nidmVersion = '';
     %If we are using NIDM-Results there will be a variable named fHTML for
     %the output directory.
@@ -238,10 +236,23 @@ rmdir(outdir, 's');
 
 %-Display webpage
 %==========================================================================
+%Check if we are running from the commandline. If no information about
+%cmdline is stored we are running code without running SPM (i.e. for 
+%tests). We display only if we are not in commandline mode.
+try
+    defaults = spm('Defaults', 'FMRI');
+    display = ~defaults.cmdline;
+catch
+    display = 1;
+end 
+
+%Display if not in commandline mode.
 if display
     if(multipleExcursions && exNo >1)
         [~, webID] = web(fHTML, '-new');
     else
         [~, webID] = web(fHTML);
     end
+else
+    webID = -1;
 end
