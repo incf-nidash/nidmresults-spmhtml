@@ -332,6 +332,11 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
     
     tableTemp = cell(1);
     
+    %Create a vector for noting down which columns contain values. At start
+    %assume all columns have values.
+
+    emptVec = ones(1, 12);
+    
     %Set-level:
     
     %As there are no set level statistics in FSL, set these values to NaN
@@ -339,6 +344,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
     if strcmp(software, 'FSL')
         tableTemp{1, 1} = NaN;
         tableTemp{1, 2} = NaN;
+        emptVec([1, 2]) = 0;
     end
     
     %In SPM however the set level statistics are found in the excursion set
@@ -460,18 +466,18 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
             if isfield(clusters{i}, context('nidm_pValueFWER'))
                 tableTemp{n, 3} = str2double(get_value(clusters{i}.(context('nidm_pValueFWER'))));
             else
-                tableTemp{n, 3} = NaN;
+                emptVec(3) = 0;
             end
             if clustersFDRP
                 tableTemp{n, 4} = str2double(get_value(clusters{i}.(context('nidm_qValueFDR'))));
             else
-                tableTemp{n, 4} = NaN;
+                emptVec(4) = 0;
             end
             tableTemp{n, 5} = str2double(get_value(clusters{i}.(context('nidm_clusterSizeInVoxels'))));
             if clustersPUncorr
                 tableTemp{n, 6} = str2double(get_value(clusters{i}.(context('nidm_pValueUncorrected'))));
             else
-                tableTemp{n, 6} = NaN;
+                emptVec(6) = 0;
             end
             peaksTemp = clusterPeakMap(keySet{i});
         
@@ -495,7 +501,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
                     elseif strcmp(statType, 'F')
                         tableTemp{n, 9} = icdf('F',1-tableTemp{n, 11},effectDegrees, errorDegrees);
                     else
-                        tableTemp{n, 9} = NaN;
+                        emptVec(9) = 0;
                     end
                 end 
                 tableTemp{n, 10} = str2double(get_value(peaksTemp{j}.(context('nidm_equivalentZStatistic'))));
@@ -506,21 +512,18 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
              end
         end
         
-        [height, ~] = size(tableTemp);
-        
-        %Otherwise fill the gaps with NaN.
+        %Report the columns as empty.
         if ~peaksFWEP
-            [tableTemp{1:height, 7}] = deal(NaN);
+            emptVec(7) = 0;
         end
         if ~peaksFDRP
-            [tableTemp{1:height, 8}] = deal(NaN);
+            emptVec(8) = 0;
         end
         
     else
-        %If no cluster values are available set the remaining values in the
-        %first row of the table to NaN.
-        for i = 3:13
-            tableTemp{1, i} = NaN;
+        %If no cluster values are available report the columns as empty.
+        for i = 3:12
+            emptVec([3:12]) = 0;
         end
     end
     
@@ -551,6 +554,11 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
     %fmt
     
     fmtTemp = {'%-0.3f' '%g' '%1.2e' '%0.3f' '%0.0f' '%0.3f' '%0.3f' '%0.3f' '%6.2f' '%5.2f' '%0.3f' '%3.0f %3.0f %3.0f '};
+    
+    %======================================================================
+    %nidm (ctd) - record the empty columns of the table.
+    
+    nidmTemp.emptVec = emptVec;
     
     %======================================================================
     

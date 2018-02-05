@@ -44,7 +44,7 @@
 
 <!--<h1 style="text-align:center;">{CON_TITLE}</h1>-->
 
-<table>
+<table style="width:615px;">
   <tr>
     <td colspan="2" align="center"><h1 style="text-align:center;">{CON_TITLE}</h1></td>
   </tr>
@@ -70,27 +70,23 @@
 </table>
 
 <!--<p><strong>Statistics: <em>{RES_TITLE}</em></strong></p>-->
-<table border="0">
+<table border="0" style="width:615px; table-layout: auto;">
   <tr>
-    <td colspan="12" style="border-bottom: 5px solid #F00;"><strong>Statistics: <em>{RES_TITLE}</em></strong></td>
+    <td colspan="{TABWID}" style="border-bottom: 5px solid #F00;"><strong>Statistics: <em>{RES_TITLE}</em></strong></td>
   </tr>
   <tr>
-    <td colspan="2" align="center" style="border-bottom: 2px solid #F00;">set-level</td>
-    <td colspan="4" align="center" style="border-bottom: 2px solid #F00;">cluster-level</td>
-    <td colspan="5" align="center" style="border-bottom: 2px solid #F00;">peak-level</td>
-    <td rowspan="2" align="center" style="padding-left:5px;padding-right:5px;">mm mm mm</td>
+   {SECTHEAD}
   </tr>
   <tr>
-    <td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em></td><td align="center" style="padding-left:5px;padding-right:5px;">c</td>
-    <td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em><sub>FWE-corr</sub></td><td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em><sub>FDR-corr</sub></td><td align="center" style="padding-left:5px;padding-right:5px;">k<sub>E</sub></td><td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em><sub>unc</sub></td>
-    <td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em><sub>FWE-corr</sub></td><td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em><sub>FDR-corr</sub></td><td align="center" style="padding-left:5px;padding-right:5px;">{CON_STAT}</td><td align="center" style="padding-left:5px;padding-right:5px;">Z<sub>E</sub></td><td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em><sub>unc</sub></td>
+    {CHSTR}  
   </tr>
   <tr>
-    <td colspan="12" style="border-bottom: 2px solid #F00;"><span style="font-size:1px;">&nbsp;</span></td>
+    <td colspan="{TABWID}" style="border-bottom: 2px solid #F00;"><span style="font-size:1px;">&nbsp;</span></td>
   </tr>
   <!-- BEGIN resrow -->
   <tr>
-    <td align="center">{RES_COL1}</td><td align="center">{RES_COL2}</td><td align="center">{RES_COL3}</td><td align="center">{RES_COL4}</td><td align="center">{RES_COL5}</td><td align="center">{RES_COL6}</td><td align="center">{RES_COL7}</td><td align="center">{RES_COL8}</td><td align="center">{RES_COL9}</td><td align="center">{RES_COL10}</td><td align="center">{RES_COL11}</td><td align="center"><div onmouseover="moveto({RES_XYZ});this.style.fontWeight='bold';" onmouseout="this.style.fontWeight='normal';">{RES_COL12}</div></td></tr>
+    {ROWSTR}
+    <td align="center"><div onmouseover="moveto({RES_XYZ});this.style.fontWeight='bold';" onmouseout="this.style.fontWeight='normal';">{RES_COLEND}</div></td></tr>
   </tr>
   <!-- END resrow -->
 </table>
