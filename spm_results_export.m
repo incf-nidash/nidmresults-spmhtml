@@ -237,7 +237,7 @@ rmdir(outdir, 's');
 %-Display webpage
 %==========================================================================
 %Check if we are running from the commandline. If no information about
-%cmdline is stored we are running code without running SPM (i.e. for 
+%cmdline is stored we are running code without SPM actually open (i.e. for 
 %tests). We display only if we are not in commandline mode.
 try
     defaults = spm('Defaults', 'FMRI');
