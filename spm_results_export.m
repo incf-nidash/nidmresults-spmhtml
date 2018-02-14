@@ -236,8 +236,23 @@ rmdir(outdir, 's');
 
 %-Display webpage
 %==========================================================================
-if(multipleExcursions && exNo >1)
-    [~, webID] = web(fHTML, '-new');
+%Check if we are running from the commandline. If no information about
+%cmdline is stored we are running code without SPM actually open (i.e. for 
+%tests). We display only if we are not in commandline mode.
+try
+    defaults = spm('Defaults', 'FMRI');
+    display = ~defaults.cmdline;
+catch
+    display = 1;
+end 
+
+%Display if not in commandline mode.
+if display
+    if(multipleExcursions && exNo >1)
+        [~, webID] = web(fHTML, '-new');
+    else
+        [~, webID] = web(fHTML);
+    end
 else
-    [~, webID] = web(fHTML);
+    webID = -1;
 end

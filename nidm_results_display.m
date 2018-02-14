@@ -12,7 +12,7 @@
 %==========================================================================
 
 function webID = nidm_results_display(nidmfilepath, conInstruct, outdir)
-        
+ 
     spm_progress_bar('Init',10,'Unpacking NIDM-Results','Current stage');
      
     %Check input
