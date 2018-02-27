@@ -82,8 +82,8 @@
   </tr>
   <tr>
     <td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em></td><td align="center" style="padding-left:5px;padding-right:5px;">c</td>
-    <td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em><sub>FWE-corr</sub></td><td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em><sub>FDR-corr</sub></td><td align="center" style="padding-left:5px;padding-right:5px;">k<sub>E</sub></td><td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em><sub>unc</sub></td>
-    <td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em><sub>FWE-corr</sub></td><td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em><sub>FDR-corr</sub></td><td align="center" style="padding-left:5px;padding-right:5px;">{CON_STAT}</td><td align="center" style="padding-left:5px;padding-right:5px;">Z<sub>E</sub></td><td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em><sub>unc</sub></td>
+    <td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em><sub>FWE-corr</sub></td><td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em><sub>FDR-corr</sub></td><td align="center" style="padding-left:5px;padding-right:5px;">k<sub>&equiv;</sub></td><td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em><sub>unc</sub></td>
+    <td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em><sub>FWE-corr</sub></td><td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em><sub>FDR-corr</sub></td><td align="center" style="padding-left:5px;padding-right:5px;">{CON_STAT}</td><td align="center" style="padding-left:5px;padding-right:5px;">Z<sub>&equiv;</sub></td><td align="center" style="padding-left:5px;padding-right:5px;"><em>p</em><sub>unc</sub></td>
   </tr>
   <tr>
     <td colspan="12" style="border-bottom: 2px solid #F00;"><span style="font-size:1px;">&nbsp;</span></td>
