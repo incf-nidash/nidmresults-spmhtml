@@ -3,7 +3,6 @@
 Read and display NIDM-Results packs in the SPM environment.
 
 ##### Usage
-
 To view NIDM results using the NIDM results viewer run the following
 
 1. Open `SPM fMRI` from the Matlab command line.
