@@ -17,7 +17,7 @@ install:
 script:  
  - docker version
  # Run docker snapshot of dev octave (until 4.4 is released)
- - did=$(docker run -ti --rm -v \test:/test cmaumet/octave-spm)
+ - did=$(docker run -ti --rm -v /test:/test cmaumet/octave-spm)
  # Run tests in Octave
  - sudo docker exec -it $did octave --no-window-system --eval "addpath('/test'); runTest()"
 before_install:
