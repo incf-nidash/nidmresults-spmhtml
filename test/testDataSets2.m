@@ -7,7 +7,7 @@
 %matlab unittest function).
 %==========================================================================
 
-function test_suite=my_test_of_abs
+function test_suite=testDataSets2
     try % assignment of 'localfunctions' is necessary in Matlab >= 2016
         test_functions=localfunctions();
     catch % no problem; early Matlab versions can use initTestSuite fine
