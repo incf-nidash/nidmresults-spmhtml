@@ -7,7 +7,6 @@
 %matlab unittest function).
 %==========================================================================
 
-```matlab
 function test_suite=testDataSets2
     try % assignment of 'localfunctions' is necessary in Matlab >= 2016
         test_functions=localfunctions();
