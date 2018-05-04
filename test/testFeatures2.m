@@ -5,6 +5,7 @@
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
+```matlab
 function test_suite=testFeatures2
     try % assignment of 'localfunctions' is necessary in Matlab >= 2016
         test_functions=localfunctions();
