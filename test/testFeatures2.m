@@ -32,7 +32,7 @@ function checkForTitle()
     delete_html_file(data_path);
     nidm_results_display(data_path);
     text = fileread(fullfile(data_path, 'index.html'));
-    verifySubstring(, text, 'tone counting vs baseline');
+    verifySubstring(text, 'tone counting vs baseline');
 end
 
 %Checking the original functionality of the viewer with the
@@ -81,5 +81,5 @@ end
 %             while testObject == 20
 %                 testObject = randi(length(originalNIDM.x_graph));
 %             end
-%             verifyEqual(, currentNIDM.x_graph{testObject}, originalNIDM.x_graph{testObject});
+%             verifyEqual(currentNIDM.x_graph{testObject}, originalNIDM.x_graph{testObject});
 %         end
