@@ -231,7 +231,9 @@ fprintf(fid,'%c',get(tpl,'OUT'));
 fclose(fid);
 %==========================================================================
 %-Delete temporary files
-
+if exist('OCTAVE_VERSION','builtin')
+    confirm_recursive_rmdir(false,'local');
+end
 rmdir(outdir, 's');
 
 %-Display webpage
@@ -240,10 +242,9 @@ rmdir(outdir, 's');
 %cmdline is stored we are running code without SPM actually open (i.e. for 
 %tests). We display only if we are not in commandline mode.
 try
-    defaults = spm('Defaults', 'FMRI');
-    display = ~defaults.cmdline;
+    display = ~spm_get_defaults('cmdline');
 catch
-    display = 1;
+    display = true;
 end 
 
 %Display if not in commandline mode.

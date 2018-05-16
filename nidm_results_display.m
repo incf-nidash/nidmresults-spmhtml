@@ -22,8 +22,8 @@ function webID = nidm_results_display(nidmfilepath, conInstruct, outdir)
     end
     
     %If it is zipped unzip it.
-    if contains(nidmfilepath, '.zip')
-        [path, filename] = fileparts(nidmfilepath);
+    [path, filename, ext] = fileparts(nidmfilepath);
+    if strncmp(ext, '.zip', 4)
         unzip(nidmfilepath, fullfile(path, filename));
         nidmfilepath = fullfile(path, filename);
     end

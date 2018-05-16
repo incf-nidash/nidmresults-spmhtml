@@ -15,7 +15,11 @@ function base64string = getBase64(imagePath)
     fclose(fid);
     
     %Encode the image and return the string.
-    encoder = org.apache.commons.codec.binary.Base64;
-    base64string = char(encoder.encode(bytes))';
+    if ~exist('OCTAVE_VERSION','builtin')
+        encoder = org.apache.commons.codec.binary.Base64;
+        base64string = char(encoder.encode(bytes))';
+    else
+        base64string = base64_encode(uint8(bytes));
+    end
 
 end
