@@ -96,7 +96,7 @@ if exist(fHTML, 'file') == 2
         1,'bd',{'Overwrite', 'Do not overwrite'},[1,2],2);
     if isempty(button) || button == 2
         webID = '0';
-        return;true;
+        return;
     end
 end
 
