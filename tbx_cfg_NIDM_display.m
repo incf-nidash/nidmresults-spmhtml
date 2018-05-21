@@ -7,9 +7,11 @@
 function nidmdisplay = tbx_cfg_NIDM_display()
     
     %Add the path to the toolbox directory.
-    toolboxDir = spm_str_manip(mfilename('fullpath'), 'h');
-    addpath(toolboxDir);
-    addpath(fullfile(toolboxDir, 'test'));
+    toolboxDir = spm_file(mfilename('fullpath'), 'fpath');
+    if ~isdeployed
+        addpath(toolboxDir);
+        addpath(fullfile(toolboxDir, 'test'));
+    end
     
     %Excursion sets specified numerically.
     exSet_num          = cfg_entry;

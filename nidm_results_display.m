@@ -12,7 +12,12 @@
 %==========================================================================
 
 function webID = nidm_results_display(nidmfilepath, conInstruct, outdir)
- 
+
+    %Add path to required methods
+    if ~isdeployed && exist('changeNIDMtoSPM', 'file') ~= 2
+        addpath(fullfile(fileparts(mfilename('fullpath')), 'lib'));
+    end
+
     spm_progress_bar('Init',10,'Unpacking NIDM-Results','Current stage');
      
     %Check input
@@ -22,8 +27,8 @@ function webID = nidm_results_display(nidmfilepath, conInstruct, outdir)
     end
     
     %If it is zipped unzip it.
-    if contains(nidmfilepath, '.zip')
-        [path, filename] = fileparts(nidmfilepath);
+    [path, filename, ext] = fileparts(nidmfilepath);
+    if strncmp(ext, '.zip', 4)
         unzip(nidmfilepath, fullfile(path, filename));
         nidmfilepath = fullfile(path, filename);
     end
@@ -49,11 +54,6 @@ function webID = nidm_results_display(nidmfilepath, conInstruct, outdir)
     end
     
     context = load_json_context(jsondoc);
-
-    %Add path to required methods
-    if exist('changeNIDMtoSPM', 'file') ~= 2
-        addpath(fullfile(fileparts(mfilename('fullpath')), 'lib'));
-    end
     
     % Deal with sub-graphs (bundle)
     if ~iscell(jsondoc)

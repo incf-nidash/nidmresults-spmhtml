@@ -91,22 +91,12 @@ end
 %If fHTML already exists, ask if it should be overWritten.
 
 if exist(fHTML, 'file') == 2
-    if(multipleExcursions)
-        button = questdlg(['The output file, index', num2str(exNo), '.html, already exists. Would you like this file to be overwritten?'], 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');      
-    else
-        button = questdlg(['The output file, index.html, already exists. Would you like this file to be overwritten?'], 'Warning', 'Overwrite', 'Do not overwrite', 'Do not overwrite');      
-    end
-    switch button
-        case 'Overwrite'
-            overWrite = true;
-        case 'Do not overwrite'
-            overWrite = false;
-        case ''
-            overWrite = false;
-    end
-    if(~overWrite)
+    button = spm_input(['The output file, ', spm_file(fHTML,'filename'), ...
+        ', already exists. Would you like this file to be overwritten?'],...
+        1,'bd',{'Overwrite', 'Do not overwrite'},[1,2],2);
+    if isempty(button) || button == 2
         webID = '0';
-        return
+        return;
     end
 end
 
@@ -231,24 +221,15 @@ fprintf(fid,'%c',get(tpl,'OUT'));
 fclose(fid);
 %==========================================================================
 %-Delete temporary files
-
+if exist('OCTAVE_VERSION','builtin')
+    confirm_recursive_rmdir(false,'local');
+end
 rmdir(outdir, 's');
 
-%-Display webpage
+%-Display webpage (if not in commandline mode)
 %==========================================================================
-%Check if we are running from the commandline. If no information about
-%cmdline is stored we are running code without SPM actually open (i.e. for 
-%tests). We display only if we are not in commandline mode.
-try
-    defaults = spm('Defaults', 'FMRI');
-    display = ~defaults.cmdline;
-catch
-    display = 1;
-end 
-
-%Display if not in commandline mode.
-if display
-    if(multipleExcursions && exNo >1)
+if ~spm('CmdLine')
+    if (multipleExcursions && exNo >1)
         [~, webID] = web(fHTML, '-new');
     else
         [~, webID] = web(fHTML);

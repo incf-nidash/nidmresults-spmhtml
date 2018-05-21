@@ -450,7 +450,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
         
         %Get number of peaks to display
         if isfield(peakDefCriteria{1}, context('nidm_maxNumberOfPeaksPerCluster'))
-            numOfPeaks = get_value(peakDefCriteria{1}.nidm_maxNumberOfPeaksPerCluster);
+            numOfPeaks = str2double(get_value(peakDefCriteria{1}.nidm_maxNumberOfPeaksPerCluster));
         else
             numOfPeaks = 3;
         end 
