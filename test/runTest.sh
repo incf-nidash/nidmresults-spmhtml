@@ -23,5 +23,6 @@ if [[ $testresult = *"FAILED"* ]]; then
   echo "huh"
   exit 1
 else
+  echo "huh2"
   exit 0
 fi
