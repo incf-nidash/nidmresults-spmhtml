@@ -20,6 +20,7 @@ echo $testresult
 
 # If the tests failed, we need to let Travis know.
 if [[ $testresult = *"FAILED"* ]]; then
+  echo "huh"
   exit 1
 else
   exit 0
