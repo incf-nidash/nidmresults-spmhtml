@@ -19,7 +19,7 @@ testresult=$(octave --no-window-system --eval "warning('off','Octave:shadowed-fu
 echo $testresult
 
 # If the tests failed, we need to let Travis know.
-if [[ $testresult = *"ans = 1"* ]]; then
+if [[ $testresult = *"FAILED"* ]]; then
   exit 1
 else
   exit 0
