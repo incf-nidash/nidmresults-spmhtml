@@ -5,7 +5,7 @@
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
-function test_suite=testFeatures2
+function test_suite=testFeatures
     try % assignment of 'localfunctions' is necessary in Matlab >= 2016
         test_functions=localfunctions();
     catch % no problem; early Matlab versions can use initTestSuite fine
