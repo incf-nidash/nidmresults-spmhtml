@@ -13,14 +13,24 @@ function test_suite=testFeatures2
     initTestSuite;
 end
 
+%Function for deleting any HTML generated previously by the viewer
+function delete_html_file(data_path)
+    index = fullfile(data_path,'index.html');
+    if exist(index, 'file')
+       delete(index);
+    else
+        for(i = 1:8)
+            index = fullfile(data_path,['index', num2str(i), '.html']);
+            if exist(index, 'file')
+                delete(index);
+            end
+        end
+    end
+end
+
 %testing the viewer runs on SPM-nidm input.
 function testViewerRunsSPM()
     data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm');
-    if(~exist(data_path, 'dir'))
-        mkdir(data_path)
-        urlwrite('http://neurovault.org/collections/2210/ex_spm_default.nidm.zip', fullfile(data_path, 'tmp.zip'));
-        unzip(fullfile(data_path, 'tmp.zip'), fullfile(data_path, '.'));
-    end
     delete_html_file(data_path);
     nidm_results_display(data_path);
 end

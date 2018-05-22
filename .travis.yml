@@ -13,13 +13,21 @@ bundler_args: --retry 9
 install: 
  - pip install --upgrade setuptools
  - cd test
+# Download Octave-Statistics
+ - hg clone http://hg.code.sf.net/p/octave/statistics octave-statistics
 # Download MoxUnit for unit testing
  - git clone https://github.com/MOxUnit/MOxUnit.git
  - cd ..
+# Download data
+ - wget https://neurovault.org/collections/2210/download
+ - cd NIDM-Results\ 1.3.0\ examples\ -\ nidmfsl\ 1.2.01\ and\ SPM12\ r6906/
+ - mv * ../*
+ - cd ..
+ - rm -r NIDM-Results\ 1.3.0\ examples\ -\ nidmfsl\ 1.2.01\ and\ SPM12\ r6906/
 script:  
  - docker version
  # Run docker snapshot of dev octave (until 4.4 is released)
- - did=$(docker run -it -d --rm -v `pwd`:/spmviewer -v cmaumet/octave-spm)
+ - did=$(sudo docker run -ti -d --rm -v `pwd`:/spmviewer cmaumet/octave-spm)
  # Run tests in Octave
  - sudo docker exec -it $did octave --no-window-system --eval "addpath(genpath('/spmviewer')); runTest()"
 before_install:
