@@ -1,7 +1,10 @@
+#!/bin/bash
+# =======================================================================
 # This file contains the setup for the NIDMResults SPM viewer CI travis
 # tests which MUST be done inside the docker container.
 #
 # Author: Tom Maullin (22/05/2018)
+# =======================================================================
 
 # Install MOxUnit
 cd /spmviewer/test/MOxUnit
