@@ -19,7 +19,6 @@ install:
  - git clone https://github.com/MOxUnit/MOxUnit.git
  - ls
 # Download data
- - mkdir data
  - cd data
  - wget https://neurovault.org/collections/2210/download
  - unzip download
