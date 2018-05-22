@@ -29,7 +29,7 @@ script:
  # Run docker snapshot of dev octave (until 4.4 is released)
  - did=$(sudo docker run -ti -d --rm -v `pwd`:/spmviewer cmaumet/octave-spm)
  # Run tests in Octave
- - sudo docker exec -it $did octave --no-window-system --eval "addpath(genpath('/spmviewer')); runTest()"
+ - sudo docker exec -t -i $did bash -c "runTest.sh;"
 before_install:
  # Update docker version
  - sudo apt-get update

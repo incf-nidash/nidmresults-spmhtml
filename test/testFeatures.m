@@ -13,7 +13,7 @@ function test_suite=testFeatures2
     initTestSuite;
 end
 
-%Function for deleting any HTML generated previously by the viewer
+% Function for deleting any HTML generated previously by the viewer
 function delete_html_file(data_path)
     index = fullfile(data_path,'index.html');
     if exist(index, 'file')
@@ -28,25 +28,25 @@ function delete_html_file(data_path)
     end
 end
 
-%testing the viewer runs on SPM-nidm input.
+% testing the viewer runs on SPM-nidm input.
 function testViewerRunsSPM()
     data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm');
     delete_html_file(data_path);
     nidm_results_display(data_path);
 end
 
-%testing the experiment title is somewhere in the output HTML
-%file.
+% testing the experiment title is somewhere in the output HTML
+% file.
 function testForTitle()
     data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm');
     delete_html_file(data_path);
     nidm_results_display(data_path);
     text = fileread(fullfile(data_path, 'index.html'));
-    verifySubstring(text, 'tone counting vs baseline');
+    assertEqual(~isempty(findstr(text, 'tone counting vs baseline')),true);
 end
 
-%testing the original functionality of the viewer with the
-%original SPM, xSPM and TabDat functions is unaffected.
+% testing the original functionality of the viewer with the
+% original SPM, xSPM and TabDat functions is unaffected.
 function testOriginalViewerRuns()
     data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_output');
     delete_html_file(data_path);
@@ -57,7 +57,7 @@ function testOriginalViewerRuns()
     cd(cwd);
 end
 
-%testing the viewer runs on FSL-nidm output.
+% testing the viewer runs on FSL-nidm output.
 function testViewerRunsFSL()
     data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'fsl_default_130.nidm');
     delete_html_file(data_path);
@@ -67,14 +67,18 @@ end
 %testing the viewer runs on SPM-nidm output with no MIP.
 function testViewerRunsSPMwoMIP()
     data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP');
-    %Copy contents of ex_spm_default NIDM pack.
+    % Make the directory if needed.
+    if ~exist(data_path)
+        mkdir(data_path)
+    end
+    % Copy contents of ex_spm_default NIDM pack.
     copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm', '*'),...
-        fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP'));
+        data_path);
     %Delete the pre-existing jsonld.
     delete(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP', 'nidm.jsonld'));
-    %Copy the jsonld without the MIP into the NIDM pack.
-    copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'testJsons', 'nidm.json'), fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP'));
-    %Run the test.
+    % Copy the jsonld without the MIP into the NIDM pack.
+    copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'testJsons', 'nidm.jsonld'), data_path);
+    % Run the test.
     delete_html_file(data_path);
     nidm_results_display(data_path);
 end

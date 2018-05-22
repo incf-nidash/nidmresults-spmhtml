@@ -489,11 +489,11 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
                 else
                     %Calculate whichever statistic type is used.
                     if strcmp(statType, 'T')
-                        tableTemp{n, 9} = icdf('T',1-tableTemp{n, 11},errorDegrees);
+                        tableTemp{n, 9} = tinv(1-tableTemp{n, 11},errorDegrees);
                     elseif strcmp(statType, 'X')
-                        tableTemp{n, 9} = icdf('Chi',1-tableTemp{n, 11},errorDegrees);
+                        tableTemp{n, 9} = chi2inv(1-tableTemp{n, 11},errorDegrees);
                     elseif strcmp(statType, 'F')
-                        tableTemp{n, 9} = icdf('F',1-tableTemp{n, 11},effectDegrees, errorDegrees);
+                        tableTemp{n, 9} = finv(1-tableTemp{n, 11},effectDegrees, errorDegrees);
                     else
                         tableTemp{n, 9} = '';
                     end
