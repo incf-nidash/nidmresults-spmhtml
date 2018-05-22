@@ -20,6 +20,7 @@ install:
  - cd ..
 # Download data
  - wget https://neurovault.org/collections/2210/download
+ - unzip download
  - cd NIDM-Results\ 1.3.0\ examples\ -\ nidmfsl\ 1.2.01\ and\ SPM12\ r6906/
  - mv * ../*
  - cd ..
