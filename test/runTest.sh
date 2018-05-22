@@ -16,5 +16,11 @@ cp /spmviewer/test/bug_patches/spm_file_template.m /code/spm12/
 # statistics package contains several duplicate functions which casue errors when
 # added to our path).
 testresult=$(octave --no-window-system --eval "warning('off','Octave:shadowed-function');addpath(genpath('/spmviewer/'));moxunit_runtests")
-
 echo $testresult
+
+# If the tests failed, we need to let Travis know.
+if [[ $testresult = *"ans = 1"* ]]; then
+  exit 1
+else
+  exit 0
+fi
