@@ -7,6 +7,7 @@
 # =======================================================================
 
 # Install MOxUnit
+echo "Installing MOxUnit for Octave..."
 cd /spmviewer/test/MOxUnit
 make install-octave
 cd ..
