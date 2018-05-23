@@ -30,7 +30,7 @@ end
 
 % testing the viewer runs on SPM-nidm input.
 function testViewerRunsSPM()
-    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm');
+    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_dekfault.nidm');
     delete_html_file(data_path);
     nidm_results_display(data_path);
 end
