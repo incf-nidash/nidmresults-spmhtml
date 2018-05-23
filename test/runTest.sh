@@ -18,7 +18,7 @@ patch -p0 < /spmviewer/test/bug_patches/spm_file_template.patch /code/spm12/spm_
 # Run the tests. (We turn off the shadowed function warning as our copy of the
 # statistics package contains several duplicate functions which casue errors when
 # added to our path).
-testresult=$(octave --no-window-system --eval "warning('off','Octave:shadowed-function');addpath(genpath('/spmviewer/'));moxunit_runtests")
+testresult=$(octave --no-window-system --eval "addpath(genpath('/spmviewer/'));moxunit_runtests")
 echo "$testresult"
 
 # If the tests failed, we need to let Travis know.

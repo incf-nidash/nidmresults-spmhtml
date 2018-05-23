@@ -13,8 +13,6 @@ bundler_args: --retry 9
 install: 
  - pip install --upgrade setuptools
  - cd test
-# Download Octave-Statistics
- - hg clone http://hg.code.sf.net/p/octave/statistics octave-statistics
 # Download MoxUnit for unit testing
  - git clone https://github.com/MOxUnit/MOxUnit.git
  - ls
