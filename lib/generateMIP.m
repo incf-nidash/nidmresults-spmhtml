@@ -50,7 +50,7 @@ function generateMIP(filepath, filename, DIM, units)
     %In some versions of octave/matlab the above removes
     %the original .nii.gz file.
     if ~exist(fullfile(filepath, filename), 'file')
-        gzip(fullfile(filepath, filename), '.gz', ''));
+        gzip(strrep(fullfile(filepath, filename), '.gz', ''));
     end
     
 end
