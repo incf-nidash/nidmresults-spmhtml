@@ -12,7 +12,6 @@ Data/*.png
 # Test data (if missing will be downloaded from NeuroVault)
 test/data
 test/MOxUnit
-test/octave-statistics
 
 #nii files
 *.nii
