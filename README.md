@@ -50,7 +50,9 @@ To view NIDM results using the NIDM results viewer run the following
 
 #### Testing
 
-Currently, two versions of the test suite exist. One based on the `matlab unittesting framework` and the other based on the [`MOxUnit`](https://github.com/MOxUnit/MOxUnit) library. The `matlab unittesting framework` tests are recommended for testing the code locally in `Matlab` as they perform much faster and do not require any additional installation. The `MOxUnit` tests are recommended for testing the code locally in `Octave` and are also used for the Travis CI. Below is a description of how to run each test set.
+Currently, two versions of the test suite exist. One is based on the `matlab unittesting framework` and the other is based on the [`MOxUnit`](https://github.com/MOxUnit/MOxUnit) library. 
+
+The `matlab unittesting framework` tests are recommended for testing the code locally in `Matlab` as they perform much faster and do not require any additional installation. The `MOxUnit` tests are recommended for testing the code locally in `Octave` and are also used for the Travis CI. Below is a description of how to run each test set.
 
 ##### Matlab Unittesting Framework
 
