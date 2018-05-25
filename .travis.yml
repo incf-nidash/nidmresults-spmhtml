@@ -16,13 +16,14 @@ install:
 # Download MoxUnit for unit testing
  - git clone https://github.com/MOxUnit/MOxUnit.git
  - ls
+ - cd ..
 # Download data
  - cd data
  - wget https://neurovault.org/collections/2210/download
  - unzip download
  - mv NIDM-Results\ 1.3.0\ examples\ -\ nidmfsl\ 1.2.01\ and\ SPM12\ r6906/* .
  - rm -r NIDM-Results\ 1.3.0\ examples\ -\ nidmfsl\ 1.2.01\ and\ SPM12\ r6906/
- - cd ../../..
+ - cd ../..
  - ls
 script:  
  # Run docker snapshot of dev octave (until 4.4 is released)

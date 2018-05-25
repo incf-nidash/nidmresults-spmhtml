@@ -30,7 +30,7 @@ end
 
 % testing the viewer runs on SPM-nidm input.
 function testViewerRunsSPM()
-    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'moxunit_testsuite', 'data', 'ex_spm_default.nidm');
+    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'ex_spm_default.nidm');
     delete_html_file(data_path);
     nidm_results_display(data_path);
 end
@@ -38,7 +38,7 @@ end
 % testing the experiment title is somewhere in the output HTML
 % file.
 function testForTitle()
-    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'moxunit_testsuite', 'data', 'ex_spm_default.nidm');
+    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'ex_spm_default.nidm');
     delete_html_file(data_path);
     nidm_results_display(data_path);
     text = fileread(fullfile(data_path, 'index.html'));
@@ -48,7 +48,7 @@ end
 % testing the original functionality of the viewer with the
 % original SPM, xSPM and TabDat functions is unaffected.
 function testOriginalViewerRuns()
-    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'moxunit_testsuite', 'data', 'ex_spm_output');
+    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'ex_spm_output');
     delete_html_file(data_path);
     cwd = pwd;
     cd(data_path)
@@ -59,25 +59,25 @@ end
 
 % testing the viewer runs on FSL-nidm output.
 function testViewerRunsFSL()
-    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'moxunit_testsuite', 'data', 'fsl_default_130.nidm');
+    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'fsl_default_130.nidm');
     delete_html_file(data_path);
     nidm_results_display(data_path);
 end
 
 %testing the viewer runs on SPM-nidm output with no MIP.
 function testViewerRunsSPMwoMIP()
-    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'moxunit_testsuite', 'data', 'ex_spm_default_wo_MIP');
+    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'ex_spm_default_wo_MIP');
     % Make the directory if needed.
     if ~exist(data_path)
         mkdir(data_path)
     end
     % Copy contents of ex_spm_default NIDM pack.
-    copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'moxunit_testsuite', 'data', 'ex_spm_default.nidm', '*'),...
+    copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'ex_spm_default.nidm', '*'),...
         data_path);
     %Delete the pre-existing jsonld.
-    delete(fullfile(fileparts(mfilename('fullpath')), '..', 'moxunit_testsuite', 'data', 'ex_spm_default_wo_MIP', 'nidm.jsonld'));
+    delete(fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'ex_spm_default_wo_MIP', 'nidm.jsonld'));
     % Copy the jsonld without the MIP into the NIDM pack.
-    copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'moxunit_testsuite', 'data', 'testJsons', 'nidm.jsonld'), data_path);
+    copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'testJsons', 'nidm.jsonld'), data_path);
     % Run the test.
     delete_html_file(data_path);
     nidm_results_display(data_path);
@@ -85,7 +85,7 @@ end
         
 %         %testing the nidm json is not damaged by the viewer.
 %         function testNIDMUnaffected()
-%             fsl_default_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'moxunit_testsuite', 'data', 'fsl_default');
+%             fsl_default_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'fsl_default');
 %             delete_html_file(fsl_default_dir);
 %             nidm_results_display(fullfile(fsl_default_dir, 'nidm.json'));
 %             originalNIDM = spm_jsonread(fullfile(fsl_default_dir, 'nidmWithoutMip.json'));
