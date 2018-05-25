@@ -50,13 +50,40 @@ To view NIDM results using the NIDM results viewer run the following
 
 ##### Testing
 
-1. Add the filepath to the 'tests' folder;
+Currently, two versions of the test suite exist. One based on the `matlab unittesting framework` and the other based on the `[MOxUnit](https://github.com/MOxUnit/MOxUnit)` library. The `matlab unittesting framework` tests are recommended for testing the code locally in `Matlab` as they perform much faster and do not require any additional installation. The `MOxUnit` tests are recommended for testing the code locally in `Octave` and are also used for the Travis CI. Below is a description of how to run each test set.
+
+#### Matlab Unittesting Framework
+
+1. Add the filepath to the 'tests/matlabunit_testsuite' folder. In the Matlab commandline type;
 
  ```
-addpath(fullfile(fileparts(which('nidm_results_display')), 'test'))
+addpath(fullfile(fileparts(which('nidm_results_display')), 'test', 'matlabunit_testsuite'))
  ```
 2. Run runTest;
 
  ```
  runTest();
  ```
+ 
+ #### MOxUnit Framework
+ 
+ 1. Download the MOxUnit testing framework to 'tests/moxunit_testsuite'. In the bash commandline type;
+ 
+  ```
+cd <PATH-TO-REPOSITORY>/tests/moxunit_testsuite
+git clone https://github.com/MOxUnit/MOxUnit.git
+  ```
+ 2. Download the test data from [NeuroVault](https://neurovault.org/). In the bash commandline type;
+
+  ```
+cd <PATH-TO-REPOSITORY>/tests/data
+wget https://neurovault.org/collections/2210/download
+unzip download
+mv NIDM-Results\ 1.3.0\ examples\ -\ nidmfsl\ 1.2.01\ and\ SPM12\ r6906/* .
+rm -r NIDM-Results\ 1.3.0\ examples\ -\ nidmfsl\ 1.2.01\ and\ SPM12\ r6906/
+  ```
+ 3. From 'tests/moxunit_testsuite' run the MOxUnit tests. In the Octave/Matlab terminal type;
+
+  ```
+  moxunit_runtests
+  ```
