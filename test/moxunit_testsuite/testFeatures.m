@@ -5,96 +5,88 @@
 %Authors: Thomas Maullin, Camille Maumet.
 %==========================================================================
 
-classdef testFeatures < matlab.unittest.TestCase
-       
-    methods
-        %Function for deleting any HTML generated previously by the viewer.
-        function delete_html_file(testCase, data_path)
-            index = fullfile(data_path, 'index.html');
+function test_suite=testFeatures
+    try % assignment of 'localfunctions' is necessary in Matlab >= 2016
+        test_functions=localfunctions();
+    catch % no problem; early Matlab versions can use initTestSuite fine
+    end
+    initTestSuite;
+end
+
+% Function for deleting any HTML generated previously by the viewer
+function delete_html_file(data_path)
+    index = fullfile(data_path,'index.html');
+    if exist(index, 'file')
+       delete(index);
+    else
+        for(i = 1:8)
+            index = fullfile(data_path,['index', num2str(i), '.html']);
             if exist(index, 'file')
                 delete(index);
             end
         end
-        
-        %Function for running SPM batch job with input and output as data_path.
-        function runBatch(testCase, data_path)
-             
-             %Write the batch.
-             matlabbatch{1}.spm.tools.NIDMdisplay.nidmpack = {fullfile(data_path, 'temp.nidm.zip')};
-             matlabbatch{1}.spm.tools.NIDMdisplay.dir = {data_path};
-             matlabbatch{1}.spm.tools.NIDMdisplay.exSet.allEx = 0;
-             
-             %Run the batch.
-             spm_jobman('run', matlabbatch);
-             
-        end
     end
+end
+
+% testing the viewer runs on SPM-nidm input.
+function testViewerRunsSPM()
+    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm');
+    delete_html_file(data_path);
+    nidm_results_display(data_path);
+end
+
+% testing the experiment title is somewhere in the output HTML
+% file.
+function testForTitle()
+    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm');
+    delete_html_file(data_path);
+    nidm_results_display(data_path);
+    text = fileread(fullfile(data_path, 'index.html'));
+    assertEqual(~isempty(findstr(text, 'tone counting vs baseline')),true);
+end
+
+% testing the original functionality of the viewer with the
+% original SPM, xSPM and TabDat functions is unaffected.
+function testOriginalViewerRuns()
+    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_output');
+    delete_html_file(data_path);
+    cwd = pwd;
+    cd(data_path)
+    testData = load(fullfile(data_path, 'nidm_example001.mat'));
+    spm_results_export(testData.SPM, testData.xSPM, testData.TabDat);
+    cd(cwd);
+end
+
+% testing the viewer runs on FSL-nidm output.
+function testViewerRunsFSL()
+    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'fsl_default_130.nidm');
+    delete_html_file(data_path);
+    nidm_results_display(data_path);
+end
+
+%testing the viewer runs on SPM-nidm output with no MIP.
+function testViewerRunsSPMwoMIP()
+    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP');
+    % Make the directory if needed.
+    if ~exist(data_path)
+        mkdir(data_path)
+    end
+    % Copy contents of ex_spm_default NIDM pack.
+    copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm', '*'),...
+        data_path);
+    %Delete the pre-existing jsonld.
+    delete(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP', 'nidm.jsonld'));
+    % Copy the jsonld without the MIP into the NIDM pack.
+    copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'testJsons', 'nidm.jsonld'), data_path);
+    % Run the test.
+    delete_html_file(data_path);
+    nidm_results_display(data_path);
+end
         
-    methods(Test)
-        
-        %Checking the viewer runs on SPM-nidm input.
-        function checkViewerRunsSPM(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm');
-            if(~exist(data_path, 'dir'))
-                mkdir(data_path)
-                websave(fullfile(data_path, 'tmp.zip'), 'http://neurovault.org/collections/2210/ex_spm_default.nidm.zip');
-                unzip(fullfile(data_path, 'tmp.zip'), fullfile(data_path, '.'));
-            end
-            testCase.delete_html_file(data_path);
- 	 	 	runBatch(testCase, data_path);
-        end
-        
-        %Checking the experiment title is somewhere in the output HTML
-        %file.
-        function checkForTitle(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm');
-            testCase.delete_html_file(data_path);
- 	 	 	runBatch(testCase, data_path);
-            text = fileread(fullfile(data_path, 'index.html'));
-            verifySubstring(testCase, text, 'tone counting vs baseline');
-        end
-        
-        %Checking the original functionality of the viewer with the
-        %original SPM, xSPM and TabDat functions is unaffected.
-        function checkOriginalViewerRuns(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_output');
-            testCase.delete_html_file(data_path);
-            cwd = pwd;
-            cd(data_path)
-            testData = load(fullfile(data_path, 'nidm_example001.mat'));
-            spm_results_export(testData.SPM, testData.xSPM, testData.TabDat);
-            cd(cwd);
-        end
-        
-        %Checking the viewer runs on FSL-nidm output.
-        function checkViewerRunsFSL(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'fsl_default_130.nidm');
-            testCase.delete_html_file(data_path);
- 	 	 	runBatch(testCase, data_path);
-        end
-        
-        %Checking the viewer runs on SPM-nidm output with no MIP.
-        function checkViewerRunsSPMwoMIP(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP');
-            %Copy contents of ex_spm_default NIDM pack.
-            copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm', '*'),...
-                fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP'));
-            %Delete the pre-existing jsonld.
-            if exist(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP', 'nidm.jsonld'), 'file')
-                delete(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP', 'nidm.jsonld'));
-            end
-            %Copy the jsonld without the MIP into the NIDM pack.
-            copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'testJsons', 'nidm.jsonld'),...
-                     fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP'));
-            %Run the test.
-            testCase.delete_html_file(data_path);
- 	 	 	runBatch(testCase, data_path);
-        end
-        
-%         %Checking the nidm json is not damaged by the viewer.
-%         function checkNIDMUnaffected(testCase)
+%         %testing the nidm json is not damaged by the viewer.
+%         function testNIDMUnaffected()
 %             fsl_default_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'fsl_default');
-%             testCase.delete_html_file(fsl_default_dir);
+%             delete_html_file(fsl_default_dir);
 %             nidm_results_display(fullfile(fsl_default_dir, 'nidm.json'));
 %             originalNIDM = spm_jsonread(fullfile(fsl_default_dir, 'nidmWithoutMip.json'));
 %             currentNIDM = spm_jsonread(fullfile(fsl_default_dir, 'nidm.json'));
@@ -103,8 +95,5 @@ classdef testFeatures < matlab.unittest.TestCase
 %             while testObject == 20
 %                 testObject = randi(length(originalNIDM.x_graph));
 %             end
-%             verifyEqual(testCase, currentNIDM.x_graph{testObject}, originalNIDM.x_graph{testObject});
+%             verifyEqual(currentNIDM.x_graph{testObject}, originalNIDM.x_graph{testObject});
 %         end
-
-    end
-end
