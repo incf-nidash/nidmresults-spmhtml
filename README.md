@@ -2,7 +2,7 @@
 
 Read and display NIDM-Results packs in the SPM environment.
 
-##### Usage
+#### Usage
 To view NIDM results using the NIDM results viewer run the following
 
 1. Open `SPM fMRI` from the Matlab command line.
@@ -32,11 +32,11 @@ To view NIDM results using the NIDM results viewer run the following
 :-------------------------:|:-------------------------:
  **Fig. 5.** Table data and images  |  **Fig. 6.** Summary statistics
 
-##### Requirements
+#### Requirements
 
 - [SPM12](http://www.fil.ion.ucl.ac.uk/spm/software/spm12/)
 
-##### Installation
+#### Installation
 
 1. Add the filepath to SPM in Matlab;
 
@@ -48,24 +48,24 @@ To view NIDM results using the NIDM results viewer run the following
  <full path to SPM>/toolbox/
  ``` 
 
-##### Testing
+#### Testing
 
-Currently, two versions of the test suite exist. One based on the `matlab unittesting framework` and the other based on the `[MOxUnit](https://github.com/MOxUnit/MOxUnit)` library. The `matlab unittesting framework` tests are recommended for testing the code locally in `Matlab` as they perform much faster and do not require any additional installation. The `MOxUnit` tests are recommended for testing the code locally in `Octave` and are also used for the Travis CI. Below is a description of how to run each test set.
+Currently, two versions of the test suite exist. One based on the `matlab unittesting framework` and the other based on the [`MOxUnit`](https://github.com/MOxUnit/MOxUnit) library. The `matlab unittesting framework` tests are recommended for testing the code locally in `Matlab` as they perform much faster and do not require any additional installation. The `MOxUnit` tests are recommended for testing the code locally in `Octave` and are also used for the Travis CI. Below is a description of how to run each test set.
 
-#### Matlab Unittesting Framework
+##### Matlab Unittesting Framework
 
 1. Add the filepath to the 'tests/matlabunit_testsuite' folder. In the Matlab commandline type;
 
  ```
 addpath(fullfile(fileparts(which('nidm_results_display')), 'test', 'matlabunit_testsuite'))
  ```
-2. Run runTest;
+2. Run runTest. In the Matlab commandline type;
 
  ```
  runTest();
  ```
  
- #### MOxUnit Framework
+ ##### MOxUnit Framework
  
  1. Download the MOxUnit testing framework to 'tests/moxunit_testsuite'. In the bash commandline type;
  
