@@ -46,5 +46,11 @@ function generateMIP(filepath, filename, DIM, units)
     %Write the image:
     mipPath = spm_file(fullfile(filepath, 'MIP.png'));
     imwrite(mip,gray(64),mipPath,'png');
+
+    %In some versions of octave/matlab the above removes
+    %the original .nii.gz file.
+    if ~exist(fullfile(filepath, filename), 'file')
+        gzip(strrep(fullfile(filepath, filename), '.gz', ''));
+    end
     
 end

@@ -8,13 +8,13 @@
 
 function runTest()
     
-    %Clear previous classes (and keep debugging breakpoints)
-    clear classes;
+    %Clear previous classes.
+    clear all;
 
     %Setup steps for the test.
     import matlab.unittest.TestSuite;
-    addpath(fullfile(fileparts(mfilename('fullpath')),'..', 'lib'));
-    addpath(fullfile(fileparts(mfilename('fullpath')),'..'));
+    addpath(fullfile(fileparts(mfilename('fullpath')),'..', '..', 'lib'));
+    addpath(fullfile(fileparts(mfilename('fullpath')),'..', '..'));
     
     %Run all tests.
     tests = [matlab.unittest.TestSuite.fromFile(which('testDataSets')),...

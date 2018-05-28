@@ -15,41 +15,28 @@ classdef testFeatures < matlab.unittest.TestCase
                 delete(index);
             end
         end
-        
-        %Function for running SPM batch job with input and output as data_path.
-        function runBatch(testCase, data_path)
-             
-             %Write the batch.
-             matlabbatch{1}.spm.tools.NIDMdisplay.nidmpack = {fullfile(data_path, 'temp.nidm.zip')};
-             matlabbatch{1}.spm.tools.NIDMdisplay.dir = {data_path};
-             matlabbatch{1}.spm.tools.NIDMdisplay.exSet.allEx = 0;
-             
-             %Run the batch.
-             spm_jobman('run', matlabbatch);
-             
-        end
     end
         
     methods(Test)
         
         %Checking the viewer runs on SPM-nidm input.
         function checkViewerRunsSPM(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm');
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'ex_spm_default.nidm');
             if(~exist(data_path, 'dir'))
                 mkdir(data_path)
                 websave(fullfile(data_path, 'tmp.zip'), 'http://neurovault.org/collections/2210/ex_spm_default.nidm.zip');
                 unzip(fullfile(data_path, 'tmp.zip'), fullfile(data_path, '.'));
             end
             testCase.delete_html_file(data_path);
- 	 	 	runBatch(testCase, data_path);
+            nidm_results_display(data_path);
         end
         
         %Checking the experiment title is somewhere in the output HTML
         %file.
         function checkForTitle(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm');
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'ex_spm_default.nidm');
             testCase.delete_html_file(data_path);
- 	 	 	runBatch(testCase, data_path);
+            nidm_results_display(data_path);
             text = fileread(fullfile(data_path, 'index.html'));
             verifySubstring(testCase, text, 'tone counting vs baseline');
         end
@@ -57,7 +44,7 @@ classdef testFeatures < matlab.unittest.TestCase
         %Checking the original functionality of the viewer with the
         %original SPM, xSPM and TabDat functions is unaffected.
         function checkOriginalViewerRuns(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_output');
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'ex_spm_output');
             testCase.delete_html_file(data_path);
             cwd = pwd;
             cd(data_path)
@@ -68,32 +55,29 @@ classdef testFeatures < matlab.unittest.TestCase
         
         %Checking the viewer runs on FSL-nidm output.
         function checkViewerRunsFSL(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'fsl_default_130.nidm');
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'fsl_default_130.nidm');
             testCase.delete_html_file(data_path);
- 	 	 	runBatch(testCase, data_path);
+            nidm_results_display(data_path);
         end
         
         %Checking the viewer runs on SPM-nidm output with no MIP.
         function checkViewerRunsSPMwoMIP(testCase)
-            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP');
+            data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'ex_spm_default_wo_MIP');
             %Copy contents of ex_spm_default NIDM pack.
-            copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default.nidm', '*'),...
-                fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP'));
+            copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'ex_spm_default.nidm', '*'),...
+                fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'ex_spm_default_wo_MIP'));
             %Delete the pre-existing jsonld.
-            if exist(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP', 'nidm.jsonld'), 'file')
-                delete(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP', 'nidm.jsonld'));
-            end
+            delete(fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'ex_spm_default_wo_MIP', 'nidm.jsonld'));
             %Copy the jsonld without the MIP into the NIDM pack.
-            copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'testJsons', 'nidm.jsonld'),...
-                     fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'ex_spm_default_wo_MIP'));
+            copyfile(fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'testJsons', 'nidm.jsonld'), fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'ex_spm_default_wo_MIP'));
             %Run the test.
             testCase.delete_html_file(data_path);
- 	 	 	runBatch(testCase, data_path);
+            nidm_results_display(data_path);
         end
         
 %         %Checking the nidm json is not damaged by the viewer.
 %         function checkNIDMUnaffected(testCase)
-%             fsl_default_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'test', 'data', 'fsl_default');
+%             fsl_default_dir = fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'fsl_default');
 %             testCase.delete_html_file(fsl_default_dir);
 %             nidm_results_display(fullfile(fsl_default_dir, 'nidm.json'));
 %             originalNIDM = spm_jsonread(fullfile(fsl_default_dir, 'nidmWithoutMip.json'));

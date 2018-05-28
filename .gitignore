@@ -9,8 +9,9 @@
 # images in data folder
 Data/*.png
 
-# Test data (if missing will be downloaded from NeuroVault)
+# Test data
 test/data
+test/moxunit_testsuite/MOxUnit
 
 #nii files
 *.nii
