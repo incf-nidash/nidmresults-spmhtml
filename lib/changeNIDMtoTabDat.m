@@ -498,7 +498,11 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
                         tableTemp{n, 9} = '';
                     end
                 end 
-                tableTemp{n, 10} = str2double(get_value(peaksTemp{j}.(context('nidm_equivalentZStatistic'))));
+                equiv_z = str2double(get_value(peaksTemp{j}.(context('nidm_equivalentZStatistic'))));
+                if isinf(equiv_z)
+                    equiv_z = spm_invNcdf(1-tableTemp{n, 11});
+                end
+                tableTemp{n, 10} = equiv_z;
                 locTemp = peaksTemp{j}.('prov_atLocation').('x_id');
                 locTemp = searchforID(locTemp, graph, ids);
                 tableTemp{n, 12} = str2num(get_value(locTemp.nidm_coordinateVector));
