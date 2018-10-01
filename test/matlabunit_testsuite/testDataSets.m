@@ -200,19 +200,31 @@
  	 	 	 data_path = fullfile(fileparts(mfilename('fullpath')),'..','data','fsl_con_f.nidm');
  	 	 	 if(~exist(data_path, 'dir'))
  	 	 	 	 mkdir(data_path);
- 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4212/fsl_con_f.nidm.zip');
+ 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4249/fsl_con_f.nidm.zip');
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
  	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..','data','fsl_con_f.nidm'), 'All');
- 	 	 end
+         end
+         
+         %Test viewer displays fsl_con_f_multiple.nidm
+ 	 	 function test_fsl_con_f_multiple(testCase)
+ 	 	 	 data_path = fullfile(fileparts(mfilename('fullpath')),'..','data','fsl_con_f_multiple.nidm');
+ 	 	 	 if(~exist(data_path, 'dir'))
+ 	 	 	 	 mkdir(data_path);
+ 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4249/fsl_con_f_multiple.nidm.zip');
+ 	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
+ 	 	 	 end
+ 	 	 	 testCase.delete_html_file(data_path);
+ 	 	 	 nidm_results_display(fullfile(fileparts(mfilename('fullpath')), '..','data','fsl_con_f_multiple.nidm'), 'All');
+         end
  
  	 	 %Test viewer displays fsl_contrast_mask.nidm
  	 	 function test_fsl_contrast_mask(testCase)
  	 	 	 data_path = fullfile(fileparts(mfilename('fullpath')),'..','data','fsl_contrast_mask.nidm');
  	 	 	 if(~exist(data_path, 'dir'))
  	 	 	 	 mkdir(data_path);
- 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4212/fsl_contrast_mask.nidm.zip');
+ 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4249/fsl_contrast_mask.nidm.zip');
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
@@ -224,7 +236,7 @@
  	 	 	 data_path = fullfile(fileparts(mfilename('fullpath')),'..','data','fsl_default.nidm');
  	 	 	 if(~exist(data_path, 'dir'))
  	 	 	 	 mkdir(data_path);
- 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4212/fsl_default.nidm.zip');
+ 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4249/fsl_default.nidm.zip');
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
@@ -236,7 +248,7 @@
  	 	 	 data_path = fullfile(fileparts(mfilename('fullpath')),'..','data','fsl_full_examples001.nidm');
  	 	 	 if(~exist(data_path, 'dir'))
  	 	 	 	 mkdir(data_path);
- 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4212/fsl_full_examples001.nidm.zip');
+ 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4249/fsl_full_examples001.nidm.zip');
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
@@ -248,7 +260,7 @@
  	 	 	 data_path = fullfile(fileparts(mfilename('fullpath')),'..','data','fsl_gamma_basis.nidm');
  	 	 	 if(~exist(data_path, 'dir'))
  	 	 	 	 mkdir(data_path);
- 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4212/fsl_gamma_basis.nidm.zip');
+ 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4249/fsl_gamma_basis.nidm.zip');
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
@@ -260,7 +272,7 @@
  	 	 	 data_path = fullfile(fileparts(mfilename('fullpath')),'..','data','fsl_gaussian.nidm');
  	 	 	 if(~exist(data_path, 'dir'))
  	 	 	 	 mkdir(data_path);
- 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4212/fsl_gaussian.nidm.zip');
+ 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4249/fsl_gaussian.nidm.zip');
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
@@ -272,7 +284,7 @@
  	 	 	 data_path = fullfile(fileparts(mfilename('fullpath')),'..','data','fsl_group_btw.nidm');
  	 	 	 if(~exist(data_path, 'dir'))
  	 	 	 	 mkdir(data_path);
- 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4212/fsl_group_btw.nidm.zip');
+ 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4249/fsl_group_btw.nidm.zip');
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
@@ -284,7 +296,7 @@
  	 	 	 data_path = fullfile(fileparts(mfilename('fullpath')),'..','data','fsl_group_ols.nidm');
  	 	 	 if(~exist(data_path, 'dir'))
  	 	 	 	 mkdir(data_path);
- 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4212/fsl_group_ols.nidm.zip');
+ 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4249/fsl_group_ols.nidm.zip');
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
@@ -296,7 +308,7 @@
  	 	 	 data_path = fullfile(fileparts(mfilename('fullpath')),'..','data','fsl_group_wls.nidm');
  	 	 	 if(~exist(data_path, 'dir'))
  	 	 	 	 mkdir(data_path);
- 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4212/fsl_group_wls.nidm.zip');
+ 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4249/fsl_group_wls.nidm.zip');
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
@@ -308,7 +320,7 @@
  	 	 	 data_path = fullfile(fileparts(mfilename('fullpath')),'..','data','fsl_hrf_fir.nidm');
  	 	 	 if(~exist(data_path, 'dir'))
  	 	 	 	 mkdir(data_path);
- 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4212/fsl_hrf_fir.nidm.zip');
+ 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4249/fsl_hrf_fir.nidm.zip');
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
@@ -320,7 +332,7 @@
  	 	 	 data_path = fullfile(fileparts(mfilename('fullpath')),'..','data','fsl_hrf_gammadiff.nidm');
  	 	 	 if(~exist(data_path, 'dir'))
  	 	 	 	 mkdir(data_path);
- 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4212/fsl_hrf_gammadiff.nidm.zip');
+ 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4249/fsl_hrf_gammadiff.nidm.zip');
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
@@ -332,7 +344,7 @@
  	 	 	 data_path = fullfile(fileparts(mfilename('fullpath')),'..','data','fsl_thr_clustfwep05.nidm');
  	 	 	 if(~exist(data_path, 'dir'))
  	 	 	 	 mkdir(data_path);
- 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4212/fsl_thr_clustfwep05.nidm.zip');
+ 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4249/fsl_thr_clustfwep05.nidm.zip');
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
@@ -344,7 +356,7 @@
  	 	 	 data_path = fullfile(fileparts(mfilename('fullpath')),'..','data','fsl_thr_voxelfwep05.nidm');
  	 	 	 if(~exist(data_path, 'dir'))
  	 	 	 	 mkdir(data_path);
- 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4212/fsl_thr_voxelfwep05.nidm.zip');
+ 	 	 	 	 websave([data_path, filesep, 'temp.zip'], 'http://neurovault.org/collections/4249/fsl_thr_voxelfwep05.nidm.zip');
  	 	 	 	 unzip([data_path, filesep, 'temp.zip'], [data_path, filesep]);
  	 	 	 end
  	 	 	 testCase.delete_html_file(data_path);
