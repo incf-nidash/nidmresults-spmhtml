@@ -83,6 +83,13 @@ function NSPM = changeNIDMtoSPM(graph, filepathTemp, typemap, context, ids, exOb
     
     xConTemp(1).c = str2num(get_value(contrastWeightMatrix{1}.('prov_value')))';
     
+    % Check if we are dealing with an F contrast with multiple rows.
+    if size(xConTemp(1).c,1) ~= nidmTemp.dim(2)
+        % If we are the contrast will need reshaping. (Othewise everything
+        % will appear on one row).
+        xConTemp(1).c = reshape(xConTemp(1).c, nidmTemp.dim(2), size(xConTemp(1).c,1)/nidmTemp.dim(2));
+    end
+    
     %======================================================================
     %xX
     

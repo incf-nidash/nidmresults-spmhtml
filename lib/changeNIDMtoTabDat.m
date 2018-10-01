@@ -353,8 +353,11 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
     end
     
     %Cluster and peak level:
-    
-    clusters = typemap(context('nidm_SupraThresholdCluster'));
+    try
+        clusters = typemap(context('nidm_SupraThresholdCluster'));
+    catch % No clusters reported
+        clusters = {};
+    end
     if(multipleExcursions)
         resultant = {};
         %Work out which object belongs to which excursion set.
@@ -367,9 +370,13 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
         clusters = resultant;
     end
     
-    peakDefCriteria = typemap(context('nidm_PeakDefinitionCriteria'));
-    if(multipleExcursions)
-        peakDefCriteria = relevantToExcursion(peakDefCriteria, exID, exLabels);
+    try
+        peakDefCriteria = typemap(context('nidm_PeakDefinitionCriteria'));
+        if(multipleExcursions)
+            peakDefCriteria = relevantToExcursion(peakDefCriteria, exID, exLabels);
+        end
+    catch
+        peakDefCriteria = {};
     end
     
     %Obtain what type of statistic we are dealing with:    
@@ -460,7 +467,7 @@ function NTabDat = changeNIDMtoTabDat(graph, typemap, context, ids, exObj)
             if isfield(clusters{i}, context('nidm_pValueFWER'))
                 tableTemp{n, 3} = str2double(get_value(clusters{i}.(context('nidm_pValueFWER'))));
             else
-                tableTemp{n, 3} = NaN;
+                tableTemp{n, 3} = '';
             end
             if clustersFDRP
                 tableTemp{n, 4} = str2double(get_value(clusters{i}.(context('nidm_qValueFDR'))));

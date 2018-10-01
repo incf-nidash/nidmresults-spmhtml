@@ -59,7 +59,7 @@ end
 
 % testing the viewer runs on FSL-nidm output.
 function testViewerRunsFSL()
-    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'fsl_default_130.nidm');
+    data_path = fullfile(fileparts(mfilename('fullpath')), '..', 'data', 'fsl_default.nidm');
     delete_html_file(data_path);
     nidm_results_display(data_path);
 end
